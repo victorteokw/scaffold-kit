@@ -111,6 +111,7 @@ const startApp = (app, argv = process.argv) => {
   let projDir = commandExecutionDirectory(commandObject);
   if (commandObject.relocateProjDir) {
     projDir = commandObject.relocateProjDir({ args, options: finalOptions, projDir });
+    process.chdir(projDir);
   }
   commandObject.execute({ projDir, options: finalOptions, args });
   executeAllInstructions(projDir);
