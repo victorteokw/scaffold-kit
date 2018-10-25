@@ -1,0 +1,22 @@
+{
+  "name": "scaffold-kit",
+  "version": "0.0.1",
+  "description": "The creator of scaffold tools.",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zhangkaiyulw/scaffold-kit.git"
+  },
+  "keywords": [
+    "scaffold"
+  ],
+  "author": "Zhang Kaiyu",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/zhangkaiyulw/scaffold-kit/issues"
+  },
+  "homepage": "https://github.com/zhangkaiyulw/scaffold-kit#readme"
+}
