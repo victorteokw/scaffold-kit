@@ -113,8 +113,19 @@ const startApp = (app, argv = process.argv) => {
     projDir = commandObject.relocateProjDir({ args, options: finalOptions, projDir });
     process.chdir(projDir);
   }
-  commandObject.execute({ projDir, options: finalOptions, args });
+  executeCommand(app, commandObject, { projDir, options: finalOptions, args });
   executeAllInstructions(projDir);
+};
+
+const executeCommand = (app, command, { projDir, options, args }) => {
+  if (command.composedOf) {
+    command.composedOf.forEach((c) => {
+      const commandObj = loadCommand(app, c);
+      commandObj.execute(Object.assign({ projDir, options, args }, command.composingParams));
+    });
+  } else {
+    command.execute({ projDir, options, args });
+  }
 };
 
 const runApp = (app, argv) => {
