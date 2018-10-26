@@ -6,6 +6,7 @@ const loadCommand = require('./loadCommand');
  * @param {Application} app - The scaffold app.
  * @param {Command} command - The command to be executed.
  * @param {ExecutionInformation} info - The execution information.
+ * @return {Void} This function returns nothing.
  */
 const executeCommand = (app, command, info) => {
   if (command.composedOf) {

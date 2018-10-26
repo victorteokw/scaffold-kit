@@ -52,6 +52,7 @@ const error = require('../error');
  * Create an executable command.
  *
  * @param {Command} command - The command descriptor.
+ * @return {Void} This function returns nothing.
  */
 const createCommand = (command) => {
   if (!command) {
@@ -60,3 +61,5 @@ const createCommand = (command) => {
   if (!command.options) command.options = {};
   return command;
 };
+
+module.exports = createCommand;
