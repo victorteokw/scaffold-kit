@@ -128,10 +128,6 @@ const executeCommand = (app, command, { projDir, options, args }) => {
   }
 };
 
-const runApp = (app, argv) => {
-  startApp(createApp(app), argv);
-};
-
 const getUserCommandLineInput = (app, argv = process.argv) => {
   if (!app.userCommandLineInput) {
     const { command, options, args } = parsingCommandLineArgs(argv);
@@ -143,6 +139,5 @@ const getUserCommandLineInput = (app, argv = process.argv) => {
 module.exports = {
   createApp,
   startApp,
-  runApp,
   getUserCommandLineInput
 };

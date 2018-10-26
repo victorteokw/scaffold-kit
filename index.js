@@ -1,32 +1,14 @@
-const {
-  createCommand,
-  executeCommand
-} = require('./command');
+const { createCommand, executeCommand } = require('./command');
 
-const {
-  pushInstruction,
-  pushInstructions,
-  executeAllInstructions
-} = require('./executor');
+const { pushInstruction, pushInstructions, executeAllInstructions } = require('./executor');
 
-const {
-  createApp,
-  startApp,
-  runApp
-} = require('./app');
+const { createApp, startApp } = require('./app');
 
 module.exports = {
-  // App
-  createCommand,
-  executeCommand,
-
-  // Execution
-  pushInstruction,
-  pushInstructions,
-  executeAllInstructions,
-
   // Command
-  createApp,
-  startApp,
-  runApp
+  createCommand, executeCommand,
+  // Execution
+  pushInstruction, pushInstructions, executeAllInstructions,
+  // App
+  createApp, startApp
 };
