@@ -9,6 +9,7 @@ const showAppVersion = require('./showAppVersion');
 const showCommandHelpMessage = require('./showCommandHelpMessage');
 const commandExecutionDirectory = require('./commandExecutionDirectory');
 const { executeAllInstructions } = require('../executor');
+const { loadCommand, executeCommand } = require('../command');
 
 const validateApp = (app) => {
   if (!app.appName) {
@@ -38,19 +39,6 @@ const createApp = (app) => {
   validateApp(app);
   app.validated = true;
   return app;
-};
-
-const loadCommand = (app, commandName) => {
-  if (!app.commandsMap[commandName]) {
-    throw error(`command '${commandName}' not exist.`);
-  }
-  let command;
-  try {
-    command = require(app.commandsMap[commandName]);
-  } catch(e) {
-    throw error(`command '${commandName}' can't be required.`);
-  }
-  return command;
 };
 
 const startApp = (app, argv = process.argv) => {
@@ -115,17 +103,6 @@ const startApp = (app, argv = process.argv) => {
   }
   executeCommand(app, commandObject, { projDir, options: finalOptions, args });
   executeAllInstructions(projDir);
-};
-
-const executeCommand = (app, command, { projDir, options, args }) => {
-  if (command.composedOf) {
-    command.composedOf.forEach((c) => {
-      const commandObj = loadCommand(app, c);
-      commandObj.execute(Object.assign({ projDir, options, args }, command.composingParams));
-    });
-  } else {
-    command.execute({ projDir, options, args });
-  }
 };
 
 const getUserCommandLineInput = (app, argv = process.argv) => {

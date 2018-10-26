@@ -36,16 +36,22 @@ const error = require('../error');
  */
 
 /**
+ * The command object.
+ *
+ * @typedef {Object} Command
+ * @property {String} description - The description of the command.
+ * @property {String} usage - The usage of the command.
+ * @property {String[]} examples - The examples of this command.
+ * @property {Boolean} executeInProjectRootDirectory - Should the command be executed in project root directory.
+ * @property {Option} commandLineOptions - The command line option specifications.
+ * @property {RelocateProjDir} relocateProjDir - The function that relocates the project root directory.
+ * @property {CommandExecution} execute - The execution function.
+ */
+
+/**
  * Create an executable command.
  *
- * @param {Object} command - The command descriptor.
- * @param {String} command.description - The description of the command.
- * @param {String} command.usage - The usage of the command.
- * @param {String[]} command.examples - The examples of this command.
- * @param {Boolean} command.executeInProjectRootDirectory - Should the command be executed in project root directory.
- * @param {Option} command.commandLineOptions - The command line option specifications.
- * @param {RelocateProjDir} command.relocateProjDir - The function that relocates the project root directory.
- * @param {CommandExecution} command.execute - The execution function.
+ * @param {Command} command - The command descriptor.
  */
 const createCommand = (command) => {
   if (!command) {
