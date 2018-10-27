@@ -1,6 +1,10 @@
 const { createCommand, executeCommand } = require('./command');
 
-const { pushInstruction, pushInstructions, executeAllInstructions } = require('./executor');
+const {
+  pushInstruction,
+  pushInstructions,
+  executeAllInstructions
+} = require('./executor');
 
 const { createApp, startApp } = require('./app');
 
