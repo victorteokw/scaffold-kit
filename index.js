@@ -1,4 +1,4 @@
-const { createCommand, executeCommand } = require('./command');
+const { createCommand, executeCommand, loadCommand } = require('./command');
 
 const {
   pushInstruction,
@@ -11,7 +11,7 @@ const { createApp, startApp } = require('./app');
 
 module.exports = {
   // Command
-  createCommand, executeCommand,
+  createCommand, executeCommand, loadCommand,
   // Execution
   pushInstruction, pushInstructions, editInstructions, executeAllInstructions,
   // App
