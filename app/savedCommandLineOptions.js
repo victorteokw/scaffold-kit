@@ -3,11 +3,11 @@ const error = require('../error');
 
 module.exports = (app, cwd = process.cwd()) => {
   if (!app.rcFile) return {};
-  const optionsFile = findDominantFile(cwd, app.rcFile);
-  if (!optionsFile) return {};
+  const rcFile = findDominantFile(cwd, app.rcFile);
+  if (!rcFile) return {};
   try {
-    return require(optionsFile);
+    return require(rcFile);
   } catch(e) {
-    throw error(`'${optionsFile}' malformed.`);
+    throw error(`'${rcFile}' malformed.`);
   }
 };
