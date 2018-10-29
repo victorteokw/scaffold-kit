@@ -72,6 +72,12 @@ const startApp = (app, argv = process.argv) => {
     return mapValues(item.extraOptions, 'default');
   });
   const totalDefaultOptions = merge({}, appDefaultOptions, ...behavioralDefaultOptions, commandDefaultOptions);
+  if (commandObject.dynamicOptions) {
+    merge(
+      totalDefaultOptions,
+      map(commandObject.dynamicOptions({ args, userOptions }), 'default')
+    );
+  }
   const finalOptions = merge({}, totalDefaultOptions, userOptions);
 
   const nonDefaultOptions = Object.assign({}, finalOptions);
