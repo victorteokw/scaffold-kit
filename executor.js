@@ -6,8 +6,10 @@ const ejs = require('ejs');
 const chalk = require('chalk');
 const { singular } = require('pluralize');
 const clone = require('lodash.clonedeep');
+const map = require('lodash.map');
+const compact = require('lodash.compact');
 
-const userInstructions = [];
+let userInstructions = [];
 
 const instructions = {
   createFile: {
@@ -100,6 +102,10 @@ const pushInstruction = (command) => {
 
 const pushInstructions = (commands) => {
   commands.map((command) => pushInstruction(command));
+};
+
+const editInstructions = (func) => {
+  userInstructions = compact(map(userInstructions, func));
 };
 
 const executeAllInstructions = (destDir) => {
@@ -409,5 +415,6 @@ const runShellCommand = (command) => {
 module.exports = {
   pushInstruction,
   pushInstructions,
+  editInstructions,
   executeAllInstructions
 };

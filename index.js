@@ -3,6 +3,7 @@ const { createCommand, executeCommand } = require('./command');
 const {
   pushInstruction,
   pushInstructions,
+  editInstructions,
   executeAllInstructions
 } = require('./executor');
 
@@ -12,7 +13,7 @@ module.exports = {
   // Command
   createCommand, executeCommand,
   // Execution
-  pushInstruction, pushInstructions, executeAllInstructions,
+  pushInstruction, pushInstructions, editInstructions, executeAllInstructions,
   // App
   createApp, startApp
 };
