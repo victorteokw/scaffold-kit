@@ -1,6 +1,7 @@
 const mapValues = require('lodash.mapvalues');
 const map = require('lodash.map');
 const kebabCase = require('lodash.kebabcase');
+const showConfigurableHelpMessages = require('./showConfigurableHelpMessages');
 
 module.exports = (app, commandName, command) => {
   const appOptionDescs = mapValues(app.appLevelCommandLineOptions, 'description');
@@ -18,13 +19,17 @@ module.exports = (app, commandName, command) => {
     console.log(`${command.usage}`);
     console.log('');
   }
-  console.log('Options:');
+  console.log('Command options:');
   console.log('');
   map(commandOptionDescs, (o, k) => {
     console.log(`  --${kebabCase(k).padEnd(14)}\t${o}`);
   });
+  console.log('');
+  console.log('App level options:');
+  console.log('');
   map(appOptionDescs, (o, k) => {
     console.log(`  --${kebabCase(k).padEnd(14)}\t${o}`);
   });
   console.log('');
+  showConfigurableHelpMessages(app);
 };
