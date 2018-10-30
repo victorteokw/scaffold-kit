@@ -12,7 +12,7 @@ const { executeAllInstructions } = require('../executor');
 const { loadCommand, executeCommand } = require('../command');
 
 const startApp = (app, argv = process.argv) => {
-  if (!app.validated) {
+  if (!app.created) {
     throw error('app is not created.');
   }
   const { command, options, args } = getUserCommandLineInput(app, argv);
