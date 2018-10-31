@@ -12,7 +12,7 @@ const error = require('../error');
  * executed in project root directory.
  * @property {CommandLineOption[]} commandLineOptions - The command line option
  * specifications.
- * @property {RelocateProjDir} relocateProjDir - The function that relocates
+ * @property {RelocateCwd} relocateCwd - The function that relocates
  * the project root directory.
  * @property {CommandExecution} execute - The execution function.
  */

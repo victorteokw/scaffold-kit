@@ -71,14 +71,14 @@ const startApp = (app, argv = process.argv) => {
       nonDefaultOptionsToSave[k] = v;
     }
   });
-  // Command modifies projDir
-  let projDir = commandExecutionDirectory(commandObject);
-  if (commandObject.relocateProjDir) {
-    projDir = commandObject.relocateProjDir({ args, options: finalOptions, projDir });
-    process.chdir(projDir);
+  // Command modifies cwd
+  let cwd = commandExecutionDirectory(commandObject);
+  if (commandObject.relocateCwd) {
+    cwd = commandObject.relocateCwd({ args, options: finalOptions, cwd });
+    process.chdir(cwd);
   }
-  executeCommand(app, commandObject, { projDir, options: finalOptions, args });
-  executeAllInstructions(projDir);
+  executeCommand(app, commandObject, { cwd, options: finalOptions, args });
+  executeAllInstructions(cwd);
 };
 
 

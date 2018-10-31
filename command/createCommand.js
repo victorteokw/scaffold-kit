@@ -16,15 +16,15 @@ const error = require('../error');
  * @typedef {Object} ExecutionInformation
  * @property {String[]} args - The command line arguments.
  * @property {Object} options - The final execution options.
- * @property {String} projDir - The original project root directory.
+ * @property {String} cwd - The original current working directory.
  */
 
 /**
- * The function that relocates project root directory.
+ * The function that relocates current working directory.
  *
- * @callback RelocateProjDir
+ * @callback RelocateCwd
  * @param {ExecutionInformation} info - The execution information.
- * @return {String} The project directory that relocated.
+ * @return {String} The current working directory that relocated.
  */
 
 /**
@@ -46,7 +46,7 @@ const error = require('../error');
  * executed in project root directory.
  * @property {CommandLineOption[]} commandLineOptions - The command line option
  * specifications.
- * @property {RelocateProjDir} relocateProjDir - The function that relocates
+ * @property {RelocateCwd} relocateCwd - The function that relocates
  * the project root directory.
  * @property {CommandExecution} execute - The execution function.
  */
