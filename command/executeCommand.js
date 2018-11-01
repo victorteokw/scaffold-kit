@@ -1,3 +1,4 @@
+const error = require('../error');
 const loadCommand = require('./loadCommand');
 
 /**
@@ -9,6 +10,9 @@ const loadCommand = require('./loadCommand');
  * @return {Void} This function returns nothing.
  */
 const executeCommand = (app, command, info) => {
+  if (!command.created) {
+    throw error('please create command first.');
+  }
   if (command.composedOf) {
     command.composedOf.forEach((subcommandName) => {
       const subcommand = loadCommand(app, subcommandName);

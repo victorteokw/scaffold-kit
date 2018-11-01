@@ -1,4 +1,5 @@
 const error = require('../error');
+const validateCommand = require('./validateCommand');
 
 /**
  * Command line option object.
@@ -49,6 +50,9 @@ const error = require('../error');
  * @property {RelocateCwd} relocateCwd - The function that relocates
  * the project root directory.
  * @property {CommandExecution} execute - The execution function.
+ * @property {String[]} composedOf - How this compound command is composed of.
+ * @property {Object} composingParams - Custom parameters passed to executed
+ * commands.
  */
 
 /**
@@ -57,12 +61,11 @@ const error = require('../error');
  * @param {Command} command - The command descriptor.
  * @return {Void} This function returns nothing.
  */
-const createCommand = (command) => {
-  if (!command) {
+const createCommand = (descriptor) => {
+  if (!descriptor) {
     throw error('please provide command descriptor.');
   }
-  if (!command.options) command.options = {};
-  return command;
+  return validateCommand(descriptor);
 };
 
 module.exports = createCommand;

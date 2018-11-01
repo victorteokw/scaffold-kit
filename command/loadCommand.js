@@ -5,7 +5,7 @@ const error = require('../error');
  *
  * @param {Application} app - The scaffold app.
  * @param {String} commandName - The name of the command to be executed.
- * @return {Void} This function returns nothing.
+ * @return {Command} This function returns the loaded command.
  */
 const loadCommand = (app, commandName) => {
   if (!app.commandsMap[commandName]) {

@@ -32,7 +32,8 @@
     "lodash.merge": "^4.0.0",
     "minimist": "1.2.0",
     "mkdirp": "^0.5.0",
-    "pluralize": "^7.0.0"
+    "pluralize": "^7.0.0",
+    "watsons.js": "^0.1.5"
   },
   "devDependencies": {
     "eslint": "^5.7.0",
