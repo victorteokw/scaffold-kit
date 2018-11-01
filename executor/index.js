@@ -3,53 +3,53 @@ const fs = require('fs');
 const mkdirp = require('mkdirp');
 const { spawnSync } = require('child_process');
 const ejs = require('ejs');
-const chalk = require('chalk');
 const { singular } = require('pluralize');
 const clone = require('lodash/cloneDeep');
 const map = require('lodash/map');
 const compact = require('lodash/compact');
+const outputMessage = require('outputMessage');
 
 let userInstructions = [];
 
 const instructions = {
   createFile: {
     fields: {
-      src: '[optional string] the src location, should be present if content is not present.',
+      from: '[optional string] the src location, should be present if content is not present.',
       content: '[optional string] the file content, should be present if src is not present.',
-      dest: '[required string] the relative destination location.',
+      at: '[required string] the relative destination location.',
       context: '[optional object] the rendering template context.'
     }
   },
   appendFile: {
     fields: {
-      src: '[optional string] the src location, should be present if content is not present.',
+      from: '[optional string] the src location, should be present if content is not present.',
       content: '[optional string] the file content, should be present if src is not present.',
-      dest: '[required string] the relative destination location.',
+      at: '[required string] the relative destination location.',
       context: '[optional object] the rendering template context.'
     }
   },
   deleteFile: {
     fields: {
-      path: '[required string] which file to delete'
+      at: '[required string] which file to delete'
     }
   },
   updateJSONFile: {
     fields: {
-      path: '[required string] which file to update',
+      at: '[required string] which file to update',
       updator: '[required (object) => object] the json updator'
     }
   },
   ensureDirectory: {
     fields: {
-      name: '[required string] the directory name.'
+      at: '[required string] the directory name.'
     }
   },
   installDependency: {
     fields: {
       package: '[required string] package name',
       version: '[required string] version',
-      isDev: '[required boolean] is dev dependency',
-      isMock: '[required boolean] is fake installing (for unit test)'
+      dev: '[required boolean] is dev dependency',
+      mock: '[required boolean] is fake installing (for unit test)'
     }
   },
   removeDependency: {
@@ -113,10 +113,6 @@ const executeAllInstructions = (destDir) => {
   execute(executionCommands, destDir);
 };
 
-const outputMessage = (flag, flagColor, text) => {
-  console.log(`${chalk[flagColor](flag.padStart(12))} ${text}`);
-};
-
 const executeFileCommandsAndOutputMessage = (target, commands, destDir) => {
   let flag, flagColor;
   commands.forEach((command) => {
@@ -125,7 +121,7 @@ const executeFileCommandsAndOutputMessage = (target, commands, destDir) => {
     command[key] = true;
     if (command.createFile) {
       mkdirp.sync(path.dirname(target));
-      const content = command.content === undefined ? fs.readFileSync(command.src).toString() : command.content;
+      const content = command.content === undefined ? fs.readFileSync(command.from).toString() : command.content;
       const rendered = ejs.render(content, command.context || {});
       if (fs.existsSync(target)) {
         if (fs.readFileSync(target).toString() === rendered) {
@@ -142,7 +138,7 @@ const executeFileCommandsAndOutputMessage = (target, commands, destDir) => {
       }
     } else if (command.appendFile) {
       mkdirp.sync(path.dirname(target));
-      const content = command.content || fs.readFileSync(command.src).toString();
+      const content = command.content || fs.readFileSync(command.from).toString();
       const rendered = ejs.render(content, command.context || {});
       if (fs.readFileSync(target).toString().includes(rendered)) {
         flag = 'up-to-date';
@@ -206,21 +202,21 @@ const executeDependencyCommandAndOutputMessage = (dep, command, destDir) => {
   if (command.command === 'install') {
     const pkgFile = path.join(destDir, 'package.json');
     const pkg = require(pkgFile);
-    if (command.isDev ? pkg.devDependencies[dep] : pkg.dependencies[dep]) {
+    if (command.dev ? pkg.devDependencies[dep] : pkg.dependencies[dep]) {
       flag = 'installed';
       flagColor = 'green';
       outputMessage(flag, flagColor, dep);
     } else {
-      if (command.isMock) {
+      if (command.mock) {
         updateJSONFile(pkgFile, (j) => {
-          j[command.isDev ? 'devDependencies' : 'dependencies'][dep] = command.version;
+          j[command.dev ? 'devDependencies' : 'dependencies'][dep] = command.version;
           return j;
         });
         flag = 'install';
         flagColor = 'green';
         outputMessage(flag, flagColor, dep);
       } else {
-        if (command.isMock) {
+        if (command.mock) {
           updateJSONFile(pkgFile, (j) => {
             if (j.devDependencies) {
               delete j['devDependencies'][dep];
@@ -234,7 +230,7 @@ const executeDependencyCommandAndOutputMessage = (dep, command, destDir) => {
           flag = 'install';
           flagColor = 'green';
           outputMessage(flag, flagColor, dep);
-          const obj = spawnSync('npm', ['install', dep + '@' + command.version, command.isDev ? '--save-dev' : '--save']);
+          const obj = spawnSync('npm', ['install', dep + '@' + command.version, command.dev ? '--save-dev' : '--save']);
           if (obj.signal === 'SIGINT') {
             console.log('');
             process.exit(0);
@@ -286,41 +282,41 @@ const convertCommandsToExecutionCommands = (commands, destDir) => {
     const commandName = Object.keys(command)[0];
     const commandParams = command[commandName];
     if (commandName === 'createFile') {
-      filesMap[commandParams.dest] = [{
+      filesMap[commandParams.at] = [{
         'createFile': {
-          src: commandParams.src,
+          from: commandParams.from,
           content: commandParams.content,
           context: commandParams.context
         }
       }];
     } else if (commandName === 'appendFile') {
-      if (filesMap[commandParams.dest]) {
-        filesMap[commandParams.dest].push({
+      if (filesMap[commandParams.at]) {
+        filesMap[commandParams.at].push({
           'appendFile': {
-            src: commandParams.src,
+            from: commandParams.from,
             content: commandParams.content,
             context: commandParams.context
           }
         });
       } else {
         // same with create if not exist yet
-        filesMap[commandParams.dest] = [{
+        filesMap[commandParams.at] = [{
           'createFile': {
-            src: commandParams.src,
+            from: commandParams.from,
             content: commandParams.content,
             context: commandParams.context
           }
         }];
       }
     } else if (commandName === 'deleteFile') {
-      filesMap[commandParams.path] = [{
+      filesMap[commandParams.at] = [{
         'deleteFile': {}
       }];
     } else if (commandName === 'updateJSONFile') {
-      if (!filesMap[commandParams.path]) {
-        filesMap[commandParams.path] = [];
+      if (!filesMap[commandParams.at]) {
+        filesMap[commandParams.at] = [];
       }
-      filesMap[commandParams.path].push({
+      filesMap[commandParams.at].push({
         'updateJSONFile': {
           updator: commandParams.updator
         }
@@ -329,8 +325,8 @@ const convertCommandsToExecutionCommands = (commands, destDir) => {
       dependenciesMap[commandParams.package] = {
         command: 'install',
         version: commandParams.version,
-        isDev: commandParams.isDev,
-        isMock: commandParams.isMock
+        dev: commandParams.dev,
+        mock: commandParams.mock
       };
     } else if (commandName === 'removeDependency') {
       dependenciesMap[commandParams.package] = {
@@ -342,13 +338,13 @@ const convertCommandsToExecutionCommands = (commands, destDir) => {
   });
   commands.filter((c) => Object.keys(c)[0] === 'ensureDirectory').forEach((c) => {
     const commandParams = c[Object.keys(c)[0]];
-    const destPath = path.join(destDir, commandParams.name);
+    const destPath = path.join(destDir, commandParams.at);
     if (fs.existsSync(destPath) && fs.lstatSync(destPath).isDirectory() && fs.existsSync(path.join(destPath, '.keep'))) {
       // Dir exist already
       let needRemoveKeepFile = false;
       Object.keys(filesMap).forEach((filename) => {
         if (filesMap[filename][0]['createFile']) {
-          if (filename.indexOf(commandParams.name) === 0) {
+          if (filename.indexOf(commandParams.at) === 0) {
             needRemoveKeepFile = true;
           }
         }
@@ -371,7 +367,7 @@ const convertCommandsToExecutionCommands = (commands, destDir) => {
         }
       }
       if (needRemoveKeepFile) {
-        filesMap[path.join(commandParams.name, '.keep')] = [{
+        filesMap[path.join(commandParams.at, '.keep')] = [{
           'deleteFile': {}
         }];
       }
@@ -380,13 +376,13 @@ const convertCommandsToExecutionCommands = (commands, destDir) => {
       let needCreate = true;
       Object.keys(filesMap).forEach((filename) => {
         if (filesMap[filename][0]['createFile']) {
-          if (filename.indexOf(commandParams.name) === 0) {
+          if (filename.indexOf(commandParams.at) === 0) {
             needCreate = false;
           }
         }
       });
       if (needCreate) {
-        filesMap[path.join(commandParams.name, '.keep')] = [{
+        filesMap[path.join(commandParams.at, '.keep')] = [{
           'createFile': {
             content: '',
             context: {}
