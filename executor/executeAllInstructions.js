@@ -88,17 +88,6 @@ const executeFileCommandsAndOutputMessage = (target, commands, destDir) => {
   outputMessage(flag, flagColor, path.relative(destDir, target));
 };
 
-const updateJSONFile = (file, updator) => {
-  let original;
-  if (!fs.existsSync(file)) {
-    original = {};
-  } else {
-    original = JSON.parse(fs.readFileSync(file).toString());
-  }
-  const updated = updator(clone(original));
-  fs.writeFileSync(file, JSON.stringify(updated, null, 2));
-};
-
 const executeDependencyCommandAndOutputMessage = (dep, command, destDir) => {
   let flag, flagColor;
   if (command.command === 'install') {
@@ -298,16 +287,6 @@ const convertCommandsToExecutionCommands = (commands, destDir) => {
     dependencies: dependenciesMap,
     shellCommands: shellCommandsList
   };
-};
-
-const runShellCommand = (command) => {
-  const [name, ...args] = command.split(' ');
-  const obj = spawnSync(name, args);
-  if (obj.signal === 'SIGINT') {
-    console.log('');
-    process.exit(0);
-  }
-  outputMessage('run', 'green', command);
 };
 
 module.exports = executeAllInstructions;
