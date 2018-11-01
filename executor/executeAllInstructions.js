@@ -5,9 +5,10 @@ const { spawnSync } = require('child_process');
 const ejs = require('ejs');
 const clone = require('lodash/cloneDeep');
 
-const outputMessage = require('./outputMessage');
 const instRegistry = require('./instRegistry');
 const getDestination = require('./getDestination');
+const { getExecutorOptions } = require('./executorOptions');
+const outputMessage = require('./outputMessage');
 
 const executeAllInstructions = () => {
   const executionCommands = convertCommandsToExecutionCommands(instRegistry.getAll());
