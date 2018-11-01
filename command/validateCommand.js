@@ -35,7 +35,7 @@ const validateCommand = (descriptor) => {
   if (descriptor.executeInProjectRootDirectory === undefined) {
     descriptor.executeInProjectRootDirectory = true;
   }
-  descriptor.validated = true;
+  descriptor.created = true;
   return descriptor;
 };
 

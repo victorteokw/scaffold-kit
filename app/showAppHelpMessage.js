@@ -1,5 +1,5 @@
-const map = require('lodash.map');
-const kebabCase = require('lodash.kebabcase');
+const map = require('lodash/map');
+const kebabCase = require('lodash/kebabCase');
 const showConfigurableHelpMessages = require('./showConfigurableHelpMessages');
 
 module.exports = (app) => {

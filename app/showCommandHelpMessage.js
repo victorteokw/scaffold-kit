@@ -1,6 +1,6 @@
-const mapValues = require('lodash.mapvalues');
-const map = require('lodash.map');
-const kebabCase = require('lodash.kebabcase');
+const mapValues = require('lodash/mapValues');
+const map = require('lodash/map');
+const kebabCase = require('lodash/kebabCase');
 const showConfigurableHelpMessages = require('./showConfigurableHelpMessages');
 
 module.exports = (app, commandName, command) => {

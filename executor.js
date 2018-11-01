@@ -5,9 +5,9 @@ const { spawnSync } = require('child_process');
 const ejs = require('ejs');
 const chalk = require('chalk');
 const { singular } = require('pluralize');
-const clone = require('lodash.clonedeep');
-const map = require('lodash.map');
-const compact = require('lodash.compact');
+const clone = require('lodash/cloneDeep');
+const map = require('lodash/map');
+const compact = require('lodash/compact');
 
 let userInstructions = [];
 

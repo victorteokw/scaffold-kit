@@ -1,5 +1,5 @@
-const map = require('lodash.map');
-const kebabCase = require('lodash.kebabcase');
+const map = require('lodash/map');
+const kebabCase = require('lodash/kebabCase');
 
 module.exports = (app) => {
   if (!app.behaviorsMap) return;

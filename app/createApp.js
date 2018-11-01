@@ -1,4 +1,4 @@
-const map = require('lodash.map');
+const map = require('lodash/map');
 const error = require('../error');
 
 /**
