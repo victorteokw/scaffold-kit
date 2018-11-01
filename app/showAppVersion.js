@@ -1,3 +1,3 @@
 module.exports = (app) => {
-  console.log(`${app.appName} version ${app.version}`);
+  console.log(`${app.appName} ${app.version}`);
 };
