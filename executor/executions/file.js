@@ -5,20 +5,6 @@ const ejs = require('ejs');
 
 const executeFileCommandsAndOutputMessage = (target, commands, destDir) => {
 
-    } else if (command.appendFile) {
-      mkdirp.sync(path.dirname(target));
-      const content = command.content || fs.readFileSync(command.from).toString();
-      const rendered = ejs.render(content, command.context || {});
-      if (fs.readFileSync(target).toString().includes(rendered)) {
-        flag = 'up-to-date';
-        flagColor = 'green';
-      } else {
-        fs.appendFileSync(target, rendered);
-        if (!flag) {
-          flag = 'append';
-          flagColor = 'green';
-        }
-      }
     } else if (command.updateJSONFile) {
       let original;
       if (fs.existsSync(target)) {
