@@ -72,7 +72,8 @@ const validateCommand = (command) => {
 //   updateJSONFile: {
 //     fields: {
 //       at: '[required string] which file to update',
-//       updator: '[required (object) => object] the json updator'
+//       updator: '[required (object) => object] the json updator',
+//       rollbacker: the json rollbacker
 //     }
 //   },
 //   ensureDirectory: {

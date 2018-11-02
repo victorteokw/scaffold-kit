@@ -11,8 +11,8 @@ const { getExecutorOptions } = require('./executorOptions');
 const outputMessage = require('./outputMessage');
 
 const executeAllInstructions = () => {
-  const executionCommands = convertCommandsToExecutionCommands(instRegistry.getAll());
-  execute(executionCommands);
+  const executable = rawInstsToExecutable(instRegistry.getAll());
+  execute(executable);
 };
 
 const executeFileCommandsAndOutputMessage = (target, commands, destDir) => {
