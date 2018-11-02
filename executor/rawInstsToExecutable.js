@@ -4,6 +4,7 @@ const rawInstsToExecutable = (rawInsts) => {
   const files = {};
   const dependencies = {};
   const commands = [];
+  const directories = {};
 
   each(rawInsts, ({ name, params }) => {
     switch (name) {
@@ -52,8 +53,18 @@ const rawInstsToExecutable = (rawInsts) => {
       case 'runShellCommand': {
         commands.push({ name: 'runShellCommand', params });
       }
+      // Handle git keep directories
+      case 'keepDirectoryInGit': {
+        directories[params.at] = { name: 'keepDirectoryInGit', params };
+      }
     }
   });
+  return {
+    files,
+    dependencies,
+    commands,
+    directories
+  };
 };
 
 module.exports = rawInstsToExecutable;
