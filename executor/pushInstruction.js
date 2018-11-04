@@ -10,19 +10,29 @@ const knownInstructions = [
   'createFile',
   'deleteFile',
   'appendFile',
+  'detachFromFile',
   'updateJSONFile',
-  'ensureDirectory',
+  'rollbackJSONFile',
   'installDependency',
   'removeDependency',
-  'runShellCommand'
+  'runShellCommand',
+  'keepDirectoryInGit'
 ];
+
+const toSingularInstName = (name) => {
+  const specialCommandNames = { 'keepDirectoriesInGit': 'keepDirectoryInGit' };
+  return specialCommandNames[name] || singular(name);
+};
 
 const isSingleCommand = (command) => {
   return includes(knownInstructions, Object.keys(command)[0]);
 };
 
 const isArrayCommand = (command) => {
-  return includes(knownInstructions, singular(Object.keys(command)[0]));
+  return includes(
+    knownInstructions,
+    toSingularInstName(Object.keys(command)[0])
+  );
 };
 
 const separateArrayCommand = (command) => {
