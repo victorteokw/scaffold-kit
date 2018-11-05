@@ -1,3 +1,4 @@
+const eachAsync = require('series-async-each');
 const error = require('../error');
 const loadCommand = require('./loadCommand');
 
@@ -9,21 +10,21 @@ const loadCommand = require('./loadCommand');
  * @param {ExecutionInformation} info - The execution information.
  * @return {Void} This function returns nothing.
  */
-const executeCommand = (app, command, info) => {
+const executeCommand = async (app, command, info) => {
   if (!command.created) {
     throw error('please create command first.');
   }
   if (command.composedOf) {
-    command.composedOf.forEach((subcommandName) => {
+    await eachAsync(command.composedOf, async (subcommandName) => {
       const subcommand = loadCommand(app, subcommandName);
-      executeCommand(
+      await executeCommand(
         app,
         subcommand,
         Object.assign(info, command.composingParams)
       );
     });
   } else {
-    command.execute(info);
+    await command.execute(info);
   }
 };
 

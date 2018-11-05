@@ -58,7 +58,7 @@ const validateCommand = require('./validateCommand');
 /**
  * Create an executable command.
  *
- * @param {Command} command - The command descriptor.
+ * @param {Command} descriptor - The command descriptor.
  * @return {Void} This function returns nothing.
  */
 const createCommand = (descriptor) => {
