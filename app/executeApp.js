@@ -5,7 +5,7 @@ const displayCommandHelp = require('./displayCommandHelp');
 const { loadCommand } = require('../command');
 
 const executeApp = async (app, argv = process.argv) => {
-  const commandLineInput = parsingCommandLineArgs(argv);
+  const commandLineInput = parsingCommandLineArgs(argv, app);
   if (commandLineInput.options.version) {
     displayAppVersion(app);
     return;
