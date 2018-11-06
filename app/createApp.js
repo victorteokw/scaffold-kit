@@ -40,10 +40,10 @@ const validateApp = (app) => {
     throw error('app version is required.');
   }
   // Validate options later
-  if (!app.commandsMap) {
+  if (!app.commands) {
     throw error('app commands map is required.');
   }
-  map(app.commandsMap, (modulePath, commandName) => {
+  map(app.commands, (modulePath, commandName) => {
     if (!commandName || !commandName.match(/[a-z0-9][a-zA-Z0-9]*/)) {
       throw error(`app command name '${commandName}' not valid.`);
     }

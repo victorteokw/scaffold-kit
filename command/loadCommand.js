@@ -8,12 +8,12 @@ const error = require('../error');
  * @return {Command} This function returns the loaded command.
  */
 const loadCommand = (app, commandName) => {
-  if (!app.commandsMap[commandName]) {
+  if (!app.commands[commandName]) {
     throw error(`command '${commandName}' not exist.`);
   }
   let command;
   try {
-    command = require(app.commandsMap[commandName]);
+    command = require(app.commands[commandName]);
   } catch(e) {
     throw error(`command '${commandName}' can't be required.`);
   }

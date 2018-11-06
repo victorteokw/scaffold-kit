@@ -11,7 +11,7 @@ module.exports = (app) => {
   console.log('');
   console.log('Commands:');
   console.log('');
-  map(app.commandsMap, (c, n) => {
+  map(app.commands, (c, n) => {
     const command = require(c);
     console.log(`  ${n.padEnd(14)}${command.description || defaultDesc}`);
   });
