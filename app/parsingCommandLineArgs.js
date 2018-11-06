@@ -26,9 +26,9 @@ const convertOptions = (options) => {
   });
 };
 
-const parsingCommandLineArgs = (argv = process.argv, app) => {
+const parsingCommandLineArgs = (argv = process.argv, optionList) => {
   const parsed = commandLineArgs(assign(
-    {}, basicOptions, convertOptions(app.options)
+    {}, basicOptions, convertOptions(optionList)
   ), {
     camelCase: true,
     partial: true,

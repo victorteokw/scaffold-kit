@@ -8,7 +8,7 @@ const { loadCommand } = require('../command');
 
 const executeApp = async (app, argv = process.argv) => {
   // Get user's input
-  const input = parsingCommandLineArgs(argv, app);
+  const input = parsingCommandLineArgs(argv, app.options);
   // Display version and exit
   if (input.options.version) {
     displayAppVersion(app);
@@ -26,9 +26,9 @@ const executeApp = async (app, argv = process.argv) => {
     return;
   }
   // Get working directory
-  const workingDirectory = getWorkingDirectory(app, command);
+  const wd = getWorkingDirectory(app, command);
   // Get execution options
-  const options = getExecutionOptions(app, command, input, workingDirectory);
+  const options = getExecutionOptions(argv, app, command, input, wd);
 };
 
 module.exports = executeApp;
