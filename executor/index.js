@@ -2,6 +2,7 @@ const useTemplatesFrom = require('./useTemplatesFrom');
 const pushInstruction = require('./pushInstruction');
 const pushInstructions = require('./pushInstructions');
 const editInstructions = require('./editInstructions');
+const reverseInstruction = require('./reverseInstruction');
 const { setExecutorOption } = require('./executorOptions');
 const createInstShortcut = require('./createInstShortcut');
 
@@ -16,6 +17,7 @@ const rollbackJSONFile = createInstShortcut('rollbackJSONFile');
 const installDependency = createInstShortcut('installDependency');
 const removeDependency = createInstShortcut('removeDependency');
 const runShellCommand = createInstShortcut('runShellCommand');
+const undoShellCommand = createInstShortcut('undoShellCommand');
 const keepDirectoryInGit = createInstShortcut('keepDirectoryInGit');
 
 const createFiles = createInstShortcut('createFiles');
@@ -27,6 +29,7 @@ const rollbackJSONFiles = createInstShortcut('rollbackJSONFiles');
 const installDependencies = createInstShortcut('installDependencies');
 const removeDependencies = createInstShortcut('removeDependencies');
 const runShellCommands = createInstShortcut('runShellCommands');
+const undoShellCommands = createInstShortcut('undoShellCommands');
 const keepDirectoriesInGit = createInstShortcut('keepDirectoriesInGit');
 
 module.exports = {
@@ -34,6 +37,7 @@ module.exports = {
   pushInstruction,
   pushInstructions,
   editInstructions,
+  reverseInstruction,
   setExecutorOption,
 
   // Instruction shortcuts
@@ -47,6 +51,7 @@ module.exports = {
   installDependency,
   removeDependency,
   runShellCommand,
+  undoShellCommand,
   keepDirectoryInGit,
 
   createFiles,
@@ -58,5 +63,6 @@ module.exports = {
   installDependencies,
   removeDependencies,
   runShellCommands,
+  undoShellCommands,
   keepDirectoriesInGit
 };

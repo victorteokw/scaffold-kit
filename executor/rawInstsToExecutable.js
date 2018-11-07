@@ -62,6 +62,10 @@ const rawInstsToExecutable = (rawInsts) => {
         commands.push({ name: 'runShellCommand', params });
         break;
       }
+      case 'undoShellCommand': {
+        commands.push({ name: 'undoShellCommand', params });
+        break;
+      }
       // Handle git keep directories
       case 'keepDirectoryInGit': {
         directories[params.at] = { name: 'keepDirectoryInGit', params };
