@@ -6,6 +6,9 @@ const outputMessage = require('./outputMessage');
 
 const isDependencyInstalled = (pkgName, dev) => {
   const pkgFile = path.join(getDestination(), 'package.json');
+  if (!fs.existsSync(pkgFile)) {
+    return false;
+  }
   const pkg = require(pkgFile);
   const section = dev ? pkg.devDependencies : pkg.dependencies;
   return !!section[pkgName];
@@ -13,6 +16,12 @@ const isDependencyInstalled = (pkgName, dev) => {
 
 const mockInstallDependency = (pkgName, version, dev) => {
   const pkgFile = path.join(getDestination(), 'package.json');
+  if (!fs.existsSync(pkgFile)) {
+    fs.writeFileSync(pkgFile, JSON.stringify({
+      dependencies: {},
+      devDependencies: {}
+    }, null, 2));
+  }
   const pkg = require(pkgFile);
   pkg[dev ? 'devDependencies' : 'dependencies'][pkgName] = version;
   fs.writeFileSync(pkgFile, JSON.stringify(pkg, null, 2));
