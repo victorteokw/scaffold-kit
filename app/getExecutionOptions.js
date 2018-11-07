@@ -14,19 +14,27 @@ const loadCommand = require('../command/loadCommand');
 const getDefaultValues = (options) =>
   merge(...map(options, (option) => ({ [option.name]: option.defaultValue })));
 
-const getCommandOptions = (app, command) => {
-  if (command.composedOf && command.composeOptions) {
-    return concat(...map(command.composedOf, (subcommand) => {
-      return getCommandOptions(app, loadCommand(app, subcommand));
-    }));
+const unwrapOptions = (command, input) => {
+  if (command.options.call) {
+    return unwrapOptions(command.options(input));
   } else {
     return command.options || [];
   }
 };
 
-const getOptionList = (app, command, behaviorals) => {
+const getCommandOptions = (app, command, input) => {
+  if (command.composedOf && command.composeOptions) {
+    return concat(...map(command.composedOf, (subcommand) => {
+      return getCommandOptions(app, loadCommand(app, subcommand));
+    }));
+  } else {
+    return unwrapOptions(command, input);
+  }
+};
+
+const getOptionList = (app, command, behaviorals, input) => {
   const appOptions = app.options;
-  const commandOptions = getCommandOptions(app, command);
+  const commandOptions = getCommandOptions(app, command, input);
   const behavioralOptions = map(app.behaviorals, (b) => {
     return find(b.values, (v) => v.name === behaviorals[b.optionName]).options;
   });
@@ -46,7 +54,7 @@ const getExecutionOptions = (argv, app, command, input, wd) => {
     (b) => ({ [b.optionName]: resolvedAppOptions[b.optionName] })
   ));
   // with user's behavioral settings, we pass user's input again this time
-  const optionList = getOptionList(app, command, behaviorals);
+  const optionList = getOptionList(app, command, behaviorals, input);
   // reparse user input with full option list
   const userInput = parsingCommandLineArgs(argv, optionList);
   // get saved options
