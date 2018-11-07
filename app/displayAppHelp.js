@@ -1,6 +1,6 @@
 const map = require('lodash/map');
 const kebabCase = require('lodash/kebabCase');
-const showConfigurableHelpMessages = require('./showConfigurableHelpMessages');
+const displayBehavioralHelp = require('./displayBehavioralHelp');
 
 module.exports = (app) => {
   const defaultDesc = 'Description not provided.';
@@ -22,5 +22,5 @@ module.exports = (app) => {
     console.log(`  --${kebabCase(n).padEnd(14)} ${o.description || defaultDesc}`);
   });
   console.log('');
-  showConfigurableHelpMessages(app);
+  displayBehavioralHelp(app);
 };

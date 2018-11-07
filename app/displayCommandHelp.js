@@ -1,7 +1,7 @@
 const mapValues = require('lodash/mapValues');
 const map = require('lodash/map');
 const kebabCase = require('lodash/kebabCase');
-const showConfigurableHelpMessages = require('./showConfigurableHelpMessages');
+const displayBehavioralHelp = require('./displayBehavioralHelp');
 
 module.exports = (app, commandName, command) => {
   const appOptionDescs = mapValues(app.appLevelCommandLineOptions, 'description');
@@ -31,5 +31,5 @@ module.exports = (app, commandName, command) => {
     console.log(`  --${kebabCase(k).padEnd(14)}\t${o}`);
   });
   console.log('');
-  showConfigurableHelpMessages(app);
+  displayBehavioralHelp(app);
 };
