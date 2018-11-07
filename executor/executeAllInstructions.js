@@ -6,7 +6,7 @@ const keys = require('lodash/keys');
 const instRegistry = require('./instRegistry');
 const rawInstsToExecutable = require('./rawInstsToExecutable');
 const { getExecutorOptions } = require('./executorOptions');
-const outputMessage = require('./outputMessage');
+const outputMessage = require('./executions/outputMessage');
 const executions = require('./executions');
 
 const executeAllInstructions = async () => {
