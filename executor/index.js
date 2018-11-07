@@ -1,7 +1,8 @@
 const useTemplatesFrom = require('./useTemplatesFrom');
 const pushInstruction = require('./pushInstruction');
 const pushInstructions = require('./pushInstructions');
-const editInstructions = require('./editInstructions');
+const getInstructions = require('./getInstructions');
+const replaceInstructions = require('./replaceInstructions');
 const reverseInstruction = require('./reverseInstruction');
 const { setExecutorOption } = require('./executorOptions');
 const createInstShortcut = require('./createInstShortcut');
@@ -36,7 +37,8 @@ module.exports = {
   useTemplatesFrom,
   pushInstruction,
   pushInstructions,
-  editInstructions,
+  getInstructions,
+  replaceInstructions,
   reverseInstruction,
   setExecutorOption,
 

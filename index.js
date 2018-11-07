@@ -1,18 +1,7 @@
-const { createCommand, executeCommand, loadCommand } = require('./command');
+const assign = require('lodash/assign');
 
-const {
-  pushInstruction,
-  pushInstructions,
-  editInstructions
-} = require('./executor');
+const app = require('./app');
+const command = require('./command');
+const executor = require('./executor');
 
-const { createApp, startApp } = require('./app');
-
-module.exports = {
-  // Command
-  createCommand, executeCommand, loadCommand,
-  // Execution
-  pushInstruction, pushInstructions, editInstructions,
-  // App
-  createApp, startApp
-};
+module.exports = assign({}, app, command, executor);
