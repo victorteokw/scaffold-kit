@@ -1,6 +1,6 @@
 const commandLineArgs = require('command-line-args');
 const kebabCase = require('lodash/kebabCase');
-const assign = require('lodash/assign');
+const concat = require('lodash/concat');
 const map = require('lodash/map');
 const pick = require('lodash/pick');
 
@@ -27,13 +27,14 @@ const convertOptions = (options) => {
 };
 
 const parsingCommandLineArgs = (argv = process.argv, optionList) => {
-  const parsed = commandLineArgs(assign(
-    {}, basicOptions, convertOptions(optionList)
-  ), {
-    camelCase: true,
-    partial: true,
-    argv
-  });
+  const parsed = commandLineArgs(
+    concat(basicOptions, convertOptions(optionList)),
+    {
+      camelCase: true,
+      partial: true,
+      argv
+    }
+  );
 
   const { _unknown: [ command, ...args ], ...options } = parsed;
   return { command, args, options };
