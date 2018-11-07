@@ -9,12 +9,24 @@ const get = require('lodash/get');
 const parsingCommandLineArgs = require('./parsingCommandLineArgs');
 const getSavedOptions = require('./getSavedOptions');
 
+const loadCommand = require('../command/loadCommand');
+
 const getDefaultValues = (options) =>
   merge(...map(options, (option) => ({ [option.name]: option.defaultValue })));
 
+const getCommandOptions = (app, command) => {
+  if (command.composedOf && command.composeOptions) {
+    return concat(...map(command.composedOf, (subcommand) => {
+      return getCommandOptions(app, loadCommand(app, subcommand));
+    }));
+  } else {
+    return command.options || [];
+  }
+};
+
 const getOptionList = (app, command, behaviorals) => {
   const appOptions = app.options;
-  const commandOptions = command.options;
+  const commandOptions = getCommandOptions(app, command);
   const behavioralOptions = map(app.behaviorals, (b) => {
     return find(b.values, (v) => v.name === behaviorals[b.optionName]).options;
   });
@@ -51,7 +63,10 @@ const getExecutionOptions = (argv, app, command, input, wd) => {
   };
 
   const isDefaultValue = (name, value) => {
-    return get(find(optionList, (o) => o.name === name), 'defaultValue') === value;
+    return get(
+      find(optionList, (o) => o.name === name),
+      'defaultValue'
+    ) === value;
   };
 
   const isPresentInSavedOption = (name) => {

@@ -11,19 +11,19 @@ const basicOptions = [
 ];
 
 const convertOptions = (options) => {
-  const picked = pick(options, [
-    'name',
-    'type',
-    'alias',
-    'multiple',
-    'lazyMultiple',
-    'defaultOption',
-    'defaultValue',
-    'group'
-  ]);
-  return map(picked, (o) => {
-    o.name = kebabCase(o.name);
-    return o;
+  return map(options, (option) => {
+    const sanitized = pick(option, [
+      'name',
+      'type',
+      'alias',
+      'multiple',
+      'lazyMultiple',
+      'defaultOption',
+      'defaultValue',
+      'group'
+    ]);
+    sanitized.name = kebabCase(option.name);
+    return sanitized;
   });
 };
 
