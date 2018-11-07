@@ -1,5 +1,4 @@
 const assign = require('lodash/assign');
-const each = require('lodash/each');
 const eachAsync = require('series-async-each');
 const sortBy = require('lodash/sortBy');
 const keys = require('lodash/keys');
