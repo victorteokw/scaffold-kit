@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const { spawnSync } = require('child_process');
 const getDestination = require('../getDestination');
-const outputMessage = require('../outputMessage');
+const outputMessage = require('./outputMessage');
 
 const isDependencyInstalled = (pkgName, dev) => {
   const pkgFile = path.join(getDestination(), 'package.json');

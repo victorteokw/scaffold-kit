@@ -3,7 +3,7 @@ const path = require('path');
 const mkdirp = require('mkdirp');
 const includes = require('lodash/includes');
 const getDestination = require('../getDestination');
-const outputMessage = require('../outputMessage');
+const outputMessage = require('./outputMessage');
 
 const keepDirectoryInGit = ({ at, silent }) => {
   const keepFilename = '.keep';
