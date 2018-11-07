@@ -15,10 +15,12 @@ const rawInstsToExecutable = (rawInsts) => {
           params.from = params.at;
         }
         files[params.at].push({ name: 'createFile', params });
+        break;
       }
       case 'deleteFile': {
         if (!files[params.at]) files[params.at] = [];
         files[params.at].push({ name: 'deleteFile', params });
+        break;
       }
       case 'appendFile': {
         if (!files[params.at]) files[params.at] = [];
@@ -26,6 +28,7 @@ const rawInstsToExecutable = (rawInsts) => {
           params.from = params.at;
         }
         files[params.at].push({ name: 'appendFile', params });
+        break;
       }
       case 'detachFromFile': {
         if (!files[params.at]) files[params.at] = [];
@@ -33,29 +36,36 @@ const rawInstsToExecutable = (rawInsts) => {
           params.from = params.at;
         }
         files[params.at].push({ name: 'detachFromFile', params });
+        break;
       }
       case 'updateJSONFile': {
         if (!files[params.at]) files[params.at] = [];
         files[params.at].push({ name: 'updateJSONFile', params });
+        break;
       }
       case 'rollbackJSONFile': {
         if (!files[params.at]) files[params.at] = [];
         files[params.at].push({ name: 'rollbackJSONFile', params });
+        break;
       }
       // Dependency instructions
       case 'installDependency': {
         dependencies[params.package] = { name: 'installDependency', params };
+        break;
       }
       case 'removeDependency': {
         dependencies[params.package] = { name: 'removeDependency', params };
+        break;
       }
       // Command instructions
       case 'runShellCommand': {
         commands.push({ name: 'runShellCommand', params });
+        break;
       }
       // Handle git keep directories
       case 'keepDirectoryInGit': {
         directories[params.at] = { name: 'keepDirectoryInGit', params };
+        break;
       }
     }
   });

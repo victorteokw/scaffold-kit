@@ -15,6 +15,7 @@ const loadCommand = (app, commandName) => {
   try {
     command = require(app.commands[commandName]);
   } catch(e) {
+    console.log(e);
     throw error(`command '${commandName}' can't be required.`);
   }
   return command;

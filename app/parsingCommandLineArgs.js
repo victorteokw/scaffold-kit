@@ -3,6 +3,7 @@ const kebabCase = require('lodash/kebabCase');
 const concat = require('lodash/concat');
 const map = require('lodash/map');
 const pick = require('lodash/pick');
+const assign = require('lodash/assign');
 
 const basicOptions = [
   { name: 'version', alias: 'v', type: Boolean, defaultValue: false },
@@ -35,8 +36,8 @@ const parsingCommandLineArgs = (argv = process.argv, optionList) => {
       argv
     }
   );
-
-  const { _unknown: [ command, ...args ], ...options } = parsed;
+  const { _unknown: [ command, ...args ], ...options } =
+    assign({ _unknown: [] }, parsed);
   return { command, args, options };
 };
 

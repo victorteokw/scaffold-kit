@@ -11,6 +11,7 @@ const getExecutionOptions = require('./getExecutionOptions');
 const updateRcFile = require('./updateRcFile');
 const { loadCommand, executeCommand } = require('../command');
 const executeAllInstructions = require('../executor/executeAllInstructions');
+const setDestination = require('../executor/setDestination');
 
 const executeApp = async (app, argv = process.argv) => {
   // Get user's input
@@ -53,6 +54,7 @@ const executeApp = async (app, argv = process.argv) => {
     if (retval) executionParams = assign({}, executionParams, retval);
   }
   // execution
+  setDestination(executionParams.wd);
   await executeCommand(app, command, executionParams);
   await executeAllInstructions();
   // Command after hook

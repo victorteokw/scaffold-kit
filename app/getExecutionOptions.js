@@ -4,6 +4,7 @@ const each = require('lodash/each');
 const assign = require('lodash/assign');
 const find = require('lodash/find');
 const concat = require('lodash/concat');
+const get = require('lodash/get');
 
 const parsingCommandLineArgs = require('./parsingCommandLineArgs');
 const getSavedOptions = require('./getSavedOptions');
@@ -35,7 +36,7 @@ const getExecutionOptions = (argv, app, command, input, wd) => {
   // with user's behavioral settings, we pass user's input again this time
   const optionList = getOptionList(app, command, behaviorals);
   // reparse user input with full option list
-  const userInput = parsingCommandLineArgs(optionList);
+  const userInput = parsingCommandLineArgs(argv, optionList);
   // get saved options
   const savedOptions = getSavedOptions(app, wd);
   // get all default values
@@ -46,11 +47,11 @@ const getExecutionOptions = (argv, app, command, input, wd) => {
   // parsing undefault options and pass back to main function.
 
   const isSavableOption = (name) => {
-    return find(optionList, (o) => o.name === name).saveToPreference;
+    return get(find(optionList, (o) => o.name === name), 'saveToPreference');
   };
 
   const isDefaultValue = (name, value) => {
-    return find(optionList, (o) => o.name === name).defaultValue === value;
+    return get(find(optionList, (o) => o.name === name), 'defaultValue') === value;
   };
 
   const isPresentInSavedOption = (name) => {
