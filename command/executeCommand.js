@@ -7,10 +7,10 @@ const loadCommand = require('./loadCommand');
  *
  * @param {Application} app - The scaffold app.
  * @param {Command} command - The command to be executed.
- * @param {ExecutionInformation} info - The execution information.
+ * @param {ExecutionInformation} executionParams - The execution parameters.
  * @return {Void} This function returns nothing.
  */
-const executeCommand = async (app, command, info) => {
+const executeCommand = async (app, command, executionParams) => {
   if (!command.created) {
     throw error('please create command first.');
   }
@@ -20,11 +20,11 @@ const executeCommand = async (app, command, info) => {
       await executeCommand(
         app,
         subcommand,
-        Object.assign(info, command.composingParams)
+        Object.assign(executionParams, command.composingParams)
       );
     });
   } else {
-    await command.execute(info);
+    await command.execute(executionParams);
   }
 };
 

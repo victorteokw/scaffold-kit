@@ -1,10 +1,12 @@
 const merge = require('lodash/merge');
 const map = require('lodash/map');
+const each = require('lodash/each');
 const assign = require('lodash/assign');
 const find = require('lodash/find');
 const concat = require('lodash/concat');
 
 const parsingCommandLineArgs = require('./parsingCommandLineArgs');
+const getSavedOptions = require('./getSavedOptions');
 
 const getDefaultValues = (options) =>
   merge(...map(options, (option) => ({ [option.name]: option.defaultValue })));
@@ -32,9 +34,56 @@ const getExecutionOptions = (argv, app, command, input, wd) => {
   ));
   // with user's behavioral settings, we pass user's input again this time
   const optionList = getOptionList(app, command, behaviorals);
+  // reparse user input with full option list
   const userInput = parsingCommandLineArgs(optionList);
+  // get saved options
+  const savedOptions = getSavedOptions(app, wd);
+  // get all default values
+  const allDefaults = getDefaultValues(optionList);
+  // merge all options
+  const options = merge({}, allDefaults, savedOptions, userInput.options);
 
-  //const commandDefaults = getDefaultValues(command.options);
+  // parsing undefault options and pass back to main function.
+
+  const isSavableOption = (name) => {
+    return find(optionList, (o) => o.name === name).saveToPreference;
+  };
+
+  const isDefaultValue = (name, value) => {
+    return find(optionList, (o) => o.name === name).defaultValue === value;
+  };
+
+  const isPresentInSavedOption = (name) => {
+    return savedOptions[name] !== undefined;
+  };
+
+  const isSameWithSavedOption = (name) => {
+    return isPresentInSavedOption(name)
+      && (savedOptions[name] === options[name]);
+  };
+
+  const undefaultOptions = {};
+
+  each(userInput.options, (value, name) => {
+    if (isSavableOption(name) && !isSameWithSavedOption(name)) {
+      if (isDefaultValue(name, value)) {
+        if (isPresentInSavedOption(name)) {
+          // remove from rc file
+          undefaultOptions[name] = '__delete__';
+        }
+      } else {
+        // update rc file
+        undefaultOptions[name] = value;
+      }
+    }
+  });
+
+  return {
+    options,
+    args: userInput.args,
+    command: userInput.command,
+    undefaultOptions
+  };
 };
 
 module.exports = getExecutionOptions;

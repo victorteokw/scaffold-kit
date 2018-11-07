@@ -1,11 +1,11 @@
 const findDominantFile = require('find-dominant-file');
 
 const getWorkingDirectory = (app, command) => {
-  let workingDirectory = process.cwd();
+  let wd = process.cwd();
   if (command.executeInProjectRootDirectory) {
-    workingDirectory = findDominantFile(workingDirectory, 'package.json', true);
+    wd = findDominantFile(wd, 'package.json', true);
   }
-  return workingDirectory;
+  return wd;
 };
 
 module.exports = getWorkingDirectory;
