@@ -9,28 +9,10 @@ const get = require('lodash/get');
 const parsingCommandLineArgs = require('./parsingCommandLineArgs');
 const getSavedOptions = require('./getSavedOptions');
 
-const loadCommand = require('../command/loadCommand');
+const getCommandOptions = require('../command/getCommandOptions');
 
 const getDefaultValues = (options) =>
   merge(...map(options, (option) => ({ [option.name]: option.defaultValue })));
-
-const unwrapOptions = (options, input) => {
-  if (options.call) {
-    return unwrapOptions(options(input), input);
-  } else {
-    return options || [];
-  }
-};
-
-const getCommandOptions = (app, command, input) => {
-  if (command.composedOf && command.composeOptions) {
-    return concat(...map(command.composedOf, (subcommand) => {
-      return getCommandOptions(app, loadCommand(app, subcommand));
-    }));
-  } else {
-    return unwrapOptions(command.options, input);
-  }
-};
 
 const getOptionList = (app, command, behaviorals, input) => {
   const appOptions = app.options;
