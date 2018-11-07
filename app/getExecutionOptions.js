@@ -14,11 +14,11 @@ const loadCommand = require('../command/loadCommand');
 const getDefaultValues = (options) =>
   merge(...map(options, (option) => ({ [option.name]: option.defaultValue })));
 
-const unwrapOptions = (command, input) => {
-  if (command.options.call) {
-    return unwrapOptions(command.options(input));
+const unwrapOptions = (options, input) => {
+  if (options.call) {
+    return unwrapOptions(options(input), input);
   } else {
-    return command.options || [];
+    return options || [];
   }
 };
 
@@ -28,7 +28,7 @@ const getCommandOptions = (app, command, input) => {
       return getCommandOptions(app, loadCommand(app, subcommand));
     }));
   } else {
-    return unwrapOptions(command, input);
+    return unwrapOptions(command.options, input);
   }
 };
 
