@@ -3,7 +3,7 @@ const pushInstruction = require('./pushInstruction');
 const pushInstructions = require('./pushInstructions');
 const getInstructions = require('./getInstructions');
 const replaceInstructions = require('./replaceInstructions');
-const reverseInstruction = require('./reverseInstruction');
+const revertInstruction = require('./revertInstruction');
 const { setExecutorOption } = require('./executorOptions');
 const createInstShortcut = require('./createInstShortcut');
 
@@ -39,7 +39,7 @@ module.exports = {
   pushInstructions,
   getInstructions,
   replaceInstructions,
-  reverseInstruction,
+  revertInstruction,
   setExecutorOption,
 
   // Instruction shortcuts
