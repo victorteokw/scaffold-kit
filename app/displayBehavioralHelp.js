@@ -1,23 +1,26 @@
 const map = require('lodash/map');
 const kebabCase = require('lodash/kebabCase');
 
-module.exports = (app) => {
-  if (!app.behaviorsMap) return;
+const displayBehavioralHelp = (app) => {
+  if (!app.behaviorals) return;
   const defaultDesc = 'Description not provided.';
   console.log('Configurables:');
   console.log('');
-  map(app.behaviorsMap, (behaviorMap, behaviorName) => {
-    console.log('  ' + behaviorMap.name + ': ' + behaviorMap.description);
+  map(app.behaviorals, ({ name, description, values, optionName }) => {
+    const behaviorName = optionName;
+    console.log('  ' + name + ': ' + description);
     console.log('');
     console.log('  Extra configurable options:');
     console.log('');
-    map(behaviorMap.items, (item, itemName) => {
-      console.log(`  --${(kebabCase(behaviorName) + '=' + itemName).padEnd(14)} ${item.description}`);
+    map(values, ({ name, description, options }) => {
+      console.log(`  --${(kebabCase(behaviorName) + '=' + name).padEnd(14)} ${description}`);
       console.log('');
-      map(item.extraOptions, (option, optionName) => {
-        console.log(`    --${kebabCase(optionName).padEnd(14)} ${option.description || defaultDesc}`);
+      map(options, ({ name, description }) => {
+        console.log(`    --${kebabCase(name).padEnd(14)} ${description || defaultDesc}`);
       });
       console.log('');
     });
   });
 };
+
+module.exports = displayBehavioralHelp;

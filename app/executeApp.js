@@ -29,7 +29,7 @@ const executeApp = async (app, argv = process.argv) => {
   const command = loadCommand(app, input.command);
   // Display command help and exit
   if (input.options.help) {
-    displayCommandHelp(app, input.command, command);
+    displayCommandHelp(app, input.command, command, input);
     return;
   }
   // Get working directory

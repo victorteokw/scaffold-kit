@@ -1,11 +1,9 @@
-const mapValues = require('lodash/mapValues');
 const map = require('lodash/map');
 const kebabCase = require('lodash/kebabCase');
 const displayBehavioralHelp = require('./displayBehavioralHelp');
+const getCommandOptions = require('../command/getCommandOptions');
 
-module.exports = (app, commandName, command) => {
-  const appOptionDescs = mapValues(app.appLevelCommandLineOptions, 'description');
-  const commandOptionDescs = mapValues(command.commandLineOptions, 'description');
+const displayCommandHelp = (app, commandName, command, input) => {
   console.log('');
   console.log(`${app.appName} ${app.version}`);
   console.log('');
@@ -21,15 +19,17 @@ module.exports = (app, commandName, command) => {
   }
   console.log('Command options:');
   console.log('');
-  map(commandOptionDescs, (o, k) => {
-    console.log(`  --${kebabCase(k).padEnd(14)}\t${o}`);
+  map(getCommandOptions(app, command, input), ({ name, description }) => {
+    console.log(`  --${kebabCase(name).padEnd(14)}\t${description}`);
   });
   console.log('');
   console.log('App level options:');
   console.log('');
-  map(appOptionDescs, (o, k) => {
-    console.log(`  --${kebabCase(k).padEnd(14)}\t${o}`);
+  map(app.options, ({ name, description }) => {
+    console.log(`  --${kebabCase(name).padEnd(14)}\t${description}`);
   });
   console.log('');
   displayBehavioralHelp(app);
 };
+
+module.exports = displayCommandHelp;
