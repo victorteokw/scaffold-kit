@@ -8,6 +8,7 @@ const installDependency = require('./installDependency');
 const removeDependency = require('./removeDependency');
 const keepDirectoryInGit = require('./keepDirectoryInGit');
 const runShellCommand = require('./runShellCommand');
+const undoShellCommand = require('./undoShellCommand');
 
 module.exports = {
   createFile,
@@ -19,5 +20,6 @@ module.exports = {
   installDependency,
   removeDependency,
   keepDirectoryInGit,
-  runShellCommand
+  runShellCommand,
+  undoShellCommand
 };
