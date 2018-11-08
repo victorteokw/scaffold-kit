@@ -13,6 +13,13 @@ const templateRegistry = {
     directories.push(dir);
   },
   resolveTemplatePath(name) {
+    if (path.isAbsolute(name)) {
+      if (fs.existsSync(name)) {
+        return name;
+      } else {
+        throw error(`cannot find template '${name}'.`);
+      }
+    }
     let resolved = undefined;
     eachRight(directories, (dir) => {
       if (!resolved) {
