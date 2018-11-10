@@ -3,7 +3,7 @@ const path = require('path');
 const eachRight = require('lodash/eachRight');
 const error = require('../error');
 
-const directories = [];
+let directories = [];
 
 const templateRegistry = {
   add(dir) {
@@ -11,6 +11,9 @@ const templateRegistry = {
       throw error(`template directory '${dir}' is not exist.`);
     }
     directories.push(dir);
+  },
+  clear() {
+    directories = [];
   },
   resolveTemplatePath(name) {
     if (path.isAbsolute(name)) {

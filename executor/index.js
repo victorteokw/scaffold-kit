@@ -6,6 +6,7 @@ const replaceInstructions = require('./replaceInstructions');
 const revertInstruction = require('./revertInstruction');
 const { setExecutorOption } = require('./executorOptions');
 const createInstShortcut = require('./createInstShortcut');
+const resetExecutor = require('./resetExecutor');
 
 // Instruction shortcuts
 
@@ -41,6 +42,7 @@ module.exports = {
   replaceInstructions,
   revertInstruction,
   setExecutorOption,
+  resetExecutor,
 
   // Instruction shortcuts
 

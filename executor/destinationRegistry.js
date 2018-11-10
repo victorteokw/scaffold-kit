@@ -14,6 +14,9 @@ const destinationRegistry = {
   },
   has() {
     return !!destination;
+  },
+  reset() {
+    destination = undefined;
   }
 };
 
