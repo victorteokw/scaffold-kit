@@ -1,3 +1,5 @@
+const mkdirp = require('mkdirp');
+
 const isEmpty = require('lodash/isEmpty');
 const pick = require('lodash/pick');
 const assign = require('lodash/assign');
@@ -44,29 +46,34 @@ const executeApp = async (app, argv = process.argv) => {
     'options', 'args', 'command'
   ]), { wd });
   // App before hook
+  mkdirp.sync(executionParams.wd);
   process.chdir(executionParams.wd);
   if (app.beforeExecution) {
     const retval = await app.beforeExecution(executionParams);
     if (retval) executionParams = assign({}, executionParams, retval);
   }
   // Command before hook
+  mkdirp.sync(executionParams.wd);
   process.chdir(executionParams.wd);
   if (command.beforeExecution) {
     const retval = await command.beforeExecution(executionParams);
     if (retval) executionParams = assign({}, executionParams, retval);
   }
   // execution
+  mkdirp.sync(executionParams.wd);
   process.chdir(executionParams.wd);
   setDestination(executionParams.wd);
   await executeCommand(app, command, executionParams);
   await executeAllInstructions();
   // Command after hook
+  mkdirp.sync(executionParams.wd);
   process.chdir(executionParams.wd);
   if (command.afterExecution) {
     const retval = await command.afterExecution(executionParams);
     if (retval) executionParams = assign({}, executionParams, retval);
   }
   // App after hook
+  mkdirp.sync(executionParams.wd);
   process.chdir(executionParams.wd);
   if (app.afterExecution) {
     await app.afterExecution(executionParams);
