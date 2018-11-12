@@ -1,6 +1,6 @@
 {
   "name": "scaffold-kit",
-  "version": "0.0.22",
+  "version": "0.1.0",
   "description": "The creator of scaffold tools.",
   "main": "index.js",
   "scripts": {
@@ -23,6 +23,7 @@
     "camelcase": "^5.0.0",
     "chalk": "^2.0.0",
     "command-line-args": "^5.0.2",
+    "command-line-usage": "^5.0.5",
     "ejs": "^2.0.0",
     "find-dominant-file": "^1.0.0",
     "lodash": "^4.17.11",

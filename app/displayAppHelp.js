@@ -1,28 +1,40 @@
-const each = require('lodash/map');
+const commandLineUsage = require('command-line-usage');
+const map = require('lodash/map');
 const kebabCase = require('lodash/kebabCase');
-const displayBehavioralHelp = require('./displayBehavioralHelp');
+const behaviorHelpSections = require('./behaviorHelpSections');
 
 const displayAppHelp = (app) => {
-  const defaultDesc = 'Description not provided.';
-  console.log('');
-  console.log(`${app.appName} ${app.version}`);
-  console.log('');
-  console.log(`${app.description}`);
-  console.log('');
-  console.log('Commands:');
-  console.log('');
-  each(app.commands, (c, n) => {
-    const command = require(c);
-    console.log(`  ${n.padEnd(14)}${command.description || defaultDesc}`);
-  });
-  console.log('');
-  console.log('App level options:');
-  console.log('');
-  each(app.options, ({ name, description }) => {
-    console.log(`  --${kebabCase(name).padEnd(14)} ${description || defaultDesc}`);
-  });
-  console.log('');
-  displayBehavioralHelp(app);
+
+  const desc = 'Description not provided.';
+
+  const intro = [{
+    header: `${app.appName} ${app.version}`,
+    content: app.description || desc
+  }, {
+    header: 'Usage',
+    content: `${app.commandName} <command> [args ...] [options ...]`
+  }];
+
+  const commands = [{
+    header: 'Commands',
+    content: map(app.commands, (commandModule, name) => {
+      return { name, summary: require(commandModule).description || desc };
+    })
+  }, {
+    content: `Run \`${app.commandName} <command> --help\` \
+for help with a specific command.`,
+  }];
+
+  const options = {
+    header: 'Global options',
+    optionList: map(app.options, (option) => {
+      return { ...option, name: kebabCase(option.name) };
+    })
+  };
+
+  const behaviors = behaviorHelpSections(app);
+
+  console.log(commandLineUsage([...intro, ...commands, options, ...behaviors]));
 };
 
 module.exports = displayAppHelp;

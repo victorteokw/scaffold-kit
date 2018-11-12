@@ -1,35 +1,49 @@
+const commandLineUsage = require('command-line-usage');
 const map = require('lodash/map');
 const kebabCase = require('lodash/kebabCase');
-const displayBehavioralHelp = require('./displayBehavioralHelp');
+const behaviorHelpSections = require('./behaviorHelpSections');
 const getCommandOptions = require('../command/getCommandOptions');
 
 const displayCommandHelp = (app, commandName, command, input) => {
-  console.log('');
-  console.log(`${app.appName} ${app.version}`);
-  console.log('');
-  console.log(`Command: ${app.commandName} ${commandName}`);
-  console.log('');
-  console.log(`Description: ${command.description}`);
-  console.log('');
+
+  const desc = 'Description not provided.';
+
+  const sections = [];
+
+  sections.push({
+    header: `${app.commandName} ${commandName} (${app.appName} ${app.version})`,
+    content: command.description || desc
+  });
+
   if (command.usage) {
-    console.log('Usage:');
-    console.log('');
-    console.log(`${command.usage}`);
-    console.log('');
+    sections.push({
+      header: 'Usage',
+      content: command.usage
+    });
   }
-  console.log('Command options:');
-  console.log('');
-  map(getCommandOptions(app, command, input), ({ name, description }) => {
-    console.log(`  --${kebabCase(name).padEnd(14)}\t${description}`);
-  });
-  console.log('');
-  console.log('App level options:');
-  console.log('');
-  map(app.options, ({ name, description }) => {
-    console.log(`  --${kebabCase(name).padEnd(14)}\t${description}`);
-  });
-  console.log('');
-  displayBehavioralHelp(app);
+
+  const commandOptions = {
+    header: 'Command options',
+    optionList: map(getCommandOptions(app, command, input), (option) => {
+      return { ...option, name: kebabCase(option.name) };
+    })
+  };
+
+  const appOptions = {
+    header: 'Global options',
+    optionList: map(app.options, (option) => {
+      return { ...option, name: kebabCase(option.name) };
+    })
+  };
+
+  const behaviors = behaviorHelpSections(app);
+
+  console.log(commandLineUsage([
+    ...sections,
+    commandOptions,
+    appOptions,
+    ...behaviors
+  ]));
 };
 
 module.exports = displayCommandHelp;
