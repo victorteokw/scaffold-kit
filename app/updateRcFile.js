@@ -3,6 +3,7 @@ const path = require('path');
 const findDominantFile = require('find-dominant-file');
 const each = require('lodash/each');
 const kebabCase = require('lodash/kebabCase');
+const chalk = require('chalk');
 
 const updateRcFile = (app, undefaultOptions, wd) => {
   if (!app.rcFile) return;
@@ -16,13 +17,12 @@ const updateRcFile = (app, undefaultOptions, wd) => {
   } else {
     content = {};
   }
-  console.log(`update ${app.rcFile}`);
   each(undefaultOptions, (value, name) => {
     if (value === '__delete__') {
-      console.log(`delete: ${name}`);
+      console.log(`${chalk.green('config'.padStart(12))} delete '${name}'`);
       delete content[name];
     } else {
-      console.log(`add: --${kebabCase(name)} = ${value}`);
+      console.log(`${chalk.green('config'.padStart(12))} add '--${kebabCase(name)}=${value}'`);
       content[name] = value;
     }
   });
