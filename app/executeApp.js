@@ -10,6 +10,7 @@ const displayAppHelp = require('./displayAppHelp');
 const displayCommandHelp = require('./displayCommandHelp');
 const getWorkingDirectory = require('./getWorkingDirectory');
 const getExecutionOptions = require('./getExecutionOptions');
+const getSavedOptions = require('./getSavedOptions');
 const updateRcFile = require('./updateRcFile');
 const { loadCommand, executeCommand } = require('../command');
 const executeAllInstructions = require('../executor/executeAllInstructions');
@@ -17,7 +18,7 @@ const setDestination = require('../executor/setDestination');
 
 const executeApp = async (app, argv = process.argv) => {
   // Get user's input
-  const input = parsingCommandLineArgs(argv, app.options);
+  const input = parsingCommandLineArgs(argv, app.options, getSavedOptions(app));
   // Display version and exit
   if (input.options.version) {
     displayAppVersion(app);

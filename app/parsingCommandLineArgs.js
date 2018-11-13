@@ -10,7 +10,7 @@ const basicOptions = [
   { name: 'help', alias: 'h', type: Boolean, defaultValue: false }
 ];
 
-const convertOptions = (options) => {
+const convertOptions = (options, savedOptions) => {
   return map(options, (option) => {
     const sanitized = pick(option, [
       'name',
@@ -22,14 +22,19 @@ const convertOptions = (options) => {
       'defaultValue',
       'group'
     ]);
+    if (savedOptions[sanitized.name] !== undefined) {
+      sanitized.defaultValue = savedOptions[sanitized.name];
+    }
     sanitized.name = kebabCase(option.name);
     return sanitized;
   });
 };
 
-const parsingCommandLineArgs = (argv = process.argv, optionList) => {
+const parsingCommandLineArgs = (
+  argv = process.argv, optionList, savedOptions
+) => {
   const parsed = commandLineArgs(
-    concat(basicOptions, convertOptions(optionList)),
+    concat(basicOptions, convertOptions(optionList, savedOptions)),
     {
       camelCase: true,
       partial: true,

@@ -37,10 +37,10 @@ const getExecutionOptions = (argv, app, command, input, wd) => {
   ));
   // with user's behavioral settings, we pass user's input again this time
   const optionList = getOptionList(app, command, behaviorals, input);
-  // reparse user input with full option list
-  const userInput = parsingCommandLineArgs(argv, optionList);
   // get saved options
   const savedOptions = getSavedOptions(app, wd);
+  // reparse user input with full option list
+  const userInput = parsingCommandLineArgs(argv, optionList, savedOptions);
   // get all default values
   const allDefaults = getDefaultValues(optionList);
   // merge all options
