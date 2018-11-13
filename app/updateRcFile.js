@@ -22,8 +22,14 @@ const updateRcFile = (app, undefaultOptions, wd) => {
       console.log(`${chalk.green('config'.padStart(12))} delete '${name}'`);
       delete content[name];
     } else {
-      console.log(`${chalk.green('config'.padStart(12))} add \
+      if (content[name] !== undefined) {
+        console.log(`${chalk.green('config'.padStart(12))} overwrite \
 '--${kebabCase(name)}=${value}'`);
+      } else {
+        console.log(`${chalk.green('config'.padStart(12))} add \
+'--${kebabCase(name)}=${value}'`);
+
+      }
       content[name] = value;
     }
   });
