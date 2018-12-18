@@ -3,6 +3,7 @@ const findKey = require('lodash/findKey');
 const reverseInsts = {
   'createFile': 'deleteFile',
   'appendFile': 'detachFromFile',
+  'updateFile': 'rollbackFile',
   'updateJSONFile': 'rollbackJSONFile',
   'installDependency': 'removeDependency',
   'runShellCommand': 'undoShellCommand'

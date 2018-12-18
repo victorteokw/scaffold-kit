@@ -2,6 +2,8 @@ const createFile = require('./createFile');
 const deleteFile = require('./deleteFile');
 const appendFile = require('./appendFile');
 const detachFromFile = require('./detachFromFile');
+const updateFile = require('./updateFile');
+const rollbackFile = require('./rollbackFile');
 const updateJSONFile = require('./updateJSONFile');
 const rollbackJSONFile = require('./rollbackJSONFile');
 const installDependency = require('./installDependency');
@@ -15,6 +17,8 @@ module.exports = {
   deleteFile,
   appendFile,
   detachFromFile,
+  updateFile,
+  rollbackFile,
   updateJSONFile,
   rollbackJSONFile,
   installDependency,

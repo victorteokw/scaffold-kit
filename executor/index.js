@@ -14,6 +14,8 @@ const createFile = createInstShortcut('createFile');
 const deleteFile = createInstShortcut('deleteFile');
 const appendFile = createInstShortcut('appendFile');
 const detachFromFile = createInstShortcut('detachFromFile');
+const updateFile = createInstShortcut('updateFile');
+const rollbackFile = createInstShortcut('rollbackFile');
 const updateJSONFile = createInstShortcut('updateJSONFile');
 const rollbackJSONFile = createInstShortcut('rollbackJSONFile');
 const installDependency = createInstShortcut('installDependency');
@@ -26,6 +28,8 @@ const createFiles = createInstShortcut('createFiles');
 const deleteFiles = createInstShortcut('deleteFiles');
 const appendFiles = createInstShortcut('appendFiles');
 const detachFromFiles = createInstShortcut('detachFromFiles');
+const updateFiles = createInstShortcut('updateFiles');
+const rollbackFiles = createInstShortcut('rollbackFiles');
 const updateJSONFiles = createInstShortcut('updateJSONFiles');
 const rollbackJSONFiles = createInstShortcut('rollbackJSONFiles');
 const installDependencies = createInstShortcut('installDependencies');
@@ -50,6 +54,8 @@ module.exports = {
   deleteFile,
   appendFile,
   detachFromFile,
+  updateFile,
+  rollbackFile,
   updateJSONFile,
   rollbackJSONFile,
   installDependency,
@@ -62,6 +68,8 @@ module.exports = {
   deleteFiles,
   appendFiles,
   detachFromFiles,
+  updateFiles,
+  rollbackFiles,
   updateJSONFiles,
   rollbackJSONFiles,
   installDependencies,
