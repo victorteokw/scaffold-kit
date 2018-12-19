@@ -11,6 +11,8 @@ const knownInstructions = [
   'deleteFile',
   'appendFile',
   'detachFromFile',
+  'updateFile',
+  'rollbackFile',
   'updateJSONFile',
   'rollbackJSONFile',
   'installDependency',
