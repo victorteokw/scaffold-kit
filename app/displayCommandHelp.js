@@ -22,26 +22,28 @@ const displayCommandHelp = (app, commandName, command, input) => {
     });
   }
 
-  const commandOptions = {
-    header: 'Command options',
-    optionList: map(getCommandOptions(app, command, input), (option) => {
-      return { ...option, name: kebabCase(option.name) };
-    })
-  };
+  if (getCommandOptions(app, command, input).length) {
+    sections.push({
+      header: 'Command options',
+      optionList: map(getCommandOptions(app, command, input), (option) => {
+        return { ...option, name: kebabCase(option.name) };
+      })
+    });
+  }
 
-  const appOptions = {
-    header: 'Global options',
-    optionList: map(app.options, (option) => {
-      return { ...option, name: kebabCase(option.name) };
-    })
-  };
+  if (app.options && app.options.length) {
+    sections.push({
+      header: 'Global options',
+      optionList: map(app.options, (option) => {
+        return { ...option, name: kebabCase(option.name) };
+      })
+    });
+  }
 
   const behaviors = behaviorHelpSections(app);
 
   console.log(commandLineUsage([
     ...sections,
-    commandOptions,
-    appOptions,
     ...behaviors
   ]));
 };
