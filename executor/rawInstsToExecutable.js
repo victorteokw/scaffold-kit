@@ -38,6 +38,16 @@ const rawInstsToExecutable = (rawInsts) => {
         files[params.at].push({ name: 'detachFromFile', params });
         break;
       }
+      case 'updateFile': {
+        if (!files[params.at]) files[params.at] = [];
+        files[params.at].push({ name: 'updateFile', params });
+        break;
+      }
+      case 'rollbackFile': {
+        if (!files[params.at]) files[params.at] = [];
+        files[params.at].push({ name: 'rollbackFile', params });
+        break;
+      }
       case 'updateJSONFile': {
         if (!files[params.at]) files[params.at] = [];
         files[params.at].push({ name: 'updateJSONFile', params });
