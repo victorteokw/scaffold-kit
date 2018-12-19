@@ -1,6 +1,7 @@
 const commandLineUsage = require('command-line-usage');
 const map = require('lodash/map');
 const kebabCase = require('lodash/kebabCase');
+const compact = require('lodash/compact');
 const behaviorHelpSections = require('./behaviorHelpSections');
 
 const displayAppHelp = (app) => {
@@ -15,7 +16,7 @@ const displayAppHelp = (app) => {
     content: `${app.commandName} <command> [args ...] [options ...]`
   }];
 
-  const commands = [{
+  const commands = app.commands.length ? [{
     header: 'Commands',
     content: map(app.commands, (commandModule, name) => {
       return { name, summary: require(commandModule).description || desc };
@@ -23,18 +24,23 @@ const displayAppHelp = (app) => {
   }, {
     content: `Run \`${app.commandName} <command> --help\` \
 for help with a specific command.`,
+  }] : [{
+    header: 'Commands',
+    content: `${app.appName} doesn't have any commands yet.`
   }];
 
-  const options = {
+  const options = app.options.length ? {
     header: 'Global options',
     optionList: map(app.options, (option) => {
       return { ...option, name: kebabCase(option.name) };
     })
-  };
+  } : undefined;
 
   const behaviors = behaviorHelpSections(app);
 
-  console.log(commandLineUsage([...intro, ...commands, options, ...behaviors]));
+  console.log(
+    commandLineUsage(compact([...intro, ...commands, options, ...behaviors]))
+  );
 };
 
 module.exports = displayAppHelp;

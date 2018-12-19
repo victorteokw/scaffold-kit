@@ -29,7 +29,13 @@ const executeApp = async (app, argv = process.argv) => {
     displayAppHelp(app);
     return;
   }
-  const command = loadCommand(app, input.command);
+  let command;
+  try {
+    command = loadCommand(app, input.command);
+  } catch(e) {
+    console.log(`\nCommand '${input.command}' not exist.\n`);
+    process.exit(1);
+  }
   // Display command help and exit
   if (input.options.help) {
     displayCommandHelp(app, input.command, command, input);
