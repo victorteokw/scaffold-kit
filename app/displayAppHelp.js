@@ -16,7 +16,7 @@ const displayAppHelp = (app) => {
     content: `${app.commandName} <command> [args ...] [options ...]`
   }];
 
-  const commands = app.commands.length ? [{
+  const commands = Object.keys(app.commands).length ? [{
     header: 'Commands',
     content: map(app.commands, (commandModule, name) => {
       return { name, summary: require(commandModule).description || desc };
