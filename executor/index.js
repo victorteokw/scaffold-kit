@@ -1,3 +1,5 @@
+// Core functions
+
 const useTemplatesFrom = require('./useTemplatesFrom');
 const pushInstruction = require('./pushInstruction');
 const pushInstructions = require('./pushInstructions');
@@ -7,6 +9,11 @@ const revertInstruction = require('./revertInstruction');
 const { setExecutorOption } = require('./executorOptions');
 const createInstShortcut = require('./createInstShortcut');
 const resetExecutor = require('./resetExecutor');
+
+// Utility functions
+
+const iterateTemplateFilesFromDirectory =
+  require('./iterateTemplateFilesFromDirectory');
 
 // Instruction shortcuts
 
@@ -39,6 +46,9 @@ const undoShellCommands = createInstShortcut('undoShellCommands');
 const keepDirectoriesInGit = createInstShortcut('keepDirectoriesInGit');
 
 module.exports = {
+
+  // Core functions
+
   useTemplatesFrom,
   pushInstruction,
   pushInstructions,
@@ -47,6 +57,10 @@ module.exports = {
   revertInstruction,
   setExecutorOption,
   resetExecutor,
+
+  // Utility functions
+
+  iterateTemplateFilesFromDirectory,
 
   // Instruction shortcuts
 
