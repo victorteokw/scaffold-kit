@@ -11,7 +11,7 @@ const isDependencyInstalled = (pkgName, dev) => {
   }
   const pkg = require(pkgFile);
   const section = dev ? pkg.devDependencies : pkg.dependencies;
-  return !!section[pkgName];
+  return !!(section && section[pkgName]);
 };
 
 const mockInstallDependency = (pkgName, version, dev) => {
