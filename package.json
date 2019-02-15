@@ -1,6 +1,6 @@
 {
   "name": "scaffold-kit",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "The creator of scaffold tools.",
   "main": "index.js",
   "scripts": {
@@ -30,8 +30,7 @@
     "lodash": "^4.17.11",
     "mkdirp": "^0.5.0",
     "pluralize": "^7.0.0",
-    "series-async-each": "^1.0.0",
-    "watsons.js": "^0.1.5"
+    "series-async-each": "^1.0.0"
   },
   "devDependencies": {
     "eslint": "^5.7.0",

@@ -1,5 +1,4 @@
 const error = require('../error');
-const validateCommand = require('./validateCommand');
 
 /**
  * Command line option object.
@@ -65,7 +64,7 @@ const createCommand = (descriptor) => {
   if (!descriptor) {
     throw error('please provide command descriptor.');
   }
-  return validateCommand(descriptor);
+  return descriptor;
 };
 
 module.exports = createCommand;
