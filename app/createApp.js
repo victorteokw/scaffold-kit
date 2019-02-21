@@ -25,7 +25,6 @@ const error = require('../error');
  */
 const createApp = (app) => {
   validateApp(app);
-  app.created = true;
   return app;
 };
 

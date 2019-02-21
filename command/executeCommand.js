@@ -11,9 +11,7 @@ const loadCommand = require('./loadCommand');
  * @return {Void} This function returns nothing.
  */
 const executeCommand = async (app, command, executionParams) => {
-  if (!command.created) {
-    throw error('please create command first.');
-  }
+
   if (command.composedOf) {
     await eachAsync(command.composedOf, async (subcommandName) => {
       const subcommand = loadCommand(app, subcommandName);
