@@ -13,12 +13,12 @@ const equal = (value) => {
   return (v) => v === value;
 };
 
-const findRevertInst = (name) => {
+const findReverseInst = (name) => {
   return reverseInsts[name] || findKey(reverseInsts, equal(name)) || name;
 };
 
-const revertInstruction = ({ name, params }) => {
-  return { name: findRevertInst(name), params };
+const reverseInstruction = ({ name, params }) => {
+  return { name: findReverseInst(name), params };
 };
 
-module.exports = revertInstruction;
+module.exports = reverseInstruction;
