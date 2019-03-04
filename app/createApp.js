@@ -1,28 +1,6 @@
 const map = require('lodash/map');
 const error = require('../error');
 
-/**
- * The app object.
- *
- * @typedef {Object} App
- * @property {String} description - The description of the command.
- * @property {String} usage - The usage of the command.
- * @property {String[]} examples - The examples of this command.
- * @property {Boolean} executeInProjectRootDirectory - Should the command be
- * executed in project root directory.
- * @property {CommandLineOption[]} commandLineOptions - The command line option
- * specifications.
- * @property {RelocateCwd} relocateCwd - The function that relocates
- * the project root directory.
- * @property {CommandExecution} execute - The execution function.
- */
-
-/**
- * Create an app.
- *
- * @param {App} app - The app descriptor.
- * @return {App} The created app.
- */
 const createApp = (app) => {
   validateApp(app);
   return app;
