@@ -58,60 +58,6 @@ const validateCommand = (command) => {
   }
 };
 
-// TODO: Should have documentation here ...
-// const instructions = {
-//   createFile: {
-//     fields: {
-//       from: '[optional string] the src location, should be present if content is not present.',
-//       content: '[optional string] the file content, should be present if src is not present.',
-//       at: '[required string] the relative destination location.',
-//       context: '[optional object] the rendering template context.'
-//     }
-//   },
-//   appendFile: {
-//     fields: {
-//       from: '[optional string] the src location, should be present if content is not present.',
-//       content: '[optional string] the file content, should be present if src is not present.',
-//       at: '[required string] the relative destination location.',
-//       context: '[optional object] the rendering template context.'
-//     }
-//   },
-//   deleteFile: {
-//     fields: {
-//       at: '[required string] which file to delete'
-//     }
-//   },
-//   updateJSONFile: {
-//     fields: {
-//       at: '[required string] which file to update',
-//       updator: '[required (object) => object] the json updator',
-//       rollbacker: the json rollbacker
-//     }
-//   },
-//   ensureDirectory: {
-//     fields: {
-//       at: '[required string] the directory name.'
-//     }
-//   },
-//   installDependency: {
-//     fields: {
-//       package: '[required string] package name',
-//       version: '[required string] version',
-//       dev: '[required boolean] is dev dependency',
-//       mock: '[required boolean] is fake installing (for unit test)'
-//     }
-//   },
-//   removeDependency: {
-//     fields: {
-//       package: '[required string] the package name'
-//     }
-//   },
-//   runShellCommand: {
-//     fields: {
-//       command: '[required string] the command to run'
-//     }
-//   }
-// };
 const pushInstruction = (command) => {
   validateCommand(command);
   if (isSingleCommand(command)) {
