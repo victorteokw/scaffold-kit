@@ -69,7 +69,7 @@ const executeApp = async (app, argv = process.argv) => {
   setDestination(executionParams.wd);
   // Update rcFile
   if (app.rcFile && !isEmpty(executionOptions.undefaultOptions)) {
-    updateRcFile(app, executionOptions.undefaultOptions, wd);
+    updateRcFile(app, executionOptions.undefaultOptions, executionParams.wd);
   }
   await executeCommand(app, command, executionParams);
   await executeAllInstructions();
