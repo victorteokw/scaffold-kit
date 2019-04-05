@@ -45,10 +45,7 @@ const executeApp = async (app, argv = process.argv) => {
   const wd = getWorkingDirectory(app, command);
   // Get execution options
   const executionOptions = getExecutionOptions(argv, app, command, input, wd);
-  // Update rcFile
-  if (app.rcFile && !isEmpty(executionOptions.undefaultOptions)) {
-    updateRcFile(app, executionOptions.undefaultOptions, wd);
-  }
+
   let executionParams = assign(pick(executionOptions, [
     'options', 'args', 'command'
   ]), { wd });
@@ -70,6 +67,10 @@ const executeApp = async (app, argv = process.argv) => {
   mkdirp.sync(executionParams.wd);
   process.chdir(executionParams.wd);
   setDestination(executionParams.wd);
+  // Update rcFile
+  if (app.rcFile && !isEmpty(executionOptions.undefaultOptions)) {
+    updateRcFile(app, executionOptions.undefaultOptions, wd);
+  }
   await executeCommand(app, command, executionParams);
   await executeAllInstructions();
   // Command after hook
