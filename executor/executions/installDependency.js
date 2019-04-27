@@ -20,11 +20,11 @@ const mockInstallDependency = (pkgName, version, dev) => {
     fs.writeFileSync(pkgFile, JSON.stringify({
       dependencies: {},
       devDependencies: {}
-    }, null, 2));
+    }, null, 2) + '\n');
   }
   const pkg = require(pkgFile);
   pkg[dev ? 'devDependencies' : 'dependencies'][pkgName] = version;
-  fs.writeFileSync(pkgFile, JSON.stringify(pkg, null, 2));
+  fs.writeFileSync(pkgFile, JSON.stringify(pkg, null, 2) + '\n');
 };
 
 const realInstallDependency = (pkgName, version, dev) => {

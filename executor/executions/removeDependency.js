@@ -15,7 +15,7 @@ const mockRemoveDependency = (pkgName, dev) => {
   const pkgFile = path.join(getDestination(), 'package.json');
   const pkg = require(pkgFile);
   delete pkg[dev ? 'devDependencies' : 'dependencies'][pkgName];
-  fs.writeFileSync(pkgFile, JSON.stringify(pkg, null, 2));
+  fs.writeFileSync(pkgFile, JSON.stringify(pkg, null, 2) + '\n');
 };
 
 const realRemoveDependency = (pkgName) => {
