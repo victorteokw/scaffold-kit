@@ -14,12 +14,12 @@ const updateJSONFile = ({ at, updator, silent }) => {
     if (isEqual(before, after)) {
       return ['up-to-date', 'yellow', at, silent];
     } else {
-      fs.writeFileSync(at, JSON.stringify(after, null, 2));
+      fs.writeFileSync(at, JSON.stringify(after, null, 2) + '\n');
       return ['update', 'green', at, silent];
     }
   } else {
     mkdirp.sync(path.dirname(dest));
-    fs.writeFileSync(at, JSON.stringify(updator({}), null, 2));
+    fs.writeFileSync(at, JSON.stringify(updator({}), null, 2) + '\n');
     return ['create', 'green', at, silent];
   }
 };

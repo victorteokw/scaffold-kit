@@ -12,7 +12,7 @@ const rollbackJSONFile = ({ at, rollbacker, silent }) => {
     if (isEqual(before, after)) {
       return ['unchanged', 'yellow', at, silent];
     } else {
-      fs.writeFileSync(at, JSON.stringify(after, null, 2));
+      fs.writeFileSync(at, JSON.stringify(after, null, 2) + '\n');
       return ['rollback', 'green', at, silent];
     }
   } else {
