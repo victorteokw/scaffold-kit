@@ -1,5 +1,6 @@
 import * as path from 'path';
 import ExecutionInfo from './ExecutionInfo';
+import Instruction from './Instruction';
 import CreateFileInfo from './instructions/CreateFileInfo';
 import DeleteFileInfo from './instructions/DeleteFileInfo';
 import firstDefined from './utilities/firstDefined';
@@ -20,7 +21,7 @@ class Context implements ExecutionInfo {
 
   // instructions
 
-  public instructions: object[];
+  public instructions: Instruction[];
   private templateLocation?: string;
 
   // initialize method
