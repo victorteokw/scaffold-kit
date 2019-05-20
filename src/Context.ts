@@ -3,6 +3,8 @@ import ExecutionInfo from './ExecutionInfo';
 import Instruction from './Instruction';
 import CreateFileInfo from './instructions/CreateFileInfo';
 import DeleteFileInfo from './instructions/DeleteFileInfo';
+import AppendFileInfo from './instructions/AppendFileInfo';
+import DetachFromFileInfo from './instructions/DetachFromFileInfo';
 import firstDefined from './utilities/firstDefined';
 
 class Context implements ExecutionInfo {
@@ -78,6 +80,41 @@ class Context implements ExecutionInfo {
     }
   }
 
+  public appendFile(detail: AppendFileInfo) {
+    this.instructions.push({
+      detail: {
+        at: this.applyDestination(detail.at),
+        content: detail.content,
+        context: detail.context,
+        from: detail.from ? this.applyTemplate(detail.from) : detail.from,
+      },
+      type: 'appendFile'
+    });
+  }
+
+  public appendFiles(details: AppendFileInfo[]) {
+    for (const detail of details) {
+      this.appendFile(detail);
+    }
+  }
+
+  public detachFromFile(detail: DetachFromFileInfo) {
+    this.instructions.push({
+      detail: {
+        at: this.applyDestination(detail.at),
+        content: detail.content,
+        context: detail.context,
+        from: detail.from ? this.applyTemplate(detail.from) : detail.from,
+      },
+      type: 'detachFromFile'
+    })
+  }
+
+  public detachFromFiles(details: DetachFromFileInfo[]) {
+    for (const detail of details) {
+      this.detachFromFile(detail);
+    }
+  }
   // instruction helpers
 
   private applyTemplate(relTempPath: string) {
