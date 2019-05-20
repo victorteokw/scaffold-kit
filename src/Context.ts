@@ -2,6 +2,7 @@ import * as path from 'path';
 import ExecutionInfo from './ExecutionInfo';
 import CreateFileInfo from './instructions/CreateFileInfo';
 import DeleteFileInfo from './instructions/DeleteFileInfo';
+import AppendFileInfo from './instructions/AppendFileInfo';
 import firstDefined from './utilities/firstDefined';
 
 class Context implements ExecutionInfo {
@@ -74,6 +75,24 @@ class Context implements ExecutionInfo {
   public deleteFiles(details: DeleteFileInfo[]) {
     for (const detail of details) {
       this.deleteFile(detail);
+    }
+  }
+
+  public appendFile(detail: AppendFileInfo) {
+    this.instructions.push({
+      detail: {
+        at: this.applyDestination(detail.at),
+        content: detail.content,
+        context: detail.context,
+        from: detail.from ? this.applyTemplate(detail.from) : detail.from,
+      },
+      type: 'appendFile'
+    });
+  }
+
+  public appendFiles(details: AppendFileInfo[]) {
+    for (const detail of details) {
+      this.appendFile(detail);
     }
   }
 
