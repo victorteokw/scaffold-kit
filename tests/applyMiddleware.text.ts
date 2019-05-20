@@ -1,6 +1,6 @@
-import applyMiddleware from '../applyMiddleware';
-import nullExecutable from '../nullExecutable';
-import Plugable from '../Plugable';
+import applyMiddleware from '../src/applyMiddleware';
+import nullExecutable from '../src/nullExecutable';
+import Plugable from '../src/Plugable';
 
 describe('Apply middleware', () => {
 
