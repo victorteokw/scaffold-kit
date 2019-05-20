@@ -28,7 +28,7 @@ function isShellCommand(command: string) {
   return ['runShellCommand', 'undoShellCommand'].includes(command);
 }
 
-function flushContext(context: Context) {
+async function flushContext(context: Context) {
   const { instructions } = context;
   const files: FileInstructionMap = {};
   const directories: FileInstructionMap = {};
@@ -54,6 +54,26 @@ function flushContext(context: Context) {
     } else {
       throw new Error(`unknown instruction type \`${instruction.type}'.`)
     }
+  }
+  const fileNames = Object.keys(files).sort();
+  for (const fileName of fileNames) {
+    for (const inst of files[fileName]) {
+      await executions[inst.type](inst.detail);
+    }
+  }
+  const dirNames = Object.keys(directories).sort();
+  for (const dirName of dirNames) {
+    for (const inst of directories[dirName]) {
+      await executions[inst.type](inst.detail);
+    }
+  }
+  const dependencyNames = Object.keys(dependencies).sort();
+  for (const dependencyName of dependencyNames) {
+    const inst = dependencies[dependencyName];
+    await executions[inst.type](inst.detail);
+  }
+  for (const inst of commands) {
+    await executions[inst.type](inst.detail);
   }
 };
 
