@@ -1,6 +1,6 @@
 interface UpdateFileInfo {
-    updator: string;
-    rollbacker: string;
+    updator: (original: string) => string;
+    rollbacker: (original: string) => string;
     at: string;
 }
 
