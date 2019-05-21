@@ -13,6 +13,10 @@ import firstDefined from './utilities/firstDefined';
 
 class Context implements ExecutionInfo {
 
+  // middleware extentions
+
+  public optionDefinitions: object = {};
+
   // user execution information
 
   public wd: string;
