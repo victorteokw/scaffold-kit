@@ -1,14 +1,14 @@
 import * as path from 'path';
 import ExecutionInfo from './ExecutionInfo';
 import Instruction from './Instruction';
+import AppendFileInfo from './instructions/AppendFileInfo';
 import CreateFileInfo from './instructions/CreateFileInfo';
 import DeleteFileInfo from './instructions/DeleteFileInfo';
-import AppendFileInfo from './instructions/AppendFileInfo';
 import DetachFromFileInfo from './instructions/DetachFromFileInfo';
-import UpdateFileInfo from './instructions/UpdateFileInfo';
 import RollbackFileInfo from './instructions/RollbackFileInfo';
-import UpdateJSONFileInfo from './instructions/UpdateJSONFileInfo';
 import RollbackJSONFileInfo from './instructions/RollbackJSONFileInfo';
+import UpdateFileInfo from './instructions/UpdateFileInfo';
+import UpdateJSONFileInfo from './instructions/UpdateJSONFileInfo';
 import firstDefined from './utilities/firstDefined';
 
 class Context implements ExecutionInfo {
