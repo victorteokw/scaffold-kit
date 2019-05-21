@@ -6,6 +6,7 @@ import DeleteFileInfo from './instructions/DeleteFileInfo';
 import AppendFileInfo from './instructions/AppendFileInfo';
 import DetachFromFileInfo from './instructions/DetachFromFileInfo';
 import UpdateFileInfo from './instructions/UpdateFileInfo';
+import RollbackFileInfo from './instructions/RollbackFileInfo'
 import firstDefined from './utilities/firstDefined';
 
 class Context implements ExecutionInfo {
@@ -134,6 +135,22 @@ class Context implements ExecutionInfo {
     }
   }
 
+  public rollbackFile(detail: RollbackFileInfo) {
+    this.instructions.push({
+      detail: {
+        at: this.applyDestination(detail.at),
+        updator: detail.updator,
+        rollbacker: detail.rollbacker
+      },
+      type: 'rollbackFile'
+    })
+  }
+
+  public rollbackFiles(details: RollbackFileInfo[]) {
+    for (const detail of details) {
+      this.rollbackFile(detail);
+    }
+  }
   // instruction helpers
 
   private applyTemplate(relTempPath: string) {
