@@ -6,7 +6,8 @@ import DeleteFileInfo from './instructions/DeleteFileInfo';
 import AppendFileInfo from './instructions/AppendFileInfo';
 import DetachFromFileInfo from './instructions/DetachFromFileInfo';
 import UpdateFileInfo from './instructions/UpdateFileInfo';
-import RollbackFileInfo from './instructions/RollbackFileInfo'
+import RollbackFileInfo from './instructions/RollbackFileInfo';
+import UpdateJSONFileInfo from './instructions/UpdateJSONFileInfo';
 import firstDefined from './utilities/firstDefined';
 
 class Context implements ExecutionInfo {
@@ -109,7 +110,7 @@ class Context implements ExecutionInfo {
         from: detail.from ? this.applyTemplate(detail.from) : detail.from,
       },
       type: 'detachFromFile'
-    })
+    });
   }
 
   public detachFromFiles(details: DetachFromFileInfo[]) {
@@ -126,7 +127,7 @@ class Context implements ExecutionInfo {
         rollbacker: detail.rollbacker
       },
       type: 'updateFile'
-    })
+    });
   }
 
   public updateFiles(details: UpdateFileInfo[]) {
@@ -143,12 +144,29 @@ class Context implements ExecutionInfo {
         rollbacker: detail.rollbacker
       },
       type: 'rollbackFile'
-    })
+    });
   }
 
   public rollbackFiles(details: RollbackFileInfo[]) {
     for (const detail of details) {
       this.rollbackFile(detail);
+    }
+  }
+
+  public updateJSONFile(detail: UpdateJSONFileInfo) {
+    this.instructions.push({
+      detail: {
+        at: this.applyDestination(detail.at),
+        updator: detail.updator,
+        rollbacker: detail.rollbacker
+      },
+      type: 'updateJSONFile'
+    });
+  }
+
+  public updateJSONFiles(details: UpdateJSONFileInfo[]) {
+    for (const detail of details) {
+      this.updateJSONFile(detail);
     }
   }
   // instruction helpers
