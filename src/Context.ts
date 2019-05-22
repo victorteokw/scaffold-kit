@@ -29,6 +29,10 @@ class Context implements ExecutionInfo {
   public silent: boolean = false;
   public mockInstall: boolean = false;
 
+  // execution behavior
+
+  public disableFlush: boolean = false;
+
   // instructions
 
   public instructions: Instruction[];

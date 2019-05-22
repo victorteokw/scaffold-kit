@@ -29,6 +29,7 @@ function isShellCommand(command: string) {
 }
 
 async function flushContext(context: Context) {
+  if (context.disableFlush) return;
   const { instructions } = context;
   const files: FileInstructionMap = {};
   const directories: FileInstructionMap = {};
