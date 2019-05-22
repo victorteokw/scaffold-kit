@@ -9,13 +9,14 @@ import RollbackFileInfo from './instructions/RollbackFileInfo';
 import RollbackJSONFileInfo from './instructions/RollbackJSONFileInfo';
 import UpdateFileInfo from './instructions/UpdateFileInfo';
 import UpdateJSONFileInfo from './instructions/UpdateJSONFileInfo';
+import Options from './Options';
 import firstDefined from './utilities/firstDefined';
 
 class Context implements ExecutionInfo {
 
   // middleware extentions
 
-  public optionDefinitions: object = {};
+  public optionDefinitions: Options = {};
 
   // user execution information
 
