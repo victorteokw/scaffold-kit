@@ -1,7 +1,9 @@
+import Options from "./Options";
+
 interface ExecutionInfo {
   wd: string,
   args: string[],
-  options: object
+  options: Options
 }
 
 export default ExecutionInfo;

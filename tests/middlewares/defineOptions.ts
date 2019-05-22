@@ -1,8 +1,8 @@
 import Context from '../../src/Context';
 import defineOptions from '../../src/middlewares/defineOptions';
 import nullExecutable from '../../src/nullExecutable';
-import Option from '../../src/Option';
-import Options from '../../src/Options';
+import OptionRule from '../../src/OptionRule';
+import OptionRules from '../../src/OptionRules';
 
 describe('Defines options on context', () => {
 
@@ -12,7 +12,7 @@ describe('Defines options on context', () => {
       args: ['nice', 'song', 'by', 'michael', 'wong'],
       options: {}
     });
-    const optionDefinitions: Options = {
+    const optionDefinitions: OptionRules = {
       'help': {
         desc: 'display help message.',
         type: 'boolean'
@@ -33,12 +33,12 @@ describe('Defines options on context', () => {
       args: ['3455521'],
       options: {}
     });
-    const versionRule: Option = {
+    const versionRule: OptionRule = {
       desc: 'display version.',
       type: 'boolean'
     };
     context.optionDefinitions.version = versionRule;
-    const optionDefinitions: Options = {
+    const optionDefinitions: OptionRules = {
       'help': {
         desc: 'display help message.',
         type: 'boolean'
@@ -60,17 +60,17 @@ describe('Defines options on context', () => {
       args: ['you', 'are', 'the', 'nearest', 'forever'],
       options: {}
     });
-    const helpRule: Option = {
+    const helpRule: OptionRule = {
       desc: 'display help message.',
       type: 'boolean'
     };
-    const silentRule: Option = {
+    const silentRule: OptionRule = {
       desc: 'make this PC silent.',
       type: 'string'
     };
     context.optionDefinitions.help = helpRule;
     context.optionDefinitions.silent = silentRule;
-    const optionDefinitions: Options = {
+    const optionDefinitions: OptionRules = {
       'help': {
         desc: 'show advertisement based on the index that user inputs.',
         type: 'number'

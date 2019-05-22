@@ -1,7 +1,5 @@
-import Option from "./Option";
-
 interface Options {
-  [key: string]: Option
+  [key: string]: boolean | number | string | number[] | string[]
 }
 
 export default Options;

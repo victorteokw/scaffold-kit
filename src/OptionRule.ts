@@ -1,4 +1,4 @@
-interface Option {
+interface OptionRule {
   alias?: string,
   desc: string,
   type: 'boolean' | 'number' | 'string' | 'number[]' | 'string[]',
@@ -6,4 +6,4 @@ interface Option {
   save?: boolean
 }
 
-export default Option;
+export default OptionRule;
