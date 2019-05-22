@@ -18,6 +18,7 @@ class Context implements ExecutionInfo {
   // middleware extentions
 
   public optionDefinitions: OptionRules = {};
+  public savedOptions: Options = {};
 
   // user execution information
 
