@@ -1,6 +1,5 @@
 // Assign option definitions to the context
 
-import * as path from 'path';
 import Executable from '../Executable';
 
 const defineOptions: (defs: object) => Executable = (defs: object) => {
