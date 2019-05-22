@@ -45,7 +45,7 @@ describe('Forwards command', () => {
       'commandb': async (ctx, next) => {/**/},
       'commandc': async (ctx, next) => {/**/}
     });
-    expect(executable(context, nullExecutable))
+    await expect(executable(context, nullExecutable))
       .rejects.toBeInstanceOf(CommandNameError);
   });
 
@@ -60,7 +60,7 @@ describe('Forwards command', () => {
       'commandb': async (ctx, next) => {/**/},
       'commandc': async (ctx, next) => {/**/}
     });
-    expect(executable(context, nullExecutable))
+    await expect(executable(context, nullExecutable))
       .rejects.toBeInstanceOf(CommandNotFoundError);
   });
 
