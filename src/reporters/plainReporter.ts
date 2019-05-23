@@ -1,4 +1,5 @@
 import chalk from 'chalk';
+import Reporter from '../Reporter';
 
 enum FileMessage {
   create = "create",
@@ -56,9 +57,9 @@ const CommandMessageColor = {
 
 const { log } = console;
 
-const report = {
+const report: Reporter = {
   flush: () => {/**/},
-  push: ({ message, file, dependency, command }) => {
+  push: ({ message, file, dependency, command, config }) => {
     if (file) {
       const msg = message as FileMessage;
       log(`${
@@ -74,6 +75,9 @@ const report = {
       log(`${
         chalk[CommandMessageColor[msg]](message.padStart(12))
       } ${command}`);
+    } else if (config) {
+      const msg = config as CommandMessage;
+      log(`${chalk.green(message.padStart(12))} ${config}`);
     }
   }
 }

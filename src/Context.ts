@@ -11,6 +11,8 @@ import UpdateFileInfo from './instructions/UpdateFileInfo';
 import UpdateJSONFileInfo from './instructions/UpdateJSONFileInfo';
 import OptionRules from './OptionRules';
 import Options from './Options';
+import Reporter from './Reporter';
+import plainReporter from './reporters/plainReporter';
 import firstDefined from './utilities/firstDefined';
 
 class Context implements ExecutionInfo {
@@ -35,7 +37,7 @@ class Context implements ExecutionInfo {
   // execution behavior
 
   public disableFlush: boolean = false;
-
+  public reporter: Reporter = plainReporter;
   // instructions
 
   public instructions: Instruction[];
