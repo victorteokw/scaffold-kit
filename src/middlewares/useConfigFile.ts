@@ -7,6 +7,7 @@ import Executable from '../Executable';
 import Options from '../Options';
 import isDefined from '../utilities/isDefined';
 import mapValues from '../utilities/mapValues';
+import ensureExt from '../utilities/ensureExt';
 
 const useConfigFile: (fileName: string) => Executable = (fileName: string) => {
   return async (ctx, next) => {
@@ -27,6 +28,7 @@ const useConfigFile: (fileName: string) => Executable = (fileName: string) => {
     await next(ctx);
     // after executing
     // update config file
+    let shouldWriteFile = false;
     const currentOptions = ctx.options;
     const currentDefinitions = ctx.optionDefinitions;
     const defaultValues = mapValues(currentDefinitions, (r) => r.default);
@@ -43,14 +45,17 @@ const useConfigFile: (fileName: string) => Executable = (fileName: string) => {
             } else {
               // add here
               originalSavedOptions[key] = currentOptions[key];
+              shouldWriteFile = true;
             }
           } else {
             if (currentOptions[key] === defaultValues[key]) {
               // remove here
               delete originalSavedOptions[key];
+              shouldWriteFile = true;
             } else {
               // update here
               originalSavedOptions[key] = currentOptions[key];
+              shouldWriteFile = true;
             }
           }
         }
@@ -58,10 +63,16 @@ const useConfigFile: (fileName: string) => Executable = (fileName: string) => {
         // it was saved, maybe due to scaffold tool update, should remove anyhow
         if (originalSavedOptions[key]) {
           delete originalSavedOptions[key];
+          shouldWriteFile = true;
         }
       }
     }
-    writeFile(originalSavedOptions, configFile || `${configFileName}.json`);
+    if (shouldWriteFile) {
+      await writeFile(
+        originalSavedOptions,
+        configFile || ensureExt(configFileName)
+      );
+    }
   }
 }
 

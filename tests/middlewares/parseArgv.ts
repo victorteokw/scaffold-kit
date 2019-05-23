@@ -23,4 +23,22 @@ describe('Parses ARGV', () => {
     expect(ctx.options).toEqual({ useGraphql: true });
   });
 
+  it('fully replaces old args and options', async () => {
+    process.argv = [];
+    const ctx = new Context({
+      wd: '/home/childhood',
+      args: ['a', 'b', 'c'],
+      options: { save: true }
+    });
+    ctx.optionDefinitions = {
+      useGraphql: {
+        type: 'boolean',
+        desc: 'whether uses graphql.'
+      }
+    };
+    await parseArgv(ctx, nullExecutable);
+    expect(ctx.args).toEqual([]);
+    expect(ctx.options).toEqual({});
+  });
+
 });
