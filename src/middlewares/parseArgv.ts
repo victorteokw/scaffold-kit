@@ -1,7 +1,7 @@
 // Automatically saves loadable options
 
-import Executable from '../Executable';
 import { parse } from 'type-args';
+import Executable from '../Executable';
 
 const parseArgv: Executable = async (ctx, next) => {
   const [options, args] = parse(
