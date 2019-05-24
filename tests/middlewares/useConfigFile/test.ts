@@ -6,6 +6,7 @@ import defineOptions from '../../../src/middlewares/defineOptions';
 import parseArgv from '../../../src/middlewares/parseArgv';
 import nullExecutable from '../../../src/nullExecutable';
 import * as fs from 'fs';
+import Reporter from '../../../src/Reporter';
 
 describe('Uses config file', () => {
 
@@ -50,6 +51,10 @@ describe('Uses config file', () => {
       args: [],
       options: {}
     });
+    const push = jest.fn();
+    const flush = jest.fn();
+    const reporter: Reporter = { flush, push };
+    context.reporter = reporter;
     process.argv = ['model', 'User', 'name:String', '--orm=typeorm'];
     const executable = applyMiddleware(
       useConfigFile('.jokerrc.json'),
@@ -64,6 +69,8 @@ describe('Uses config file', () => {
     await executable(context, nullExecutable);
     const fileList = fs.readdirSync(projDir);
     expect(fileList).toEqual(['.keep']);
+    expect(push.mock.calls.length).toBe(0);
+    expect(flush.mock.calls.length).toBe(0);
   });
 
   it('file not exist, has savable options, but default val, do nothing',
@@ -74,6 +81,10 @@ describe('Uses config file', () => {
       args: [],
       options: {}
     });
+    const push = jest.fn();
+    const flush = jest.fn();
+    const reporter: Reporter = { flush, push };
+    context.reporter = reporter;
     process.argv = ['model', 'User', 'name:String', '--orm=typeorm'];
     const executable = applyMiddleware(
       useConfigFile('.jokerrc'),
@@ -90,6 +101,8 @@ describe('Uses config file', () => {
     await executable(context, nullExecutable);
     const fileList = fs.readdirSync(projDir);
     expect(fileList).toEqual(['.keep']);
+    expect(push.mock.calls.length).toBe(0);
+    expect(flush.mock.calls.length).toBe(0);
   });
 
   it('file not exist, new savable appear, create file and add record',
@@ -100,6 +113,10 @@ describe('Uses config file', () => {
       args: [],
       options: {}
     });
+    const push = jest.fn();
+    const flush = jest.fn();
+    const reporter: Reporter = { flush, push };
+    context.reporter = reporter;
     process.argv = ['model', 'User', 'name:String', '--orm=mongoose'];
     const executable = applyMiddleware(
       useConfigFile('.jokerrc'),
@@ -122,6 +139,12 @@ describe('Uses config file', () => {
       fs.readFileSync(path.join(projDir, '.jokerrc.json')
     ).toString());
     expect(content).toEqual({ orm: 'mongoose' });
+    expect(push.mock.calls.length).toBe(1);
+    expect(push.mock.calls[0][0]).toEqual({
+      message: 'add',
+      config: '"orm": "mongoose"'
+    });
+    expect(flush.mock.calls.length).toBe(0);
   });
 
   it('file exist, no savable options, do nothing', async () => {
@@ -131,6 +154,10 @@ describe('Uses config file', () => {
       args: [],
       options: {}
     });
+    const push = jest.fn();
+    const flush = jest.fn();
+    const reporter: Reporter = { flush, push };
+    context.reporter = reporter;
     process.argv = ['model', 'User', 'name:String', '--orm=mongoose'];
     const executable = applyMiddleware(
       useConfigFile('.jokerrc'),
@@ -151,6 +178,8 @@ describe('Uses config file', () => {
       fs.readFileSync(path.join(projDir, '.jokerrc.json')
     ).toString());
     expect(content).toEqual({ key1: 'value1', key2: 'value2' });
+    expect(push.mock.calls.length).toBe(0);
+    expect(flush.mock.calls.length).toBe(0);
   });
 
   it('file exist, has savable options, but default val, do nothing',
@@ -161,6 +190,10 @@ describe('Uses config file', () => {
       args: [],
       options: {}
     });
+    const push = jest.fn();
+    const flush = jest.fn();
+    const reporter: Reporter = { flush, push };
+    context.reporter = reporter;
     process.argv = ['model', 'User', 'name:String', '--orm=mongoose'];
     const executable = applyMiddleware(
       useConfigFile('.jokerrc'),
@@ -182,6 +215,8 @@ describe('Uses config file', () => {
       fs.readFileSync(path.join(projDir, '.jokerrc.json')
     ).toString());
     expect(content).toEqual({ key1: 'value1', key2: 'value2' });
+    expect(push.mock.calls.length).toBe(0);
+    expect(flush.mock.calls.length).toBe(0);
   });
 
   it('file exist, new savable appear, add config record', async () => {
@@ -195,6 +230,10 @@ describe('Uses config file', () => {
       args: [],
       options: {}
     });
+    const push = jest.fn();
+    const flush = jest.fn();
+    const reporter: Reporter = { flush, push };
+    context.reporter = reporter;
     process.argv = ['model', 'User', 'name:String', '--orm=mongoose'];
     const executable = applyMiddleware(
       useConfigFile('.jokerrc'),
@@ -216,6 +255,12 @@ describe('Uses config file', () => {
       fs.readFileSync(path.join(projDir, '.jokerrc.json')
     ).toString());
     expect(content).toEqual({ key1: 'val1', key2: 'val2', orm: 'mongoose' });
+    expect(push.mock.calls.length).toBe(1);
+    expect(push.mock.calls[0][0]).toEqual({
+      message: 'add',
+      config: '"orm": "mongoose"'
+    });
+    expect(flush.mock.calls.length).toBe(0);
   });
 
   it('file exist, same savable different value, update config record',
@@ -230,6 +275,10 @@ describe('Uses config file', () => {
       args: [],
       options: {}
     });
+    const push = jest.fn();
+    const flush = jest.fn();
+    const reporter: Reporter = { flush, push };
+    context.reporter = reporter;
     process.argv = ['model', 'User', 'name:String', '--orm=mongoose'];
     const executable = applyMiddleware(
       useConfigFile('.jokerrc'),
@@ -251,6 +300,12 @@ describe('Uses config file', () => {
       fs.readFileSync(path.join(projDir, '.jokerrc.json')
     ).toString());
     expect(content).toEqual({ key1: 'val1', key2: 'val2', orm: 'mongoose' });
+    expect(push.mock.calls.length).toBe(1);
+    expect(push.mock.calls[0][0]).toEqual({
+      message: 'update',
+      config: '"orm": "mongoose"'
+    });
+    expect(flush.mock.calls.length).toBe(0);
   });
 
   it('file exist, same savable but default appear, delete record', async () => {
@@ -264,6 +319,10 @@ describe('Uses config file', () => {
       args: [],
       options: {}
     });
+    const push = jest.fn();
+    const flush = jest.fn();
+    const reporter: Reporter = { flush, push };
+    context.reporter = reporter;
     process.argv = ['model', 'User', 'name:String', '--orm=typeorm'];
     const executable = applyMiddleware(
       useConfigFile('.jokerrc'),
@@ -285,6 +344,12 @@ describe('Uses config file', () => {
       fs.readFileSync(path.join(projDir, '.jokerrc.json')
     ).toString());
     expect(content).toEqual({ key1: 'val1', key2: 'val2' });
+    expect(push.mock.calls.length).toBe(1);
+    expect(push.mock.calls[0][0]).toEqual({
+      message: 'delete',
+      config: '"orm": "was"'
+    });
+    expect(flush.mock.calls.length).toBe(0);
   });
 
   it('deletes rules used to be savable but now not', async () => {
@@ -298,6 +363,10 @@ describe('Uses config file', () => {
       args: [],
       options: {}
     });
+    const push = jest.fn();
+    const flush = jest.fn();
+    const reporter: Reporter = { flush, push };
+    context.reporter = reporter;
     process.argv = ['model', 'User', 'name:String', '--orm=typeorm'];
     const executable = applyMiddleware(
       useConfigFile('.jokerrc'),
@@ -325,6 +394,12 @@ describe('Uses config file', () => {
       fs.readFileSync(path.join(projDir, '.jokerrc.json')
     ).toString());
     expect(content).toEqual({ lang: 'ts' });
+    expect(push.mock.calls.length).toBe(1);
+    expect(push.mock.calls[0][0]).toEqual({
+      message: 'delete',
+      config: '"orm": "mongoose"'
+    });
+    expect(flush.mock.calls.length).toBe(0);
   });
 
   it("don't touch undefined rules", async () => {
@@ -338,6 +413,10 @@ describe('Uses config file', () => {
       args: [],
       options: {}
     });
+    const push = jest.fn();
+    const flush = jest.fn();
+    const reporter: Reporter = { flush, push };
+    context.reporter = reporter;
     process.argv = ['model', 'User', 'name:String', '--orm=typeorm'];
     const executable = applyMiddleware(
       useConfigFile('.jokerrc'),
@@ -365,6 +444,12 @@ describe('Uses config file', () => {
       fs.readFileSync(path.join(projDir, '.jokerrc.json')
     ).toString());
     expect(content).toEqual({ lang: 'ts' });
+    expect(push.mock.calls.length).toBe(1);
+    expect(push.mock.calls[0][0]).toEqual({
+      message: 'delete',
+      config: '"orm": "mongoose"'
+    });
+    expect(flush.mock.calls.length).toBe(0);
   });
 
 });

@@ -8,6 +8,7 @@ import Options from '../Options';
 import isDefined from '../utilities/isDefined';
 import mapValues from '../utilities/mapValues';
 import ensureExt from '../utilities/ensureExt';
+import formatKeyValue from '../utilities/formatKeyValue';
 
 const useConfigFile: (fileName: string) => Executable = (fileName: string) => {
   return async (ctx, next) => {
@@ -46,16 +47,28 @@ const useConfigFile: (fileName: string) => Executable = (fileName: string) => {
               // add here
               originalSavedOptions[key] = currentOptions[key];
               shouldWriteFile = true;
+              ctx.reporter.push({
+                message: 'add',
+                config: formatKeyValue(key, currentOptions[key])
+              });
             }
           } else {
             if (currentOptions[key] === defaultValues[key]) {
               // remove here
+              ctx.reporter.push({
+                message: 'delete',
+                config: formatKeyValue(key, originalSavedOptions[key])
+              });
               delete originalSavedOptions[key];
               shouldWriteFile = true;
             } else {
               // update here
               originalSavedOptions[key] = currentOptions[key];
               shouldWriteFile = true;
+              ctx.reporter.push({
+                message: 'update',
+                config: formatKeyValue(key, currentOptions[key])
+              });
             }
           }
         }
