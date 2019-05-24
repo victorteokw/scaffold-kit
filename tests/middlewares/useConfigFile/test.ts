@@ -7,6 +7,8 @@ import parseArgv from '../../../src/middlewares/parseArgv';
 import nullExecutable from '../../../src/nullExecutable';
 import * as fs from 'fs';
 import Reporter from '../../../src/Reporter';
+import * as CSON from 'cson-parser';
+import * as YAML from 'js-yaml';
 
 describe('Uses config file', () => {
 
@@ -42,6 +44,18 @@ describe('Uses config file', () => {
       lang: 'ts',
       orm: 'mongoose'
     }, null, 2));
+    // rollback config for example 8
+    const example8Config = path.join(__dirname, 'example8/.jokerrc.cson');
+    fs.writeFileSync(example8Config, CSON.stringify({
+      lang: 'ts',
+      orm: 'mongoose'
+    }, null, 2));
+    // rollback config for example 9
+    const example9Config = path.join(__dirname, 'example9/.jokerrc.yaml');
+    fs.writeFileSync(example9Config, YAML.dump({
+      lang: 'ts',
+      orm: 'mongoose'
+    }));
   });
 
   it('file not exist, no savable options, do nothing', async () => {
@@ -442,6 +456,106 @@ describe('Uses config file', () => {
     expect(fileList).toContain('.jokerrc.json');
     content = JSON.parse(
       fs.readFileSync(path.join(projDir, '.jokerrc.json')
+    ).toString());
+    expect(content).toEqual({ lang: 'ts' });
+    expect(push.mock.calls.length).toBe(1);
+    expect(push.mock.calls[0][0]).toEqual({
+      message: 'delete',
+      config: '"orm": "mongoose"'
+    });
+    expect(flush.mock.calls.length).toBe(0);
+  });
+
+  it('supports cson format', async () => {
+    const projDir = path.join(__dirname, 'example8');
+    let content = CSON.parse(
+      fs.readFileSync(path.join(projDir, '.jokerrc.cson')
+    ).toString());
+    expect(content).toEqual({ lang: 'ts', orm: 'mongoose' });
+    const context = new Context({
+      wd: projDir,
+      args: [],
+      options: {}
+    });
+    const push = jest.fn();
+    const flush = jest.fn();
+    const reporter: Reporter = { flush, push };
+    context.reporter = reporter;
+    process.argv = ['model', 'User', 'name:String', '--orm=typeorm'];
+    const executable = applyMiddleware(
+      useConfigFile('.jokerrc'),
+      defineOptions({
+        orm: {
+          type: 'string',
+          desc: 'the orm to be used.',
+          default: 'typeorm',
+          save: true
+        },
+        useModel: {
+          type: 'boolean',
+          desc: 'whether use ORM.',
+          default: true,
+          save: true
+        }
+      }),
+      parseArgv
+    );
+    await executable(context, nullExecutable);
+    const fileList = fs.readdirSync(projDir);
+    expect(fileList).toHaveLength(1);
+    expect(fileList).toContain('.jokerrc.cson');
+    content = CSON.parse(
+      fs.readFileSync(path.join(projDir, '.jokerrc.cson')
+    ).toString());
+    expect(content).toEqual({ lang: 'ts' });
+    expect(push.mock.calls.length).toBe(1);
+    expect(push.mock.calls[0][0]).toEqual({
+      message: 'delete',
+      config: '"orm": "mongoose"'
+    });
+    expect(flush.mock.calls.length).toBe(0);
+  });
+
+  it('supports yaml format', async () => {
+    const projDir = path.join(__dirname, 'example9');
+    let content = YAML.load(
+      fs.readFileSync(path.join(projDir, '.jokerrc.yaml')
+    ).toString());
+    expect(content).toEqual({ lang: 'ts', orm: 'mongoose' });
+    const context = new Context({
+      wd: projDir,
+      args: [],
+      options: {}
+    });
+    const push = jest.fn();
+    const flush = jest.fn();
+    const reporter: Reporter = { flush, push };
+    context.reporter = reporter;
+    process.argv = ['model', 'User', 'name:String', '--orm=typeorm'];
+    const executable = applyMiddleware(
+      useConfigFile('.jokerrc'),
+      defineOptions({
+        orm: {
+          type: 'string',
+          desc: 'the orm to be used.',
+          default: 'typeorm',
+          save: true
+        },
+        useModel: {
+          type: 'boolean',
+          desc: 'whether use ORM.',
+          default: true,
+          save: true
+        }
+      }),
+      parseArgv
+    );
+    await executable(context, nullExecutable);
+    const fileList = fs.readdirSync(projDir);
+    expect(fileList).toHaveLength(1);
+    expect(fileList).toContain('.jokerrc.yaml');
+    content = YAML.load(
+      fs.readFileSync(path.join(projDir, '.jokerrc.yaml')
     ).toString());
     expect(content).toEqual({ lang: 'ts' });
     expect(push.mock.calls.length).toBe(1);
