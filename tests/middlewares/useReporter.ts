@@ -1,5 +1,3 @@
-import applyMiddleware from '../../src/applyMiddleware';
-import Executable from '../../src/Executable';
 import nullExecutable from '../../src/nullExecutable';
 import useReporter from '../../src/middlewares/useReporter';
 import silentReporter from '../../src/reporters/silentReporter';
