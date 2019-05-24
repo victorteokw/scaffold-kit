@@ -3,11 +3,14 @@
 import Executable from '../Executable';
 import ensureNewLine from '../utilities/ensureNewLine';
 import isDefined from '../utilities/isDefined';
+import { Writable } from 'stream';
 
-const displayVersion: (version: string) => Executable = (version: string) => {
+const displayVersion:
+(version: string, stream?: Writable) => Executable =
+(version: string, stream: Writable = process.stdout) => {
   return async (ctx, next) => {
     if (isDefined(ctx.options.version)) {
-      process.stdout.write(ensureNewLine(version));
+      stream.write(ensureNewLine(version));
     } else {
       await next(ctx);
     }

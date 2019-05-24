@@ -3,11 +3,14 @@
 import Executable from '../Executable';
 import ensureNewLine from '../utilities/ensureNewLine';
 import isDefined from '../utilities/isDefined';
+import { Writable } from 'stream';
 
-const displayHelp: (help: string) => Executable = (help: string) => {
+const displayHelp:
+(help: string, stream?: Writable) => Executable =
+(help: string, stream: Writable = process.stdout) => {
   return async (ctx, next) => {
     if (isDefined(ctx.options.help)) {
-      process.stdout.write(ensureNewLine(help));
+      stream.write(ensureNewLine(help));
     } else {
       await next(ctx);
     }
