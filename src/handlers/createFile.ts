@@ -2,10 +2,25 @@ import * as fs from 'fs';
 import * as mkdirp from 'mkdirp';
 import * as path from 'path';
 import * as ejs from 'ejs';
-import {isUndefined} from  'lodash';
+import {isUndefined} from 'lodash';
 
+export interface ICreateFileInfo {
+  content: string;
+  from: string;
+  at: string;
+  context: object;
+  overwrite: boolean;
+  silent: any;
+}
 
-export default function createFile ({ content, from, at, context, silent, overwrite }) {
+export default function createFile({
+  content,
+  from,
+  at,
+  context,
+  silent,
+  overwrite,
+}: ICreateFileInfo) {
   if (isUndefined(content)) {
     content = fs.readFileSync(from).toString();
   }
@@ -34,5 +49,4 @@ export default function createFile ({ content, from, at, context, silent, overwr
     fs.writeFileSync(dest, content);
     return ['create', 'green', at, silent];
   }
-
-};
+}
