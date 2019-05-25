@@ -1,15 +1,21 @@
 import * as fs from 'fs';
-import * as path from 'path';
+import Reporter from '../Reporter';
+import DeleteFileInfo from '../instructions/DeleteFileInfo';
+import isDefined from '../utilities/isDefined';
 
-const deleteFile = ({ at, silent }) => {
-  const dest = at;
-  if (fs.existsSync(dest)) {
+const deleteFile = (params:DeleteFileInfo,
+                    reporter: Reporter) => {
+  let { at }  = params;
+  if (!isDefined(at) ) {
+    throw new Error(`You should provide the path to delete the file, the current path:'${at}'.`);
+  }
+  if (fs.existsSync(at)) {
     // delete file
-    fs.unlinkSync(dest);
-    return ['delete', 'green', at, silent];
+    fs.unlinkSync(at);
+    reporter.push({ message: 'delete', file: at });
   } else {
     // do nothing
-    return ['not exist', 'yellow', at, silent];
+    reporter.push({ message: 'not exist', file: at });
   }
 };
 
