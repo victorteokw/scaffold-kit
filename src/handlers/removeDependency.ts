@@ -26,7 +26,7 @@ const realRemoveDependency = pkgName => {
   }
 };
 
-export default function removeDependency(params) {
+const removeDependency = params => {
   const pkgName = params.package;
   const { dev, mock, silent } = params;
   const installed = isDependencyInstalled(pkgName, dev);
@@ -40,4 +40,6 @@ export default function removeDependency(params) {
   } else {
     outputMessage('uninstalled', 'yellow', pkgName, silent);
   }
-}
+};
+
+export default removeDependency;
