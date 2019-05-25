@@ -2,7 +2,7 @@ import * as fs from 'fs';
 import * as ejs from 'ejs';
 import isDefined from '../utilities/isDefined';
 
-export default function detachFromFile({ content, from, at, context, silent }) {
+const detachFromFile = ({ content, from, at, context, silent }) => {
   if (!isDefined(content)) {
     content = fs.readFileSync(from).toString();
   }
@@ -24,4 +24,6 @@ export default function detachFromFile({ content, from, at, context, silent }) {
     // file not exist, how to detach content?
     return ['not exist', 'yellow', at, silent];
   }
-}
+};
+
+export default detachFromFile;

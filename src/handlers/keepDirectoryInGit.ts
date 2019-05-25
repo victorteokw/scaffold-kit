@@ -4,7 +4,7 @@ import * as mkdirp from 'mkdirp';
 import { includes } from 'lodash';
 const outputMessage = require('./outputMessage');
 
-export default function keepDirectoryInGit({ at, silent }) {
+const keepDirectoryInGit = ({ at, silent }) => {
   const keepFilename = '.keep';
   const dir = at;
   if (fs.existsSync(dir) && fs.lstatSync(dir).isDirectory()) {
@@ -26,4 +26,6 @@ export default function keepDirectoryInGit({ at, silent }) {
     fs.writeFileSync(path.join(dir, keepFilename), '');
     outputMessage('create', 'green', path.join(at, keepFilename), silent);
   }
-}
+};
+
+export default keepDirectoryInGit;

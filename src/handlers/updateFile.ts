@@ -4,7 +4,7 @@ import * as mkdirp from 'mkdirp';
 
 import { isEqual } from 'lodash';
 
-export default function updateFile({ at, updator, silent }) {
+const updateFile = ({ at, updator, silent }) => {
   const dest = at;
   if (fs.existsSync(dest)) {
     const before = fs.readFileSync(dest).toString();
@@ -20,4 +20,6 @@ export default function updateFile({ at, updator, silent }) {
     fs.writeFileSync(at, updator(''));
     return ['create', 'green', at, silent];
   }
-}
+};
+
+export default updateFile;
