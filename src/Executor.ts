@@ -11,6 +11,11 @@ class Executor {
     this.handlers = {};
   }
 
+  public push(instruction: Instruction): Executor {
+    this.instructions.push(instruction);
+    return this;
+  }
+
 }
 
 export default Executor;

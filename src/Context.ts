@@ -1,6 +1,5 @@
 import * as path from 'path';
 import ExecutionInfo from './ExecutionInfo';
-import Instruction from './Instruction';
 import AppendFileInfo from './instructions/AppendFileInfo';
 import CreateFileInfo from './instructions/CreateFileInfo';
 import DeleteFileInfo from './instructions/DeleteFileInfo';
@@ -9,11 +8,18 @@ import RollbackFileInfo from './instructions/RollbackFileInfo';
 import RollbackJSONFileInfo from './instructions/RollbackJSONFileInfo';
 import UpdateFileInfo from './instructions/UpdateFileInfo';
 import UpdateJSONFileInfo from './instructions/UpdateJSONFileInfo';
+import InstallDependencyInfo from './instructions/InstallDependencyInfo';
+import RemoveDependencyInfo from './instructions/RemoveDependencyInfo';
+import RunShellCommandInfo from './instructions/RunShellCommandInfo';
+import UndoShellCommandInfo from './instructions/UndoShellCommandInfo';
+import KeepDirectoryInGitInfo from './instructions/KeepDirectoryInGitInfo';
 import OptionRules from './OptionRules';
 import Options from './Options';
 import Reporter from './Reporter';
 import plainReporter from './reporters/plainReporter';
 import firstDefined from './utilities/firstDefined';
+import Executor from './Executor';
+
 
 class Context implements ExecutionInfo {
 
@@ -38,9 +44,8 @@ class Context implements ExecutionInfo {
 
   public disableFlush: boolean = false;
   public reporter: Reporter = plainReporter;
-  // instructions
+  public executor: Executor = new Executor();
 
-  public instructions: Instruction[];
   private templateLocation?: string;
 
   // initialize method
@@ -49,7 +54,6 @@ class Context implements ExecutionInfo {
     this.wd = executionInfo.wd;
     this.args = executionInfo.args;
     this.options = executionInfo.options;
-    this.instructions = [];
   }
 
   // instruction methods
@@ -64,7 +68,7 @@ class Context implements ExecutionInfo {
   }
 
   public createFile(detail: CreateFileInfo) {
-    this.instructions.push({
+    this.executor.push({
       detail: {
         at: this.applyDestination(detail.at),
         content: detail.content,
@@ -83,7 +87,7 @@ class Context implements ExecutionInfo {
   }
 
   public deleteFile(detail: DeleteFileInfo) {
-    this.instructions.push({
+    this.executor.push({
       detail: {
         at: this.applyDestination(detail.at)
       },
@@ -98,7 +102,7 @@ class Context implements ExecutionInfo {
   }
 
   public appendFile(detail: AppendFileInfo) {
-    this.instructions.push({
+    this.executor.push({
       detail: {
         at: this.applyDestination(detail.at),
         content: detail.content,
@@ -116,7 +120,7 @@ class Context implements ExecutionInfo {
   }
 
   public detachFromFile(detail: DetachFromFileInfo) {
-    this.instructions.push({
+    this.executor.push({
       detail: {
         at: this.applyDestination(detail.at),
         content: detail.content,
@@ -134,7 +138,7 @@ class Context implements ExecutionInfo {
   }
 
   public updateFile(detail: UpdateFileInfo) {
-    this.instructions.push({
+    this.executor.push({
       detail: {
         at: this.applyDestination(detail.at),
         updator: detail.updator,
@@ -151,7 +155,7 @@ class Context implements ExecutionInfo {
   }
 
   public rollbackFile(detail: RollbackFileInfo) {
-    this.instructions.push({
+    this.executor.push({
       detail: {
         at: this.applyDestination(detail.at),
         updator: detail.updator,
@@ -168,7 +172,7 @@ class Context implements ExecutionInfo {
   }
 
   public updateJSONFile(detail: UpdateJSONFileInfo) {
-    this.instructions.push({
+    this.executor.push({
       detail: {
         at: this.applyDestination(detail.at),
         updator: detail.updator,
@@ -185,7 +189,7 @@ class Context implements ExecutionInfo {
   }
 
   public rollbackJSONFile(detail: RollbackJSONFileInfo) {
-    this.instructions.push({
+    this.executor.push({
       detail: {
         at: this.applyDestination(detail.at),
         updator: detail.updator,
@@ -200,6 +204,86 @@ class Context implements ExecutionInfo {
       this.rollbackFile(detail);
     }
   }
+
+  public installDependency(detail: InstallDependencyInfo) {
+    this.executor.push({
+      detail: {
+        package: detail.package,
+        version: detail.version,
+        dev: detail.dev
+      },
+      type: 'installDependency'
+    });
+  }
+
+  public installDependencies(details: InstallDependencyInfo[]) {
+    for (const detail of details) {
+      this.installDependency(detail);
+    }
+  }
+
+  public removeDependency(detail: RemoveDependencyInfo) {
+    this.executor.push({
+      detail: {
+        package: detail.package
+      },
+      type: 'removeDependency'
+    });
+  }
+
+  public removeDependencies(details: RemoveDependencyInfo[]) {
+    for (const detail of details) {
+      this.removeDependency(detail);
+    }
+  }
+
+  public runShellCommand(detail: RunShellCommandInfo) {
+    this.executor.push({
+      detail: {
+        command: detail.command,
+        reverseCommand: detail.reverseCommand
+      },
+      type: 'runShellCommand'
+    });
+  }
+
+  public runShellCommands(details: RunShellCommandInfo[]) {
+    for (const detail of details) {
+      this.runShellCommand(detail);
+    }
+  }
+
+  public undoShellCommand(detail: UndoShellCommandInfo) {
+    this.executor.push({
+      detail: {
+        command: detail.command,
+        reverseCommand: detail.reverseCommand
+      },
+      type: 'undoShellCommand'
+    });
+  }
+
+  public undoShellCommands(details: UndoShellCommandInfo[]) {
+    for (const detail of details) {
+      this.undoShellCommand(detail);
+    }
+  }
+
+  public keepDirectoryInGit(detail: KeepDirectoryInGitInfo) {
+    this.executor.push({
+      detail: {
+        at: this.applyDestination(detail.at)
+      },
+      type: 'keepDirectoryInGit'
+    });
+  }
+
+  public keepDirectoryInGits(details: KeepDirectoryInGitInfo[]) {
+    for (const detail of details) {
+      this.keepDirectoryInGit(detail);
+    }
+  }
+
   // instruction helpers
 
   private applyTemplate(relTempPath: string) {
