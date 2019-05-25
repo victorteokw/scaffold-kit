@@ -1,7 +1,5 @@
-import Context from "./Context";
 import nullExecutable from "./nullExecutable";
 import Plugable from './Plugable';
-import PlugableCallback from './PlugableCallback';
 
 function applySingle<T>(lhs: Plugable<T>, rhs: Plugable<T>): Plugable<T> {
   return (ctx: T, next: Plugable<T>) => {
