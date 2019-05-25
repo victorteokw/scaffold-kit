@@ -1,28 +1,41 @@
 import * as fs from 'fs';
-import * as ejs from 'ejs';
 import isDefined from '../utilities/isDefined';
+import Render from '../Render';
+import Reporter from '../Reporter';
+import DetachFromFileInfo from '../instructions/DetachFromFileInfo';
 
-const detachFromFile = ({ content, from, at, context, silent }) => {
-  if (!isDefined(content)) {
+const detachFromFile = (
+  params: DetachFromFileInfo,
+  reporter: Reporter,
+  render: Render
+) => {
+
+  let { content, from, at, context } = params;
+
+  if (!isDefined(from) && !isDefined(content)) {
+    throw new Error(`you should provide content or from for '${at}'.`);
+  }
+
+  if (isDefined(from) && from ) {
     content = fs.readFileSync(from).toString();
   }
-  if (context) {
-    content = ejs.render(content, context);
+
+  if (context && content) {
+    content = render(content, context);
   }
-  const dest = at;
-  if (fs.existsSync(dest)) {
-    const destContent = fs.readFileSync(dest).toString();
-    if (destContent.endsWith(content)) {
+
+  if (fs.existsSync(at)) {
+    const destContent = fs.readFileSync(at).toString();
+    if (content && destContent.endsWith(content)) {
       // remove content from the bottom
-      fs.truncateSync(dest, destContent.indexOf(content));
-      return ['truncate', 'green', at, silent];
+      fs.truncateSync(at, destContent.indexOf(content));
+      reporter.push({ message: 'truncate', file: at });
     } else {
       // cannot remove content
-      return ['not detachable', 'red', at, silent];
+      reporter.push({ message: 'not detachable', file: at });
     }
   } else {
-    // file not exist, how to detach content?
-    return ['not exist', 'yellow', at, silent];
+    reporter.push({ message: 'not exist', file: at });
   }
 };
 

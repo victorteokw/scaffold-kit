@@ -9,18 +9,18 @@ import Render from '../Render';
 const createFile = (
   params: CreateFileInfo,
   reporter: Reporter,
-  render: Render
+  render: Render,
 ) => {
   let { content } = params;
   const { from, at, context, overwrite } = params;
   if (!isDefined(from) && !isDefined(content)) {
-    throw new Error(`you should provide content or from for '${params.at}'.`);
+    throw new Error(`you should provide content or from for '${at}'.`);
   }
-  if (!isDefined(content)) {
-    content = fs.readFileSync(from as string).toString();
+  if (isDefined(from) && from) {
+    content = fs.readFileSync(from).toString();
   }
-  if (context) {
-    content = render(content as string, context);
+  if (context && content) {
+    content = render(content, context);
   }
   if (fs.existsSync(at)) {
     const destContent = fs.readFileSync(at).toString();
@@ -45,4 +45,4 @@ const createFile = (
   }
 };
 
-module.exports = createFile;
+export default createFile;
