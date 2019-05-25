@@ -1,21 +1,29 @@
 import * as fs from 'fs';
-import * as path from 'path';
 import { isEqual } from 'lodash';
+import RollbackFileInfo from '../instructions/RollbackFileInfo';
+import Reporter from '../Reporter';
+import isDefined from '../utilities/isDefined';
 
-const rollbackFile = ({ at, rollbacker, silent }) => {
-  const dest = at;
-  if (fs.existsSync(dest)) {
-    const before = fs.readFileSync(dest).toString();
+const rollbackFile = (params:RollbackFileInfo,reporter: Reporter) => {
+  let { at, rollbacker }= params;
+
+  if (!isDefined(at) && !isDefined(rollbacker)) {
+    throw new Error(
+      `You should provide at and rollbacker`,
+    );
+  }
+  if (fs.existsSync(at)) {
+    const before = fs.readFileSync(at).toString();
     const after = rollbacker(before);
     if (isEqual(before, after)) {
-      return ['unchanged', 'yellow', at, silent];
+      reporter.push({ message: 'unchanged', file: at });
     } else {
       fs.writeFileSync(at, after);
-      return ['rollback', 'green', at, silent];
+      reporter.push({ message: 'rollback', file: at });
     }
   } else {
     // file not exist, can not rollback
-    return ['not exist', 'red', at, silent];
+    reporter.push({ message: 'not exist', file: at });
   }
 };
 
