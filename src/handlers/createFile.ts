@@ -45,4 +45,4 @@ const createFile = (
   }
 };
 
-module.exports = createFile;
+export default createFile;

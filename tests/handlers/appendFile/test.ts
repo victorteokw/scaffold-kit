@@ -75,7 +75,7 @@ this is line six
     it('sends update message to reporter', () => {
       expect(reporter.push.mock.calls.length).toBe(1);
       expect(reporter.push.mock.calls[0][0]).toEqual({
-        message: 'update',
+        message: 'append',
         file
       });
       expect(reporter.flush.mock.calls.length).toBe(0);

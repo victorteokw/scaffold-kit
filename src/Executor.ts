@@ -34,7 +34,7 @@ class Executor {
 
   public instructions: Instruction[] = [];
   protected done: boolean = false;
-  private handlers: { [key: string]: Handler } = handlers;
+  private handlers: { [key: string]: any } = handlers;
 
   constructor() {
     /**/
