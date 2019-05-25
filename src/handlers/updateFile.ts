@@ -3,22 +3,30 @@ import * as path from 'path';
 import * as mkdirp from 'mkdirp';
 
 import { isEqual } from 'lodash';
+import UpdateFileInfo from '../instructions/UpdateFileInfo';
+import Reporter from '../Reporter';
+import isDefined from '../utilities/isDefined';
 
-const updateFile = ({ at, updator, silent }) => {
-  const dest = at;
-  if (fs.existsSync(dest)) {
-    const before = fs.readFileSync(dest).toString();
+const updateFile = (params: UpdateFileInfo, reporter: Reporter) => {
+  let { at, updator } = params;
+
+  if (!isDefined(at) && !isDefined(updator)) {
+    throw new Error(`you should provide at and updator`);
+  }
+
+  if (fs.existsSync(at)) {
+    const before = fs.readFileSync(at).toString();
     const after = updator(before);
     if (isEqual(before, after)) {
-      return ['up-to-date', 'yellow', at, silent];
+      reporter.push({ message: 'up-to-date', file: at });
     } else {
       fs.writeFileSync(at, after);
-      return ['update', 'green', at, silent];
+      reporter.push({ message: 'update', file: at });
     }
   } else {
-    mkdirp.sync(path.dirname(dest));
+    mkdirp.sync(path.dirname(at));
     fs.writeFileSync(at, updator(''));
-    return ['create', 'green', at, silent];
+    reporter.push({ message: 'create', file: at });
   }
 };
 

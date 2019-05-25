@@ -1,30 +1,37 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import * as mkdirp from 'mkdirp';
-import { includes } from 'lodash';
-const outputMessage = require('./outputMessage');
+import KeepDirectoryInGitInfo from '../instructions/KeepDirectoryInGitInfo';
+import Reporter from '../Reporter';
+import isDefined from '../utilities/isDefined';
 
-const keepDirectoryInGit = ({ at, silent }) => {
+const keepDirectoryInGit = (
+  params: KeepDirectoryInGitInfo,
+  reporter: Reporter,
+) => {
+  let { at } = params;
+  if (!isDefined(at)) {
+    throw new Error(`You should provide the path, the current path:'${at}'.`);
+  }
   const keepFilename = '.keep';
-  const dir = at;
-  if (fs.existsSync(dir) && fs.lstatSync(dir).isDirectory()) {
+  if (fs.existsSync(at) && fs.lstatSync(at).isDirectory()) {
     // the directory exist
-    const filenames = fs.readdirSync(dir);
-    if (includes(filenames, keepFilename) && filenames.length > 1) {
-      fs.unlinkSync(path.join(dir, keepFilename));
-      outputMessage('delete', 'green', path.join(at, keepFilename), silent);
+    const filenames = fs.readdirSync(at);
+    if (filenames.includes(keepFilename) && filenames.length > 1) {
+      fs.unlinkSync(path.join(at, keepFilename));
+      reporter.push({ message: 'delete', file: at });
     } else if (filenames.length === 0) {
-      fs.writeFileSync(path.join(dir, keepFilename), '');
-      outputMessage('create', 'green', path.join(at, keepFilename), silent);
+      fs.writeFileSync(path.join(at, keepFilename), '');
+      reporter.push({ message: 'create', file: at });
     }
-  } else if (fs.existsSync(dir)) {
+  } else if (fs.existsSync(at)) {
     // the directory is a file
     // do nothing
   } else {
     // the directory not exist at all
-    mkdirp.sync(dir);
-    fs.writeFileSync(path.join(dir, keepFilename), '');
-    outputMessage('create', 'green', path.join(at, keepFilename), silent);
+    mkdirp.sync(at);
+    fs.writeFileSync(path.join(at, keepFilename), '');
+    reporter.push({ message: 'create', file: at });
   }
 };
 
