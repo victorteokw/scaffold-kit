@@ -2,7 +2,7 @@ interface CreateFileInfo {
   content?: string;
   from?: string;
   at: string;
-  context: object;
+  context?: object;
   overwrite?: boolean;
 }
 
