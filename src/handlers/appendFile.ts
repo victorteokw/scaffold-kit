@@ -13,9 +13,7 @@ const appendFile = (
 ) => {
   const { from, at, context } = params;
   let { content } = params;
-  if (!isDefined(from) && !isDefined(content)) {
-    throw new Error(`you should provide content or from for '${params.at}'.`);
-  }
+
   if (!isDefined(content)) {
     content = fs.readFileSync(from as string).toString();
   }
