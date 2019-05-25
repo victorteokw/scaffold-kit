@@ -1,9 +1,9 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import * as mkdirp from 'mkdirp';
-import {isEqual,cloneDeep} from  'lodash';
+import { isEqual, cloneDeep } from 'lodash';
 
-export default function updateJSONFile  ({ at, updator, silent })  {
+export default function updateJSONFile({ at, updator, silent }) {
   const dest = at;
   if (fs.existsSync(dest)) {
     const before = JSON.parse(fs.readFileSync(dest).toString());
@@ -19,4 +19,4 @@ export default function updateJSONFile  ({ at, updator, silent })  {
     fs.writeFileSync(at, JSON.stringify(updator({}), null, 2) + '\n');
     return ['create', 'green', at, silent];
   }
-};
+}

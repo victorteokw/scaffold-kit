@@ -6,11 +6,11 @@ import Reporter from '../Reporter';
 import AppendFileInfo from '../instructions/AppendFileInfo';
 import Render from '../Render';
 
-export default function appendFile  (
+const appendFile = (
   params: AppendFileInfo,
   reporter: Reporter,
-  render: Render
-)  {
+  render: Render,
+) => {
   const { from, at, context } = params;
   let { content } = params;
   if (!isDefined(from) && !isDefined(content)) {
@@ -39,3 +39,5 @@ export default function appendFile  (
     reporter.push({ message: 'create', file: at });
   }
 };
+
+export default appendFile;
