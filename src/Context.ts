@@ -20,7 +20,6 @@ import plainReporter from './reporters/plainReporter';
 import firstDefined from './utilities/firstDefined';
 import Executor from './Executor';
 
-
 class Context implements ExecutionInfo {
 
   // middleware extentions
@@ -57,15 +56,6 @@ class Context implements ExecutionInfo {
   }
 
   // instruction methods
-
-  public async useTemplateFrom(
-    templateLocation: string,
-    callback: () => Promise<void>
-  ) {
-    this.templateLocation = templateLocation;
-    await callback();
-    this.templateLocation = undefined;
-  }
 
   public createFile(detail: CreateFileInfo) {
     this.executor.push({
@@ -285,6 +275,15 @@ class Context implements ExecutionInfo {
   }
 
   // instruction helpers
+
+  public async useTemplateFrom(
+    templateLocation: string,
+    callback: () => Promise<void>
+  ) {
+    this.templateLocation = templateLocation;
+    await callback();
+    this.templateLocation = undefined;
+  }
 
   private applyTemplate(relTempPath: string) {
     if (!relTempPath) return undefined;

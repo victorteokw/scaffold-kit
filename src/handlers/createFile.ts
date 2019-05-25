@@ -1,18 +1,18 @@
 import * as fs from 'fs';
+import * as mkdirp from 'mkdirp';
 import * as path from 'path';
 import isDefined from '../utilities/isDefined';
-import * as mkdirp from 'mkdirp';
+import CreateFileInfo from '../instructions/CreateFileInfo';
 import Reporter from '../Reporter';
-import AppendFileInfo from '../instructions/AppendFileInfo';
 import Render from '../Render';
 
-const appendFile = (
-  params: AppendFileInfo,
+const createFile = (
+  params: CreateFileInfo,
   reporter: Reporter,
   render: Render
 ) => {
-  const { from, at, context } = params;
   let { content } = params;
+  const { from, at, context, overwrite } = params;
   if (!isDefined(from) && !isDefined(content)) {
     throw new Error(`you should provide content or from for '${params.at}'.`);
   }
@@ -24,13 +24,18 @@ const appendFile = (
   }
   if (fs.existsSync(at)) {
     const destContent = fs.readFileSync(at).toString();
-    if (destContent.endsWith(content as string)) {
-      // never mind, don't need to append anymore
+    if (destContent === content) {
+      // never mind, same content
       reporter.push({ message: 'up-to-date', file: at });
     } else {
-      // do the append
-      fs.appendFileSync(at, content);
-      reporter.push({ message: 'append', file: at });
+      if (overwrite) {
+        // overwrite
+        fs.writeFileSync(at, content);
+        reporter.push({ message: 'overwrite', file: at });
+      } else {
+        // jsut errors
+        reporter.push({ message: 'exist', file: at });
+      }
     }
   } else {
     // create file
@@ -40,4 +45,4 @@ const appendFile = (
   }
 };
 
-export default appendFile;
+module.exports = createFile;
