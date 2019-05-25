@@ -36,7 +36,6 @@ class Context implements ExecutionInfo {
   // context options
 
   public overwrite: boolean = false;
-  public silent: boolean = false;
   public mockInstall: boolean = false;
 
   // execution behavior
@@ -200,7 +199,8 @@ class Context implements ExecutionInfo {
       detail: {
         package: detail.package,
         version: detail.version,
-        dev: detail.dev
+        dev: detail.dev,
+        mock: firstDefined(detail.mock, this.mockInstall)
       },
       type: 'installDependency'
     });
