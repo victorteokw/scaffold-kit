@@ -37,6 +37,7 @@
   },
   "dependencies": {
     "@types/lodash": "^4.14.129",
+    "@types/mkdirp": "^0.5.2",
     "chalk": "^2.4.0",
     "ejs": "^2.0.0",
     "find-dominant-file": "^2.1.0",
