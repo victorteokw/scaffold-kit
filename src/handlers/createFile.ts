@@ -1,36 +1,29 @@
 import * as fs from 'fs';
-import * as mkdirp from 'mkdirp';
+import * as ejs from 'ejs';
 import * as path from 'path';
+import * as mkdirp from 'mkdirp';
+import Reporter from '../Reporter';
 import isDefined from '../utilities/isDefined';
 import CreateFileInfo from '../instructions/CreateFileInfo';
-import Reporter from '../Reporter';
-import Render from '../Render';
 
-const createFile = (
-  params: CreateFileInfo,
-  reporter: Reporter,
-  render: Render,
-) => {
-  let { content } = params;
-  const { from, at, context, overwrite } = params;
-  if (!isDefined(from) && !isDefined(content)) {
-    throw new Error(`you should provide content or from for '${at}'.`);
-  }
-  if (isDefined(from) && from) {
+const createFile = (params: CreateFileInfo, reporter: Reporter) => {
+  let { content, from, at, context, overwrite } = params;
+  if (!isDefined && from) {
     content = fs.readFileSync(from).toString();
   }
-  if (context && content) {
-    content = render(content, context);
+  if (context) {
+    content = ejs.render(content, context);
   }
-  if (fs.existsSync(at)) {
-    const destContent = fs.readFileSync(at).toString();
+  const dest = at;
+  if (fs.existsSync(dest)) {
+    const destContent = fs.readFileSync(dest).toString();
     if (destContent === content) {
       // never mind, same content
       reporter.push({ message: 'up-to-date', file: at });
     } else {
       if (overwrite) {
         // overwrite
-        fs.writeFileSync(at, content);
+        fs.writeFileSync(dest, content);
         reporter.push({ message: 'overwrite', file: at });
       } else {
         // jsut errors
@@ -39,8 +32,8 @@ const createFile = (
     }
   } else {
     // create file
-    mkdirp.sync(path.dirname(at));
-    fs.writeFileSync(at, content);
+    mkdirp.sync(path.dirname(dest));
+    fs.writeFileSync(dest, content);
     reporter.push({ message: 'create', file: at });
   }
 };
