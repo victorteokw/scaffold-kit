@@ -1,5 +1,4 @@
 import * as fs from 'fs';
-import * as path from 'path';
 import { isEqual, cloneDeep } from 'lodash';
 import RollbackJSONFileInfo from '../instructions/RollbackJSONFileInfo';
 import Reporter from '../Reporter';
