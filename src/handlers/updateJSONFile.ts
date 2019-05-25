@@ -2,22 +2,31 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as mkdirp from 'mkdirp';
 import { isEqual, cloneDeep } from 'lodash';
+import isDefined from '../utilities/isDefined';
+import UpdateJSONFileInfo from '../instructions/UpdateJSONFileInfo';
+import Reporter from '../Reporter';
 
-const updateJSONFile = ({ at, updator, silent }) => {
+const updateJSONFile = (params: UpdateJSONFileInfo, reporter: Reporter) => {
+  let { at, updator } = params;
+
+  if (!isDefined(at) && !isDefined(updator)) {
+    throw new Error(`you should provide at and updator`);
+  }
+
   const dest = at;
   if (fs.existsSync(dest)) {
     const before = JSON.parse(fs.readFileSync(dest).toString());
     const after = updator(cloneDeep(before));
     if (isEqual(before, after)) {
-      return ['up-to-date', 'yellow', at, silent];
+      reporter.push({ message: 'up-to-date', file: at });
     } else {
       fs.writeFileSync(at, JSON.stringify(after, null, 2) + '\n');
-      return ['update', 'green', at, silent];
+      reporter.push({ message: 'update', file: at });
     }
   } else {
     mkdirp.sync(path.dirname(dest));
     fs.writeFileSync(at, JSON.stringify(updator({}), null, 2) + '\n');
-    return ['create', 'green', at, silent];
+    reporter.push({ message: 'create', file: at });
   }
 };
 

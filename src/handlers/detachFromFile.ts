@@ -7,16 +7,15 @@ import DetachFromFileInfo from '../instructions/DetachFromFileInfo';
 const detachFromFile = (
   params: DetachFromFileInfo,
   reporter: Reporter,
-  render: Render
+  render: Render,
 ) => {
-
   let { content, from, at, context } = params;
 
   if (!isDefined(from) && !isDefined(content)) {
     throw new Error(`you should provide content or from for '${at}'.`);
   }
 
-  if (isDefined(from) && from ) {
+  if (isDefined(from) && from) {
     content = fs.readFileSync(from).toString();
   }
 
