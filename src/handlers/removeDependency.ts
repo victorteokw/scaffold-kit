@@ -1,4 +1,4 @@
-import * as fs from 'fs';;
+import * as fs from 'fs';
 import * as path from 'path';
 const { spawnSync } = require('child_process');
 const getDestination = require('../getDestination');
@@ -18,7 +18,7 @@ const mockRemoveDependency = (pkgName, dev) => {
   fs.writeFileSync(pkgFile, JSON.stringify(pkg, null, 2) + '\n');
 };
 
-const realRemoveDependency = (pkgName) => {
+const realRemoveDependency = pkgName => {
   const obj = spawnSync('npm', ['remove', pkgName]);
   if (obj.signal === 'SIGINT') {
     console.log('');
@@ -26,7 +26,7 @@ const realRemoveDependency = (pkgName) => {
   }
 };
 
-export default function  removeDependency (params)  {
+export default function removeDependency(params) {
   const pkgName = params.package;
   const { dev, mock, silent } = params;
   const installed = isDependencyInstalled(pkgName, dev);
@@ -40,4 +40,4 @@ export default function  removeDependency (params)  {
   } else {
     outputMessage('uninstalled', 'yellow', pkgName, silent);
   }
-};
+}

@@ -1,19 +1,18 @@
-import * as fs from 'fs';;
-import * as path from 'path';
+import * as fs from 'fs';
 import * as ejs from 'ejs';
-import {isUndefined,endsWith} from  'lodash';
+import isDefined from '../utilities/isDefined';
 
-export default function   detachFromFile ({ content, from, at, context, silent }) {
-  if (isUndefined(content)) {
+export default function detachFromFile({ content, from, at, context, silent }) {
+  if (!isDefined(content)) {
     content = fs.readFileSync(from).toString();
   }
   if (context) {
     content = ejs.render(content, context);
   }
-  const dest =at;
+  const dest = at;
   if (fs.existsSync(dest)) {
     const destContent = fs.readFileSync(dest).toString();
-    if (endsWith(destContent, content)) {
+    if (destContent.endsWith(content)) {
       // remove content from the bottom
       fs.truncateSync(dest, destContent.indexOf(content));
       return ['truncate', 'green', at, silent];
@@ -25,5 +24,4 @@ export default function   detachFromFile ({ content, from, at, context, silent }
     // file not exist, how to detach content?
     return ['not exist', 'yellow', at, silent];
   }
-};
-
+}
