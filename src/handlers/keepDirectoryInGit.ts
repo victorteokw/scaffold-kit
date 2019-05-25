@@ -1,16 +1,16 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import * as mkdirp from 'mkdirp';
-import {includes} from  'lodash';
+import { includes } from 'lodash';
 const outputMessage = require('./outputMessage');
 
-export default function   keepDirectoryInGit  ({ at, silent })  {
+export default function keepDirectoryInGit({ at, silent }) {
   const keepFilename = '.keep';
-  const dir =at;
+  const dir = at;
   if (fs.existsSync(dir) && fs.lstatSync(dir).isDirectory()) {
     // the directory exist
     const filenames = fs.readdirSync(dir);
-    if (includes(filenames, keepFilename) && (filenames.length > 1)) {
+    if (includes(filenames, keepFilename) && filenames.length > 1) {
       fs.unlinkSync(path.join(dir, keepFilename));
       outputMessage('delete', 'green', path.join(at, keepFilename), silent);
     } else if (filenames.length === 0) {
@@ -26,4 +26,4 @@ export default function   keepDirectoryInGit  ({ at, silent })  {
     fs.writeFileSync(path.join(dir, keepFilename), '');
     outputMessage('create', 'green', path.join(at, keepFilename), silent);
   }
-};
+}

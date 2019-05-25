@@ -1,4 +1,4 @@
-import * as fs from 'fs';;
+import * as fs from 'fs';
 import * as path from 'path';
 const { spawnSync } = require('child_process');
 const getDestination = require('../getDestination');
@@ -17,10 +17,17 @@ const isDependencyInstalled = (pkgName, dev) => {
 const mockInstallDependency = (pkgName, version, dev) => {
   const pkgFile = path.join(getDestination(), 'package.json');
   if (!fs.existsSync(pkgFile)) {
-    fs.writeFileSync(pkgFile, JSON.stringify({
-      dependencies: {},
-      devDependencies: {}
-    }, null, 2) + '\n');
+    fs.writeFileSync(
+      pkgFile,
+      JSON.stringify(
+        {
+          dependencies: {},
+          devDependencies: {},
+        },
+        null,
+        2,
+      ) + '\n',
+    );
   }
   const pkg = require(pkgFile);
   pkg[dev ? 'devDependencies' : 'dependencies'][pkgName] = version;
@@ -29,7 +36,9 @@ const mockInstallDependency = (pkgName, version, dev) => {
 
 const realInstallDependency = (pkgName, version, dev) => {
   const obj = spawnSync('npm', [
-    'install', pkgName + '@' + version, dev ? '--save-dev' : '--save'
+    'install',
+    pkgName + '@' + version,
+    dev ? '--save-dev' : '--save',
   ]);
   if (obj.signal === 'SIGINT') {
     console.log('');
@@ -37,7 +46,7 @@ const realInstallDependency = (pkgName, version, dev) => {
   }
 };
 
-export default function installDependency  (params) {
+export default function installDependency(params) {
   const pkgName = params.package;
   const { version, dev, mock, silent } = params;
   const installed = isDependencyInstalled(pkgName, dev);
@@ -51,4 +60,4 @@ export default function installDependency  (params) {
       realInstallDependency(pkgName, version, dev);
     }
   }
-};
+}

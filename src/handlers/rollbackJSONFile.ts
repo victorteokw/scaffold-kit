@@ -1,8 +1,8 @@
-import * as fs from 'fs';;
+import * as fs from 'fs';
 import * as path from 'path';
-import {isEqual,cloneDeep} from  'lodash';
+import { isEqual, cloneDeep } from 'lodash';
 
-export default function rollbackJSONFile   ({ at, rollbacker, silent }) {
+export default function rollbackJSONFile({ at, rollbacker, silent }) {
   const dest = at;
   if (fs.existsSync(dest)) {
     const before = JSON.parse(fs.readFileSync(dest).toString());
@@ -17,4 +17,4 @@ export default function rollbackJSONFile   ({ at, rollbacker, silent }) {
     // file not exist, can not rollback
     return ['not exist', 'red', at, silent];
   }
-};
+}
