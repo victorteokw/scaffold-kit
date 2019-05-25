@@ -2,7 +2,7 @@ const util = require('util');
 const exec = util.promisify(require('child_process').exec);
 const outputMessage = require('./outputMessage');
 
-export default async function runShellCommand({ command, silent }) {
+const runShellCommand = async ({ command, silent }) => {
   outputMessage('run', 'green', command, silent);
   const obj = await exec(command);
   if (silent) return;
@@ -13,4 +13,6 @@ export default async function runShellCommand({ command, silent }) {
   } else {
     process.stdout.write(obj.stdout);
   }
-}
+};
+
+export default runShellCommand;

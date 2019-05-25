@@ -2,7 +2,7 @@ const util = require('util');
 const exec = util.promisify(require('child_process').exec);
 const outputMessage = require('./outputMessage');
 
-export default async function undoShellCommand({ reverseCommand, silent }) {
+const undoShellCommand = async ({ reverseCommand, silent }) => {
   outputMessage('run', 'green', reverseCommand, silent);
   const obj = await exec(reverseCommand);
   if (silent) return;
@@ -13,4 +13,6 @@ export default async function undoShellCommand({ reverseCommand, silent }) {
   } else {
     process.stdout.write(obj.stdout);
   }
-}
+};
+
+export default undoShellCommand;

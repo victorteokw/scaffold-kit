@@ -2,7 +2,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { isEqual } from 'lodash';
 
-export default function rollbackFile({ at, rollbacker, silent }) {
+const rollbackFile = ({ at, rollbacker, silent }) => {
   const dest = at;
   if (fs.existsSync(dest)) {
     const before = fs.readFileSync(dest).toString();
@@ -17,4 +17,6 @@ export default function rollbackFile({ at, rollbacker, silent }) {
     // file not exist, can not rollback
     return ['not exist', 'red', at, silent];
   }
-}
+};
+
+export default rollbackFile;

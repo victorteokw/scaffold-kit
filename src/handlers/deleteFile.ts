@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 
-export default function deleteFile({ at, silent }) {
+const deleteFile = ({ at, silent }) => {
   const dest = at;
   if (fs.existsSync(dest)) {
     // delete file
@@ -11,6 +11,6 @@ export default function deleteFile({ at, silent }) {
     // do nothing
     return ['not exist', 'yellow', at, silent];
   }
-}
+};
 
-module.exports = deleteFile;
+export default deleteFile;

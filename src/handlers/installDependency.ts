@@ -46,7 +46,7 @@ const realInstallDependency = (pkgName, version, dev) => {
   }
 };
 
-export default function installDependency(params) {
+const installDependency = params => {
   const pkgName = params.package;
   const { version, dev, mock, silent } = params;
   const installed = isDependencyInstalled(pkgName, dev);
@@ -60,4 +60,6 @@ export default function installDependency(params) {
       realInstallDependency(pkgName, version, dev);
     }
   }
-}
+};
+
+export default installDependency;
