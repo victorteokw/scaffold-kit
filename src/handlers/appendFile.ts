@@ -9,7 +9,7 @@ import Render from '../Render';
 const appendFile = (
   params: AppendFileInfo,
   reporter: Reporter,
-  render: Render
+  render: Render,
 ) => {
   const { from, at, context } = params;
   let { content } = params;
