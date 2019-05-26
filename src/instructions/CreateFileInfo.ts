@@ -1,5 +1,5 @@
 interface CCreateFileInfo {
-  from: undefined;
+  from?: undefined;
   content: string;
   at: string;
   context?: object;
@@ -8,7 +8,7 @@ interface CCreateFileInfo {
 
 interface FCreateFileInfo {
   from: string;
-  content: undefined;
+  content?: undefined;
   at: string;
   context?: object;
   overwrite?: boolean;

@@ -1,5 +1,5 @@
 interface CAppendFileInfo {
-  from: undefined;
+  from?: undefined;
   content: string;
   at: string;
   context?: object;
@@ -7,7 +7,7 @@ interface CAppendFileInfo {
 
 interface FAppendFileInfo {
   from: string;
-  content: undefined;
+  content?: undefined;
   at: string;
   context?: object;
 }
