@@ -3,7 +3,7 @@ import Reporter from '../Reporter';
 import DeleteFileInfo from '../instructions/DeleteFileInfo';
 
 const deleteFile = (params: DeleteFileInfo, reporter: Reporter) => {
-  let { at } = params;
+  const { at } = params;
   if (fs.existsSync(at)) {
     // delete file
     fs.unlinkSync(at);

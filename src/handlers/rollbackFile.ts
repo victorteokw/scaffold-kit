@@ -4,7 +4,7 @@ import RollbackFileInfo from '../instructions/RollbackFileInfo';
 import Reporter from '../Reporter';
 
 const rollbackFile = (params: RollbackFileInfo, reporter: Reporter) => {
-  let { at, rollbacker } = params;
+  const { at, rollbacker } = params;
 
   if (fs.existsSync(at)) {
     const before = fs.readFileSync(at).toString();

@@ -8,7 +8,7 @@ const keepDirectoryInGit = (
   params: KeepDirectoryInGitInfo,
   reporter: Reporter,
 ) => {
-  let { at } = params;
+  const { at } = params;
   const keepFilename = '.keep';
   if (fs.existsSync(at) && fs.lstatSync(at).isDirectory()) {
     // the directory exist

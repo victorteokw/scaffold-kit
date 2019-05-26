@@ -9,14 +9,10 @@ const detachFromFile = (
   reporter: Reporter,
   render: Render,
 ) => {
-  let content = params.content;
+  let { content } = params;
   const { from, at, context } = params;
 
-  if (!isDefined(from) && !isDefined(content)) {
-    throw new Error(`you should provide content or from for '${at}'.`);
-  }
-
-  if (isDefined(from)) {
+  if (!isDefined(content)) {
     content = fs.readFileSync(from as string).toString();
   }
 
@@ -26,9 +22,9 @@ const detachFromFile = (
 
   if (fs.existsSync(at)) {
     const destContent = fs.readFileSync(at).toString();
-    if (content && destContent.endsWith(content)) {
+    if (destContent.endsWith(content as string)) {
       // remove content from the bottom
-      fs.truncateSync(at, destContent.indexOf(content));
+      fs.truncateSync(at, destContent.indexOf(content as string));
       reporter.push({ message: 'truncate', file: at });
     } else {
       // cannot remove content

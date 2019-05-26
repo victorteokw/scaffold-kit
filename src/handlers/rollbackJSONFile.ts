@@ -4,10 +4,9 @@ import RollbackJSONFileInfo from '../instructions/RollbackJSONFileInfo';
 import Reporter from '../Reporter';
 
 const rollbackJSONFile = (params: RollbackJSONFileInfo, reporter: Reporter) => {
-  let { at, rollbacker } = params;
-  const dest = at;
-  if (fs.existsSync(dest)) {
-    const before = JSON.parse(fs.readFileSync(dest).toString());
+  const { at, rollbacker } = params;
+  if (fs.existsSync(at)) {
+    const before = JSON.parse(fs.readFileSync(at).toString());
     const after = rollbacker(cloneDeep(before));
     if (isEqual(before, after)) {
       reporter.push({ message: 'unchanged', file: at });

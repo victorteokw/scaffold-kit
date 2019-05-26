@@ -7,7 +7,7 @@ import UpdateJSONFileInfo from '../instructions/UpdateJSONFileInfo';
 import Reporter from '../Reporter';
 
 const updateJSONFile = (params: UpdateJSONFileInfo, reporter: Reporter) => {
-  let { at, updator } = params;
+  const { at, updator } = params;
 
   if (!isDefined(at) && !isDefined(updator)) {
     throw new Error(`you should provide at and updator`);

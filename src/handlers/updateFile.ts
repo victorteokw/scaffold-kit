@@ -6,7 +6,7 @@ import UpdateFileInfo from '../instructions/UpdateFileInfo';
 import Reporter from '../Reporter';
 
 const updateFile = (params: UpdateFileInfo, reporter: Reporter) => {
-  let { at, updator } = params;
+  const { at, updator } = params;
 
   if (fs.existsSync(at)) {
     const before = fs.readFileSync(at).toString();
