@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import isDefined from '../utilities/isDefined';
 import * as mkdirp from 'mkdirp';
+import isDefined from '../utilities/isDefined';
 import Reporter from '../Reporter';
 import AppendFileInfo from '../instructions/AppendFileInfo';
 import Render from '../Render';
@@ -9,7 +9,7 @@ import Render from '../Render';
 const appendFile = (
   params: AppendFileInfo,
   reporter: Reporter,
-  render: Render,
+  render: Render
 ) => {
   const { from, at, context } = params;
   let { content } = params;

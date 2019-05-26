@@ -7,7 +7,7 @@ const execAsync = promisify(exec);
 
 const undoShellCommand = async (
   params: UndoShellCommandInfo,
-  reporter: Reporter,
+  reporter: Reporter
 ) => {
   const { reverseCommand } = params;
   reporter.push({ message: 'run', command: reverseCommand });

@@ -8,7 +8,7 @@ const execAsync = promisify(exec);
 
 const runShellCommand = async (
   params: RunShellCommandInfo,
-  reporter: Reporter,
+  reporter: Reporter
 ) => {
   const { command } = params;
   reporter.push({ message: 'run', command });

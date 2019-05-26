@@ -7,7 +7,7 @@ import DetachFromFileInfo from '../instructions/DetachFromFileInfo';
 const detachFromFile = (
   params: DetachFromFileInfo,
   reporter: Reporter,
-  render: Render,
+  render: Render
 ) => {
   let { content } = params;
   const { from, at, context } = params;
