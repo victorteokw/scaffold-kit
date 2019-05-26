@@ -4,6 +4,7 @@ import * as handlers from './handlers';
 import DependencyInstruction from './DependencyInstruction';
 import FileInstruction from './FileInstruction';
 import ShellCommandInstruction from './ShellCommandInstruction';
+import Reporter from "./Reporter";
 
 interface FileInstructionMap { [key: string]: FileInstruction[] }
 interface DependencyInstructionMap { [key: string]: DependencyInstruction }
@@ -45,7 +46,7 @@ class Executor {
     return this;
   }
 
-  public async flush() {
+  public async flush(reporter: Reporter) {
     const files: FileInstructionMap = {};
     const directories: FileInstructionMap = {};
     const dependencies: DependencyInstructionMap = {};
@@ -74,22 +75,22 @@ class Executor {
     const fileNames = Object.keys(files).sort();
     for (const fileName of fileNames) {
       for (const inst of files[fileName]) {
-        await handlers[inst.type](inst.detail);
+        await this.handlers[inst.type](inst.detail, reporter);
       }
     }
     const dirNames = Object.keys(directories).sort();
     for (const dirName of dirNames) {
       for (const inst of directories[dirName]) {
-        await handlers[inst.type](inst.detail);
+        await this.handlers[inst.type](inst.detail, reporter);
       }
     }
     const dependencyNames = Object.keys(dependencies).sort();
     for (const dependencyName of dependencyNames) {
       const inst = dependencies[dependencyName];
-      await handlers[inst.type](inst.detail);
+      await this.handlers[inst.type](inst.detail, reporter);
     }
     for (const inst of commands) {
-      await handlers[inst.type](inst.detail);
+      await this.handlers[inst.type](inst.detail, reporter);
     }
     this.done = true;
   };

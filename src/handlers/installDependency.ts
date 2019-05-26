@@ -3,7 +3,7 @@ import * as path from 'path';
 const { spawnSync } = require('child_process');
 
 const isDependencyInstalled = (pkgName, dev) => {
-  const pkgFile = path.join(getDestination(), 'package.json');
+  const pkgFile = path.join('', 'package.json');
   if (!fs.existsSync(pkgFile)) {
     return false;
   }
@@ -13,7 +13,7 @@ const isDependencyInstalled = (pkgName, dev) => {
 };
 
 const mockInstallDependency = (pkgName, version, dev) => {
-  const pkgFile = path.join(getDestination(), 'package.json');
+  const pkgFile = path.join('', 'package.json');
   if (!fs.existsSync(pkgFile)) {
     fs.writeFileSync(
       pkgFile,
@@ -49,9 +49,9 @@ const installDependency = params => {
   const { version, dev, mock, silent } = params;
   const installed = isDependencyInstalled(pkgName, dev);
   if (installed) {
-    outputMessage('installed', 'yellow', pkgName, silent);
+    //outputMessage('installed', 'yellow', pkgName, silent);
   } else {
-    outputMessage('install', 'green', pkgName, silent);
+    //outputMessage('install', 'green', pkgName, silent);
     if (mock) {
       mockInstallDependency(pkgName, version, dev);
     } else {
