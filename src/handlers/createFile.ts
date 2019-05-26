@@ -9,7 +9,7 @@ import Render from '../Render';
 const createFile = (
   params: CreateFileInfo,
   reporter: Reporter,
-  render: Render
+  render: Render,
 ) => {
   let { content } = params;
   const { from, at, context, overwrite } = params;
