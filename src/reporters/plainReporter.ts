@@ -76,7 +76,6 @@ const report: Reporter = {
         chalk[CommandMessageColor[msg]](message.padStart(12))
       } ${command}`);
     } else if (config) {
-      const msg = config as CommandMessage;
       log(`${chalk.green(message.padStart(12))} ${config}`);
     }
   }

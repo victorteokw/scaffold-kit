@@ -12,7 +12,9 @@ async function execute(
   const context = new Context(executionInfo);
   if (reporter) context.reporter = reporter;
   await executable(context, nullExecutable);
-  await context.executor.flush(context.reporter);
+  if (!context.disableFlush) {
+    await context.executor.flush(context.reporter);
+  }
 }
 
 export default execute;

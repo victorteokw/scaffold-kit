@@ -42,7 +42,7 @@ class Context implements ExecutionInfo {
 
   public disableFlush: boolean = false;
   public reporter: Reporter = plainReporter;
-  public executor: Executor = new Executor();
+  public readonly executor: Executor = new Executor();
 
   private templateLocation?: string;
 

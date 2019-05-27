@@ -44,4 +44,86 @@ describe('the context object', () => {
     });
   });
 
+  describe('has user execution information fields', () => {
+    describe('has field wd', () => {
+      it('can be set to string value and can be get', () => {
+
+      });
+
+      it('has default value that user passed in', () => {
+
+      });
+    });
+
+    describe('has field args', () => {
+      it('can be set to array of string value and can be get', () => {
+
+      });
+
+      it('has default value that user passed in', () => {
+
+      });
+    });
+
+    describe('has field options', () => {
+      it('can be set to Options value and can be get', () => {
+
+      });
+
+      it('has default value that user passed in', () => {
+
+      });
+    });
+  });
+
+  describe('has context option fields', () => {
+    describe('has field overwrite', () => {
+      it('can be set to boolean value and can be get', () => {
+
+      });
+
+      it('has default value false', () => {
+
+      });
+    });
+
+    describe('has field mockInstall', () => {
+      it('can be set to boolean value and can be get', () => {
+
+      });
+
+      it('has default value false', () => {
+
+      });
+    });
+  });
+
+  describe('has execution behavior fields', () => {
+    describe('has field disableFlush', () => {
+      it('can be set to boolean value and can be get', () => {
+
+      });
+
+      it('has default value false', () => {
+
+      });
+    });
+    describe('has field reporter', () => {
+      it('can be set to Reporter value and can be get', () => {
+
+      });
+
+      it('has default value plainReporter', () => {
+
+      });
+    });
+    describe('has field executor', () => {
+      it('is readonly', () => {
+
+      });
+      it("on creation, it's a brand new executor", () => {
+
+      });
+    });
+  });
 });
