@@ -1,6 +1,6 @@
 interface RemoveDependencyInfo {
   package: string;
-  mock: boolean;
+  mock?: boolean;
 }
 
 export default RemoveDependencyInfo;

@@ -37,6 +37,7 @@
   },
   "dependencies": {
     "@types/lodash": "^4.14.129",
+    "@types/lodash.kebabcase": "^4.1.6",
     "@types/mkdirp": "^0.5.2",
     "chalk": "^2.4.0",
     "find-dominant-file": "^2.2.0",
