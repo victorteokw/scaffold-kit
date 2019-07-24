@@ -24,9 +24,9 @@ const displayAppHelp:
       retval += title(help.displayName + ' ' + help.version);
       retval += body(help.description, 2, 2);
       retval += title('Usage');
-      retval += body(help.usage || `${help.commandName} ${chalk.italic('command')} [options...]`)
+      retval += body(help.usage || `${help.commandName} ${chalk.italic('command')} [options...]`, 2, 2);
       retval += title('Options');
-      retval += options(ctx.optionDefinitions);
+      retval += options(ctx.optionDefinitions, 2);
       stream.write(ensureNewLine(retval));
     } else {
       await next(ctx);
