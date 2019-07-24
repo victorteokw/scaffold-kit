@@ -7,7 +7,7 @@ interface IterateFileParameter {
   filename: string
 }
 
-const iterateTemplateFilesFromDirectory = (
+const iterateTemplateFiles = (
   dir: string,
   callback: (param: IterateFileParameter) => void
 ) => {
@@ -19,4 +19,4 @@ const iterateTemplateFilesFromDirectory = (
   });
 };
 
-module.exports = iterateTemplateFilesFromDirectory;
+export default iterateTemplateFiles;
