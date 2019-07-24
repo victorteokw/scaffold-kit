@@ -12,3 +12,5 @@ export { default as redirectWorkingDirectory } from './redirectWorkingDirectory'
 export { default as seekingProjectRoot } from './seekingProjectRoot';
 export { default as useConfigFile } from './useConfigFile';
 export { default as useReporter } from './useReporter';
+export { default as prefixGenerate } from './prefixGenerate';
+export { default as prefixDestroy } from './prefixDestroy';

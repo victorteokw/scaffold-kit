@@ -25,4 +25,4 @@ const reverseInstruction = (instruction: Instruction) => {
   };
 };
 
-module.exports = reverseInstruction;
+export default reverseInstruction;
