@@ -435,4 +435,74 @@ describe('context instruction helper methods', () => {
     // TODO: test mockInstall just like overwrite for createFile
   });
 
+  describe('runShellCommand', () => {
+    it("creates a new runShellCommand instruction in the executor's instruction stack", () => {
+      const context = new Context({ 'wd': '/users/victor', args: [], options: {}});
+
+      context.runShellCommand({
+        command: 'git init',
+        reverseCommand: 'rm -rf .git'
+      });
+      expect(context.executor.instructions.length).toBe(1);
+      expect(context.executor.instructions[0]).toEqual({
+        type: 'runShellCommand',
+        detail: {
+          command: 'git init',
+          reverseCommand: 'rm -rf .git'
+        }
+      });
+    });
+  });
+
+  describe('undoShellCommand', () => {
+    it("creates a new undoShellCommand instruction in the executor's instruction stack", () => {
+      const context = new Context({ 'wd': '/users/victor', args: [], options: {}});
+
+      context.undoShellCommand({
+        command: 'git init',
+        reverseCommand: 'rm -rf .git'
+      });
+      expect(context.executor.instructions.length).toBe(1);
+      expect(context.executor.instructions[0]).toEqual({
+        type: 'undoShellCommand',
+        detail: {
+          command: 'git init',
+          reverseCommand: 'rm -rf .git'
+        }
+      });
+    });
+  });
+
+  describe('keepDirectoryInGit', () => {
+    it("creates a new keepDirectoryInGit instruction in the executor's instruction stack", () => {
+      const context = new Context({ 'wd': '/users/victor', args: [], options: {}});
+      context.keepDirectoryInGit({
+        at: '1.txt',
+      });
+      expect(context.executor.instructions.length).toBe(1);
+      expect(context.executor.instructions[0]).toEqual({
+        type: 'keepDirectoryInGit',
+        detail: {
+          at: '/users/victor/1.txt'
+        }
+      });
+    });
+
+    it("expends from location if it's inside template dir.", () => {
+      const context = new Context({ 'wd': '/users/victor', args: [], options: {}});
+      context.useTemplateFrom('/users/pinkle', () => {
+        context.keepDirectoryInGit({
+          at: '1.txt'
+        });
+      });
+      expect(context.executor.instructions.length).toBe(1);
+      expect(context.executor.instructions[0]).toEqual({
+        type: 'keepDirectoryInGit',
+        detail: {
+          at: '/users/victor/1.txt'
+        }
+      });
+    });
+  });
+
 });
