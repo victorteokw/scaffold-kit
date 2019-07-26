@@ -1,5 +1,4 @@
 import Instruction from "./Instruction";
-import Handler from './Handler';
 import * as handlers from './handlers';
 import DependencyInstruction from './DependencyInstruction';
 import FileInstruction from './FileInstruction';
@@ -12,10 +11,7 @@ interface DependencyInstructionMap { [key: string]: DependencyInstruction }
 function isFileCommand(command: string) {
   return [
     'createFile', 'deleteFile', 'appendFile', 'detachFromFile',
-    'updateFile', 'rollbackFile', 'updateJSONFile', 'rollbackJSONFile',
-    'installDependency', 'removeDependency',
-    'runShellCommand', 'undoShellCommand',
-    'keepDirectoryInGit'
+    'updateFile', 'rollbackFile', 'updateJSONFile', 'rollbackJSONFile'
   ].includes(command);
 }
 
@@ -47,6 +43,7 @@ class Executor {
   }
 
   public async flush(reporter: Reporter) {
+    if (this.done) return;
     const files: FileInstructionMap = {};
     const directories: FileInstructionMap = {};
     const dependencies: DependencyInstructionMap = {};
