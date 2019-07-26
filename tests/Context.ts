@@ -156,3 +156,283 @@ describe('the context object', () => {
     });
   });
 });
+
+describe('context instruction helper methods', () => {
+  describe('createFile', () => {
+    it("creates a new createFile instruction in the executor's instruction stack", () => {
+      const context = new Context({ 'wd': '/users/victor', args: [], options: {}});
+      context.createFile({
+        at: '1.txt',
+        from: '/users/pinkle/2.txt'
+      });
+      expect(context.executor.instructions.length).toBe(1);
+      expect(context.executor.instructions[0]).toEqual({
+        type: 'createFile',
+        detail: {
+          at: '/users/victor/1.txt',
+          from: '/users/pinkle/2.txt',
+          overwrite: false,
+          content: undefined,
+          context: undefined
+        }
+      });
+    });
+
+    it("expends from location if it's inside template dir.", () => {
+      const context = new Context({ 'wd': '/users/victor', args: [], options: {}});
+      context.useTemplateFrom('/users/pinkle', () => {
+        context.createFile({
+          at: '1.txt',
+          from: '2.txt'
+        });
+      });
+      expect(context.executor.instructions.length).toBe(1);
+      expect(context.executor.instructions[0]).toEqual({
+        type: 'createFile',
+        detail: {
+          at: '/users/victor/1.txt',
+          from: '/users/pinkle/2.txt',
+          overwrite: false,
+          content: undefined,
+          context: undefined
+        }
+      });
+    });
+
+    // TODO: overwrite when context setting is true and local setting is undefined
+    // TODO: overwrite when overwrite is set
+    // TODO: not overwrite when local is false while context setting is true
+  });
+
+  describe('deleteFile', () => {
+    it("creates a new deleteFile instruction in the executor's instruction stack", () => {
+      const context = new Context({ 'wd': '/users/victor', args: [], options: {}});
+      context.deleteFile({
+        at: '1.txt'
+      });
+      expect(context.executor.instructions.length).toBe(1);
+      expect(context.executor.instructions[0]).toEqual({
+        type: 'deleteFile',
+        detail: {
+          at: '/users/victor/1.txt',
+          from: undefined,
+          overwrite: false,
+          content: undefined,
+          context: undefined
+        }
+      });
+    });
+  });
+
+  describe('appendFile', () => {
+    it("creates a new appendFile instruction in the executor's instruction stack", () => {
+      const context = new Context({ 'wd': '/users/victor', args: [], options: {}});
+      context.appendFile({
+        at: '1.txt',
+        from: '/users/pinkle/2.txt'
+      });
+      expect(context.executor.instructions.length).toBe(1);
+      expect(context.executor.instructions[0]).toEqual({
+        type: 'appendFile',
+        detail: {
+          at: '/users/victor/1.txt',
+          from: '/users/pinkle/2.txt',
+          content: undefined,
+          context: undefined
+        }
+      });
+    });
+
+    it("expends from location if it's inside template dir.", () => {
+      const context = new Context({ 'wd': '/users/victor', args: [], options: {}});
+      context.useTemplateFrom('/users/pinkle', () => {
+        context.appendFile({
+          at: '1.txt',
+          from: '2.txt'
+        });
+      });
+      expect(context.executor.instructions.length).toBe(1);
+      expect(context.executor.instructions[0]).toEqual({
+        type: 'appendFile',
+        detail: {
+          at: '/users/victor/1.txt',
+          from: '/users/pinkle/2.txt',
+          content: undefined,
+          context: undefined
+        }
+      });
+    });
+  });
+
+  describe('detachFromFile', () => {
+    it("creates a new detachFromFile instruction in the executor's instruction stack", () => {
+      const context = new Context({ 'wd': '/users/victor', args: [], options: {}});
+      context.detachFromFile({
+        at: '1.txt',
+        from: '/users/pinkle/2.txt'
+      });
+      expect(context.executor.instructions.length).toBe(1);
+      expect(context.executor.instructions[0]).toEqual({
+        type: 'detachFromFile',
+        detail: {
+          at: '/users/victor/1.txt',
+          from: '/users/pinkle/2.txt',
+          content: undefined,
+          context: undefined
+        }
+      });
+    });
+
+    it("expends from location if it's inside template dir.", () => {
+      const context = new Context({ 'wd': '/users/victor', args: [], options: {}});
+      context.useTemplateFrom('/users/pinkle', () => {
+        context.detachFromFile({
+          at: '1.txt',
+          from: '2.txt'
+        });
+      });
+      expect(context.executor.instructions.length).toBe(1);
+      expect(context.executor.instructions[0]).toEqual({
+        type: 'detachFromFile',
+        detail: {
+          at: '/users/victor/1.txt',
+          from: '/users/pinkle/2.txt',
+          content: undefined,
+          context: undefined
+        }
+      });
+    });
+  });
+
+  describe('updateFile', () => {
+    it("creates a new updateFile instruction in the executor's instruction stack", () => {
+      const context = new Context({ 'wd': '/users/victor', args: [], options: {}});
+      const updator = (s: string) => s;
+
+      context.updateFile({
+        at: '1.txt',
+        updator,
+        rollbacker: updator
+      });
+      expect(context.executor.instructions.length).toBe(1);
+      expect(context.executor.instructions[0]).toEqual({
+        type: 'updateFile',
+        detail: {
+          at: '/users/victor/1.txt',
+          updator,
+          rollbacker: updator
+        }
+      });
+    });
+  });
+
+  describe('rollbackFile', () => {
+    it("creates a new rollbackFile instruction in the executor's instruction stack", () => {
+      const context = new Context({ 'wd': '/users/victor', args: [], options: {}});
+      const updator = (s: string) => s;
+
+      context.rollbackFile({
+        at: '1.txt',
+        updator,
+        rollbacker: updator
+      });
+      expect(context.executor.instructions.length).toBe(1);
+      expect(context.executor.instructions[0]).toEqual({
+        type: 'rollbackFile',
+        detail: {
+          at: '/users/victor/1.txt',
+          updator,
+          rollbacker: updator
+        }
+      });
+    });
+  });
+
+  describe('updateJSONFile', () => {
+    it("creates a new updateJSONFile instruction in the executor's instruction stack", () => {
+      const context = new Context({ 'wd': '/users/victor', args: [], options: {}});
+      const updator = (a: any) => a;
+
+      context.updateJSONFile({
+        at: '1.txt',
+        updator,
+        rollbacker: updator
+      });
+      expect(context.executor.instructions.length).toBe(1);
+      expect(context.executor.instructions[0]).toEqual({
+        type: 'updateJSONFile',
+        detail: {
+          at: '/users/victor/1.txt',
+          updator,
+          rollbacker: updator
+        }
+      });
+    });
+  });
+
+  describe('rollbackJSONFile', () => {
+    it("creates a new rollbackJSONFile instruction in the executor's instruction stack", () => {
+      const context = new Context({ 'wd': '/users/victor', args: [], options: {}});
+      const updator = (a: any) => a;
+
+      context.rollbackJSONFile({
+        at: '1.txt',
+        updator,
+        rollbacker: updator
+      });
+      expect(context.executor.instructions.length).toBe(1);
+      expect(context.executor.instructions[0]).toEqual({
+        type: 'rollbackJSONFile',
+        detail: {
+          at: '/users/victor/1.txt',
+          updator,
+          rollbacker: updator
+        }
+      });
+    });
+  });
+
+  describe('installDependency', () => {
+    it("creates a new installDependency instruction in the executor's instruction stack", () => {
+      const context = new Context({ 'wd': '/users/victor', args: [], options: {}});
+
+      context.installDependency({
+        package: 'prevjs',
+        version: '~2.0'
+      });
+      expect(context.executor.instructions.length).toBe(1);
+      expect(context.executor.instructions[0]).toEqual({
+        type: 'installDependency',
+        detail: {
+          package: 'prevjs',
+          version: '~2.0',
+          dev: undefined,
+          mock: false
+        }
+      });
+    });
+    // TODO: test mockInstall just like overwrite for createFile
+  });
+
+  describe('removeDependency', () => {
+    it("creates a new removeDependency instruction in the executor's instruction stack", () => {
+      const context = new Context({ 'wd': '/users/victor', args: [], options: {}});
+
+      context.removeDependency({
+        package: 'prevjs'
+      });
+      expect(context.executor.instructions.length).toBe(1);
+      expect(context.executor.instructions[0]).toEqual({
+        type: 'removeDependency',
+        detail: {
+          package: 'prevjs',
+          mock: undefined,
+          version: undefined,
+          dev: undefined
+        }
+      });
+    });
+    // TODO: test mockInstall just like overwrite for createFile
+  });
+
+});

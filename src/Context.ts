@@ -78,7 +78,11 @@ class Context implements ExecutionInfo {
   public deleteFile(detail: DeleteFileInfo) {
     this.executor.push({
       detail: {
-        at: this.applyDestination(detail.at)
+        at: this.applyDestination(detail.at),
+        content: detail.content,
+        context: detail.context,
+        from: detail.from ? this.applyTemplate(detail.from) : detail.from,
+        overwrite: firstDefined(detail.overwrite, this.overwrite)
       },
       type: 'deleteFile'
     });
@@ -215,7 +219,10 @@ class Context implements ExecutionInfo {
   public removeDependency(detail: RemoveDependencyInfo) {
     this.executor.push({
       detail: {
-        package: detail.package
+        package: detail.package,
+        version: detail.version,
+        dev: detail.dev,
+        mock: detail.mock
       },
       type: 'removeDependency'
     });
@@ -278,7 +285,7 @@ class Context implements ExecutionInfo {
 
   public async useTemplateFrom(
     templateLocation: string,
-    callback: () => Promise<void>
+    callback: () => Promise<void> | void
   ) {
     this.templateLocation = templateLocation;
     await callback();
