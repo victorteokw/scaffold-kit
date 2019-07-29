@@ -4,12 +4,28 @@ import ExecutionInfo from './ExecutionInfo';
 import nullExecutable from './nullExecutable';
 import Reporter from './Reporter';
 
-async function execute(
+function execute(
   executable: Executable,
   executionInfo: ExecutionInfo,
   reporter?: Reporter
+): Promise<void>;
+
+function execute(
+  executable: Executable,
+  context: Context
+): Promise<void>;
+
+async function execute(
+  executable: Executable,
+  executionInfo: ExecutionInfo | Context,
+  reporter?: Reporter
 ) {
-  const context = new Context(executionInfo);
+  let context: Context;
+  if (executionInfo instanceof Context) {
+    context = executionInfo;
+  } else {
+    context = new Context(executionInfo);
+  }
   if (reporter) context.reporter = reporter;
   await executable(context, nullExecutable);
   if (!context.disableFlush) {
