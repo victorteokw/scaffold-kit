@@ -1,22 +1,46 @@
 import * as fs from 'fs';
 import * as path from 'path';
-const { spawnSync } = require('child_process');
+import { spawn } from 'child-process-promise';
+import findDominantFile from 'find-dominant-file';
+import Reporter from '../Reporter';
+import InstallDependencyInfo from '../instructions/InstallDependencyInfo';
 
-const isDependencyInstalled = (pkgName, dev) => {
-  const pkgFile = path.join('', 'package.json');
-  if (!fs.existsSync(pkgFile)) {
+const isDependencyInstalled = (wd: string, pkgName: string, dev: boolean) => {
+  const pkgFilePath = findDominantFile(wd, 'package.json', false);
+  if (!pkgFilePath) {
     return false;
   }
-  const pkg = require(pkgFile);
-  const section = dev ? pkg.devDependencies : pkg.dependencies;
+  const pkgJson = require(pkgFilePath);
+  const section = dev ? pkgJson.devDependencies : pkgJson.dependencies;
   return !!(section && section[pkgName]);
 };
 
-const mockInstallDependency = (pkgName, version, dev) => {
-  const pkgFile = path.join('', 'package.json');
-  if (!fs.existsSync(pkgFile)) {
+const realInstallDependency = async (
+  pkgFilePath: string,
+  pkgName: string,
+  version: string,
+  dev: boolean
+) => {
+  try {
+    spawn(
+      'npm',
+      ['install', pkgName + '@' + version, dev ? '--save-dev' : '--save'],
+      { capture: [ 'stdout', 'stderr' ]}
+    );
+  } catch(e) {
+    console.error(e.stderr);
+  }
+}
+
+const mockInstallDependency = (
+  pkgFilePath: string,
+  pkgName: string,
+  version: string,
+  dev: boolean
+) => {
+  if (!fs.existsSync(pkgFilePath)) {
     fs.writeFileSync(
-      pkgFile,
+      pkgFilePath,
       JSON.stringify(
         {
           dependencies: {},
@@ -27,35 +51,38 @@ const mockInstallDependency = (pkgName, version, dev) => {
       ) + '\n',
     );
   }
-  const pkg = require(pkgFile);
-  pkg[dev ? 'devDependencies' : 'dependencies'][pkgName] = version;
-  fs.writeFileSync(pkgFile, JSON.stringify(pkg, null, 2) + '\n');
-};
-
-const realInstallDependency = (pkgName, version, dev) => {
-  const obj = spawnSync('npm', [
-    'install',
-    pkgName + '@' + version,
-    dev ? '--save-dev' : '--save',
-  ]);
-  if (obj.signal === 'SIGINT') {
-    console.log('');
-    process.exit(0);
+  const pkg = require(pkgFilePath);
+  if (!pkg.dependencies) {
+    pkg.dependencies = {};
   }
+  if (!pkg.devDependencies) {
+    pkg.devDependencies = {};
+  }
+  pkg[dev ? 'devDependencies' : 'dependencies'][pkgName] = version;
+  fs.writeFileSync(pkgFilePath, JSON.stringify(pkg, null, 2) + '\n');
 };
 
-const installDependency = params => {
-  const pkgName = params.package;
-  const { version, dev, mock, silent } = params;
-  const installed = isDependencyInstalled(pkgName, dev);
+const installDependency = async (
+  params: InstallDependencyInfo,
+  reporter: Reporter
+) => {
+  const packageName = params.package;
+  const { version, dev, mock } = params;
+  const installed = isDependencyInstalled('', packageName, dev || false);
   if (installed) {
-    //outputMessage('installed', 'yellow', pkgName, silent);
+    reporter.push({
+      message: 'installed',
+      dependency: packageName
+    });
   } else {
-    //outputMessage('install', 'green', pkgName, silent);
+    reporter.push({
+      message: 'install',
+      dependency: packageName
+    });
     if (mock) {
-      mockInstallDependency(pkgName, version, dev);
+      mockInstallDependency('', packageName, version, dev || false);
     } else {
-      realInstallDependency(pkgName, version, dev);
+      realInstallDependency('', packageName, version, dev || false);
     }
   }
 };
