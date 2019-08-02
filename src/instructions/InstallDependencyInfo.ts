@@ -3,6 +3,7 @@ interface InstallDependencyInfo {
   version: string;
   dev?: boolean;
   mock?: boolean;
+  wd?: string;
 }
 
 export default InstallDependencyInfo;

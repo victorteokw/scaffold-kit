@@ -1,5 +1,4 @@
 import * as fs from 'fs';
-import * as path from 'path';
 import { spawn } from 'child-process-promise';
 import isDependencyInstalled from '../utilities/isDependencyInstalled';
 import Reporter from '../Reporter';
@@ -50,16 +49,16 @@ const removeDependency = async (
 ) => {
   const packageName = params.package;
   const { version, dev, mock } = params;
-  const installed = isDependencyInstalled('', packageName, dev || false);
+  const [installed, pkgFilePath] = isDependencyInstalled('', packageName, dev || false);
   if (installed) {
     reporter.push({
       message: 'remove',
       dependency: packageName
     });
     if (mock) {
-      mockRemoveDependency('', packageName, version, dev || false);
+      mockRemoveDependency(pkgFilePath, packageName, version, dev || false);
     } else {
-      realRemoveDependency('', packageName, version, dev || false);
+      realRemoveDependency(pkgFilePath, packageName, version, dev || false);
     }
   } else {
     reporter.push({

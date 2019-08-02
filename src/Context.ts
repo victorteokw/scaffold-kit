@@ -204,7 +204,8 @@ class Context implements ExecutionInfo {
         package: detail.package,
         version: detail.version,
         dev: detail.dev,
-        mock: firstDefined(detail.mock, this.mockInstall)
+        mock: firstDefined(detail.mock, this.mockInstall),
+        wd: detail.wd || this.wd
       },
       type: 'installDependency'
     });
@@ -222,7 +223,8 @@ class Context implements ExecutionInfo {
         package: detail.package,
         version: detail.version,
         dev: detail.dev,
-        mock: detail.mock
+        mock: firstDefined(detail.mock, this.mockInstall),
+        wd: detail.wd || this.wd
       },
       type: 'removeDependency'
     });

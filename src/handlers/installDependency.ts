@@ -1,5 +1,4 @@
 import * as fs from 'fs';
-import * as path from 'path';
 import { spawn } from 'child-process-promise';
 import isDependencyInstalled from '../utilities/isDependencyInstalled';
 import Reporter from '../Reporter';
@@ -57,8 +56,8 @@ const installDependency = async (
   reporter: Reporter
 ) => {
   const packageName = params.package;
-  const { version, dev, mock } = params;
-  const installed = isDependencyInstalled('', packageName, dev || false);
+  const { version, dev, mock, wd } = params;
+  const [installed, pkgFilePath] = isDependencyInstalled(wd as string, packageName, dev || false);
   if (installed) {
     reporter.push({
       message: 'installed',
@@ -70,9 +69,9 @@ const installDependency = async (
       dependency: packageName
     });
     if (mock) {
-      mockInstallDependency('', packageName, version, dev || false);
+      mockInstallDependency(pkgFilePath, packageName, version, dev || false);
     } else {
-      realInstallDependency('', packageName, version, dev || false);
+      realInstallDependency(pkgFilePath, packageName, version, dev || false);
     }
   }
 };

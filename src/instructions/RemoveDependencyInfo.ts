@@ -3,6 +3,7 @@ interface RemoveDependencyInfo {
   mock?: boolean;
   version?: string;
   dev?: boolean;
+  wd?: string;
 }
 
 export default RemoveDependencyInfo;
