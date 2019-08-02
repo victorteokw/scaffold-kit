@@ -10,6 +10,7 @@ export { default as executeInstructions } from './executeInstructions';
 export { default as forwardCommand } from './forwardCommand';
 export { default as parseArgv } from './parseArgv';
 export { default as redirectWorkingDirectory } from './redirectWorkingDirectory';
+export { default as removeFirstArg } from './removeFirstArg';
 export { default as seekingProjectRoot } from './seekingProjectRoot';
 export { default as useConfigFile } from './useConfigFile';
 export { default as useReporter } from './useReporter';

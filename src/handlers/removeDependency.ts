@@ -39,10 +39,7 @@ const realRemoveDependency = async (
   );
 
   if (obj.stderr) {
-    process.stdout.write(obj.stdout);
     process.stderr.write(obj.stderr);
-  } else {
-    process.stdout.write(obj.stdout);
   }
 }
 
@@ -61,7 +58,7 @@ const removeDependency = async (
     if (mock) {
       mockRemoveDependency(pkgFilePath, packageName, version, dev || false);
     } else {
-      realRemoveDependency(pkgFilePath, packageName, version, dev || false);
+      await realRemoveDependency(pkgFilePath, packageName, version, dev || false);
     }
   } else {
     reporter.push({

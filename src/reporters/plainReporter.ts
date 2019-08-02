@@ -1,4 +1,6 @@
+import * as path from 'path';
 import chalk from 'chalk';
+import { camelCase } from 'lodash';
 import Reporter from '../Reporter';
 
 enum FileMessage {
@@ -63,17 +65,17 @@ const report: Reporter = {
     if (file) {
       const msg = message as FileMessage;
       log(`${
-        chalk[FileMessageColor[msg]](message.padStart(12))
-      } ${file}`);
+        chalk[FileMessageColor[camelCase(msg)]](message.padStart(12))
+      } ${path.relative(process.cwd(), file)}`);
     } else if (dependency) {
       const msg = message as DependencyMessage;
       log(`${
-        chalk[DependencyMessageColor[msg]](message.padStart(12))
+        chalk[DependencyMessageColor[camelCase(msg)]](message.padStart(12))
       } ${dependency}`);
     } else if (command) {
       const msg = message as CommandMessage;
       log(`${
-        chalk[CommandMessageColor[msg]](message.padStart(12))
+        chalk[CommandMessageColor[camelCase(msg)]](message.padStart(12))
       } ${command}`);
     } else if (config) {
       log(`${chalk.green(message.padStart(12))} ${config}`);

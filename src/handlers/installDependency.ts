@@ -16,10 +16,7 @@ const realInstallDependency = async (
     ['npm', 'install', pkgName + '@' + version, dev ? '--save-dev' : '--save'].join(' ')
   );
   if (obj.stderr) {
-    process.stdout.write(obj.stdout);
     process.stderr.write(obj.stderr);
-  } else {
-    process.stdout.write(obj.stdout);
   }
 }
 
@@ -73,7 +70,7 @@ const installDependency = async (
     if (mock) {
       mockInstallDependency(pkgFilePath, packageName, version, dev || false);
     } else {
-      realInstallDependency(pkgFilePath, packageName, version, dev || false);
+      await realInstallDependency(pkgFilePath, packageName, version, dev || false);
     }
   }
 };
