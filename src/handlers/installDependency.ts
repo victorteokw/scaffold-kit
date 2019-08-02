@@ -18,7 +18,7 @@ const realInstallDependency = async (
       { capture: [ 'stdout', 'stderr' ]}
     );
   } catch(e) {
-    console.error(e.stderr);
+    process.stderr.write(e.stderr);
   }
 }
 
