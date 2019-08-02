@@ -1,0 +1,1 @@
+component composition is often a simpler solution than context.
