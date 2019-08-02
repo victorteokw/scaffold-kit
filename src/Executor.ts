@@ -4,6 +4,7 @@ import DependencyInstruction from './DependencyInstruction';
 import FileInstruction from './FileInstruction';
 import ShellCommandInstruction from './ShellCommandInstruction';
 import Reporter from "./Reporter";
+import { ejsRenderer } from './renderers';
 
 interface FileInstructionMap { [key: string]: FileInstruction[] }
 interface DependencyInstructionMap { [key: string]: DependencyInstruction }
@@ -72,7 +73,7 @@ class Executor {
     const fileNames = Object.keys(files).sort();
     for (const fileName of fileNames) {
       for (const inst of files[fileName]) {
-        await this.handlers[inst.type](inst.detail, reporter);
+        await this.handlers[inst.type](inst.detail, reporter, ejsRenderer);
       }
     }
     const dirNames = Object.keys(directories).sort();

@@ -3,7 +3,6 @@ import RunShellCommandInfo from '../instructions/RunShellCommandInfo';
 
 import { promisify } from 'util';
 import { exec } from 'child_process';
-
 const execAsync = promisify(exec);
 
 const runShellCommand = async (
