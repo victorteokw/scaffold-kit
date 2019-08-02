@@ -48,8 +48,8 @@ const removeDependency = async (
   reporter: Reporter
 ) => {
   const packageName = params.package;
-  const { version, dev, mock } = params;
-  const [installed, pkgFilePath] = isDependencyInstalled('', packageName, dev || false);
+  const { version, dev, mock, wd } = params;
+  const [installed, pkgFilePath] = isDependencyInstalled(wd as string, packageName, dev || false);
   if (installed) {
     reporter.push({
       message: 'remove',
