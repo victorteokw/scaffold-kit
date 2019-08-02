@@ -11,6 +11,7 @@ const seekingProjectRoot: SeekingProjectRoot =
   return async (ctx, next) => {
     const located = findDominantFile(ctx.wd, dominant, true);
     if (located) ctx.wd = located;
+    process.chdir(ctx.wd);
     await next(ctx);
   }
 }

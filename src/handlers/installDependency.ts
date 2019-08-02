@@ -1,7 +1,5 @@
 import * as fs from 'fs';
-import { promisify } from 'util';
-import { exec } from 'child_process';
-const execAsync = promisify(exec);
+import { spawn } from 'child-process-promise';
 import isDependencyInstalled from '../utilities/isDependencyInstalled';
 import Reporter from '../Reporter';
 import InstallDependencyInfo from '../instructions/InstallDependencyInfo';
@@ -12,11 +10,14 @@ const realInstallDependency = async (
   version: string,
   dev: boolean
 ) => {
-  const obj = await execAsync(
-    ['npm', 'install', pkgName + '@' + version, dev ? '--save-dev' : '--save'].join(' ')
-  );
-  if (obj.stderr) {
-    process.stderr.write(obj.stderr);
+  try {
+    await spawn(
+      'npm',
+      ['install', pkgName + '@' + version, dev ? '--save-dev' : '--save'],
+      { capture: [ 'stdout', 'stderr' ]}
+    );
+  } catch(e) {
+    process.stderr.write(e.stderr);
   }
 }
 
