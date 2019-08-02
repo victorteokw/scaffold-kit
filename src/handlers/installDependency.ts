@@ -1,19 +1,9 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { spawn } from 'child-process-promise';
-import findDominantFile from 'find-dominant-file';
+import isDependencyInstalled from '../utilities/isDependencyInstalled';
 import Reporter from '../Reporter';
 import InstallDependencyInfo from '../instructions/InstallDependencyInfo';
-
-const isDependencyInstalled = (wd: string, pkgName: string, dev: boolean) => {
-  const pkgFilePath = findDominantFile(wd, 'package.json', false);
-  if (!pkgFilePath) {
-    return false;
-  }
-  const pkgJson = require(pkgFilePath);
-  const section = dev ? pkgJson.devDependencies : pkgJson.dependencies;
-  return !!(section && section[pkgName]);
-};
 
 const realInstallDependency = async (
   pkgFilePath: string,
