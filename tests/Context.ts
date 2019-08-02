@@ -407,7 +407,8 @@ describe('context instruction helper methods', () => {
           package: 'prevjs',
           version: '~2.0',
           dev: undefined,
-          mock: false
+          mock: false,
+          wd: '/users/victor'
         }
       });
     });
@@ -426,9 +427,10 @@ describe('context instruction helper methods', () => {
         type: 'removeDependency',
         detail: {
           package: 'prevjs',
-          mock: undefined,
+          mock: false,
           version: undefined,
-          dev: undefined
+          dev: undefined,
+          wd: '/users/victor'
         }
       });
     });

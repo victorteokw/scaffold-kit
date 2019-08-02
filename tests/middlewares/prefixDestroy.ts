@@ -28,7 +28,7 @@ describe('Prefix destroy', () => {
     expect(context.executor.instructions.length).toBe(1);
     expect(context.executor.instructions[0]).toEqual({
       type: 'removeDependency',
-      detail: { package: 'lodash', version: 'latest', dev: undefined, mock: false }
+      detail: { package: 'lodash', version: 'latest', dev: undefined, mock: false, wd: 'never-mind' }
     });
   });
 
@@ -55,7 +55,7 @@ describe('Prefix destroy', () => {
     expect(context.executor.instructions.length).toBe(1);
     expect(context.executor.instructions[0]).toEqual({
       type: 'installDependency',
-      detail: { package: 'lodash', version: 'latest', dev: undefined, mock: false }
+      detail: { package: 'lodash', version: 'latest', dev: undefined, mock: false, wd: 'never-mind' }
     });
   });
 });
