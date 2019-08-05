@@ -1,10 +1,13 @@
+export { default as acceptHelp } from './acceptHelp';
+export { default as acceptVersion } from './acceptVersion';
 export { default as acceptMockInstall } from './acceptMockInstall';
 export { default as acceptOverwrite } from './acceptOverwrite';
 export { default as acceptSilent } from './acceptSilent';
+export { default as appHelp } from './appHelp';
+export { default as commandHelp } from './commandHelp';
 export { default as catchError } from './catchError';
 export { default as defineOptions } from './defineOptions';
-export { default as displayAppHelp } from './displayAppHelp';
-export { default as displayCommandHelp } from './displayCommandHelp';
+export { default as displayHelp } from './displayHelp';
 export { default as displayVersion } from './displayVersion';
 export { default as executeInstructions } from './executeInstructions';
 export { default as forwardCommand } from './forwardCommand';
