@@ -1,8 +1,8 @@
-import applyMiddleware from '../../src/applyMiddleware';
-import Executable from '../../src/Executable';
-import displayAppHelp from '../../src/middlewares/displayAppHelp';
-import nullExecutable from '../../src/nullExecutable';
+import chalk from 'chalk';
 import { Writable } from 'stream';
+import applyMiddleware from '../../src/applyMiddleware';
+import displayHelp from '../../src/middlewares/displayHelp';
+import nullExecutable from '../../src/nullExecutable';
 import Context from '../../src/Context';
 
 class TestWritableStream extends Writable {
@@ -13,86 +13,27 @@ class TestWritableStream extends Writable {
   }
 }
 
-describe.skip('Displays help', () => {
-  it('', () => {});
-  // it("outputs help to process's stdout", async () => {
-  //   const stream = new TestWritableStream();
-  //   const help = displayHelp('usage', stream);
-  //   const callback = jest.fn();
-  //   const after: Executable = (ctx, next) => {
-  //     callback();
-  //     next(ctx);
-  //   };
-  //   const executable = applyMiddleware(
-  //     help,
-  //     after
-  //   );
-  //   await executable(
-  //     new Context({ wd: '', args: [], options: { help: true }}),
-  //     nullExecutable
-  //   );
-  //   expect(callback.mock.calls.length).toBe(0);
-  //   expect(stream.received).toBe('usage\n');
-  // });
+describe('Displays help', () => {
 
-  // it("prevents execution of next callback", async () => {
-  //   const stream = new TestWritableStream();
-  //   const help = displayHelp('usage', stream);
-  //   const callback = jest.fn();
-  //   const after: Executable = (ctx, next) => {
-  //     callback();
-  //     next(ctx);
-  //   };
-  //   const executable = applyMiddleware(
-  //     help,
-  //     after
-  //   );
-  //   await executable(
-  //     new Context({ wd: '', args: [], options: { help: true }}),
-  //     nullExecutable
-  //   );
-  //   expect(callback.mock.calls.length).toBe(0);
-  //   expect(stream.received).toBe('usage\n');
-  // });
-
-  // it("appends new line if argument doesn't end with new line", async () => {
-  //   const stream = new TestWritableStream();
-  //   const help = displayHelp('usage', stream);
-  //   const callback = jest.fn();
-  //   const after: Executable = (ctx, next) => {
-  //     callback();
-  //     next(ctx);
-  //   };
-  //   const executable = applyMiddleware(
-  //     help,
-  //     after
-  //   );
-  //   await executable(
-  //     new Context({ wd: '', args: [], options: { help: true }}),
-  //     nullExecutable
-  //   );
-  //   expect(callback.mock.calls.length).toBe(0);
-  //   expect(stream.received).toBe('usage\n');
-  // });
-
-  // it("keep unmodified if argument ends with new line", async () => {
-  //   const stream = new TestWritableStream();
-  //   const help = displayHelp('usage\n\n', stream);
-  //   const callback = jest.fn();
-  //   const after: Executable = (ctx, next) => {
-  //     callback();
-  //     next(ctx);
-  //   };
-  //   const executable = applyMiddleware(
-  //     help,
-  //     after
-  //   );
-  //   await executable(
-  //     new Context({ wd: '', args: [], options: { help: true }}),
-  //     nullExecutable
-  //   );
-  //   expect(callback.mock.calls.length).toBe(0);
-  //   expect(stream.received).toBe('usage\n\n');
-  // });
+  it("outputs help to process's stdout", async () => {
+    const stream = new TestWritableStream();
+    const context = new Context({
+      wd: '/home/luen-sai-ching-lui',
+      args: [],
+      options: {}
+    });
+    context.helpSections = [{
+      key: 'title',
+      title: 'Title',
+      content: 'content 1.'
+    }, {
+      key: 'usage',
+      title: 'Usage',
+      content: 'content 2.'
+    }];
+    const executable = applyMiddleware(displayHelp(stream));
+    await executable(context, nullExecutable);
+    expect(stream.received).toBe(chalk`\n{bold.underline Title}\n\n  content 1.\n\n{bold.underline Usage}\n\n  content 2.\n\n`);
+  });
 
 });

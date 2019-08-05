@@ -19,6 +19,7 @@ import Reporter from './Reporter';
 import plainReporter from './reporters/plainReporter';
 import firstDefined from './utilities/firstDefined';
 import Executor from './Executor';
+import HelpSection from './HelpSection';
 
 class Context implements ExecutionInfo {
 
@@ -37,6 +38,10 @@ class Context implements ExecutionInfo {
 
   public overwrite: boolean = false;
   public mockInstall: boolean = false;
+
+  // help behavior
+  public helpMode: boolean = false;
+  public helpSections: HelpSection[] = [];
 
   // execution behavior
 
