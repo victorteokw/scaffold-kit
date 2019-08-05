@@ -1,10 +1,10 @@
-import nullExecutable from "./nullExecutable";
 import Plugable from './Plugable';
+import PlugableCallback from './PlugableCallback';
 
 function applySingle<T>(lhs: Plugable<T>, rhs: Plugable<T>): Plugable<T> {
-  return (ctx: T, next: Plugable<T>) => {
+  return (ctx: T, next: PlugableCallback<T>) => {
     return lhs(ctx, (innerCtx: T) => {
-      return rhs(innerCtx, nullExecutable);
+      return rhs(innerCtx, next);
     });
   };
 };

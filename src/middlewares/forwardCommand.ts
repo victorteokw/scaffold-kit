@@ -21,6 +21,13 @@ interface Command {
 const forwardCommand: (commands: Command) => Executable =
 (commands: Command) => {
   return async (ctx, next) => {
+    // Adding help section command section
+    ctx.helpSections.push({
+      key: 'command',
+      title: 'Commands',
+      content: Object.keys(commands).join(', ')
+    });
+    // Forward command
     const arg0 = ctx.args[0];
     if (!arg0) {
       throw new CommandNameError('No command name.');

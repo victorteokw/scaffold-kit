@@ -41,8 +41,8 @@
     "load-any-file": "^1.3.0",
     "lodash": "^4.17.11",
     "mkdirp": "^0.5.0",
-    "type-args": "^0.2.0",
-    "type-args-usage": "^0.2.0",
+    "type-args": "^0.2.1",
+    "type-args-usage": "^0.2.1",
     "write-any-file": "^0.1.2"
   },
   "devDependencies": {
